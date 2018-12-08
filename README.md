@@ -12,7 +12,7 @@ Exit out of preferences and open Xcode again. Then click on *Clone an existing p
 ## Adding a new feature to the project
 
 ### Step 1: Create a new branch off of master in GitHub
-Call it feature/(name_of_feature) for consistency and to help everyone know what you are adding.
+Call it "feature/(name_of_feature)" for consistency and to help everyone know what you are adding.
 
 ### Step 2: Update the status of your local repository
 In the Xcode project, select *Source Control* -> *Fetch and Refresh Status*. You should now see the branch you created on GitHub in the Remotes folder in the Source Navigtor.
