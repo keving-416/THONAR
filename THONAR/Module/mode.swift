@@ -9,11 +9,20 @@
 import Foundation
 import ARKit
 
-protocol Mode {
-    var configuration: ARWorldTrackingConfiguration { get }
+/// Default mode to be subclassed for specific types of modes
+class Mode {
+    var configuration: ARWorldTrackingConfiguration
     
-    func render(nodeFor anchor: ARAnchor) -> SCNNode?
+    func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
+        return nil
+    }
     
-    func viewWillAppear(forView view: UIView)
-    
+    func viewWillAppear(forView view: ARSCNView) {
+        view.session.run(self.configuration)
+    }
+        
+    public init() {
+        self.configuration = ARWorldTrackingConfiguration()
+    }
+        
 }

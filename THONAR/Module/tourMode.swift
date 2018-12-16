@@ -9,11 +9,10 @@
 import Foundation
 import ARKit
 
+/// The mode that handles the functionality of the augmented reality tour during THON weekend
 class TourMode: Mode {
-    var configuration: ARWorldTrackingConfiguration = ARWorldTrackingConfiguration()
-    
-    
     var videoPlayers = [String?:AVPlayer]()
+    
     let resourceNames = [
         "FootballPepRally":("Football Pep Rally","mp4"),
         "THON2019Logo":("THON2019LogoARVideo","mp4"),
@@ -22,7 +21,7 @@ class TourMode: Mode {
         "LineDanceFull":("Line Dance Full","MP4")
     ]
     
-    func render(nodeFor anchor: ARAnchor) -> SCNNode? {
+    override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
         if let imageAnchor = anchor as? ARImageAnchor {
@@ -52,7 +51,7 @@ class TourMode: Mode {
         return node
     }
     
-    func viewWillAppear(forView view: UIView) {
+    override func viewWillAppear(forView view: ARSCNView) {
         // Define a variable to hold all your reference images
         let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: Bundle.main)
         self.configuration.detectionImages = referenceImages!
@@ -60,6 +59,9 @@ class TourMode: Mode {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGestureRecognizer)
+        
+        // Run the view's session
+        view.session.run(self.configuration)
     }
     
     func getURL(imageName: String) -> URL? {
@@ -92,6 +94,10 @@ class TourMode: Mode {
                 videoPlayer.play()
             }
         }
+    }
+    
+    public override init() {
+        super.init()
     }
     
 }

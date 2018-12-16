@@ -17,7 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Would be an object that defines what that mode does, but for now, to test the passing of data
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
-    var arMode = TourMode()
+    var arMode: Mode = TourMode()
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
     @IBOutlet weak var menuButton: UIButton!
@@ -36,6 +36,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBAction func dismissMenu(_ sender: Any) {
         if let button = sender as? MenuButton {
             self.mode = button.mode
+            self.arMode = button.arMode!
         }
         updateView()
         animateMenuOut()
@@ -71,19 +72,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func setButtonModes() {
         gameButton.mode = "Game"
+        gameButton.arMode = GameMode()
         storybookButton.mode = "Storybook"
+        storybookButton.arMode = TourMode()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
-        let configuration = arMode.configuration
+        print("appear")
         
         arMode.viewWillAppear(forView: sceneView)
-        
-        // Run the view's session
-        sceneView.session.run(configuration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -93,12 +92,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    override func viewWillLayoutSubviews() {
+        arMode.viewWillAppear(forView: sceneView)
+    }
+    
+    
     // MARK: - ARSCNViewDelegate
     
     
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        return arMode.render(nodeFor: anchor)
+        return arMode.renderer(nodeFor: anchor)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -118,6 +122,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func updateView() {
         modeLabel?.text = self.mode
+        [self.view .setNeedsDisplay()]
     }
     
     func animateMenuIn() {
