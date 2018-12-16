@@ -17,6 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Would be an object that defines what that mode does, but for now, to test the passing of data
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
+    var arMode = TourMode()
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
     @IBOutlet weak var menuButton: UIButton!
@@ -28,15 +29,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var effect:UIVisualEffect!
     
     @IBOutlet weak var modeLabel: UILabel?
-    
-    var videoPlayers = [String?:AVPlayer]()
-    let resourceNames = [
-        "FootballPepRally":("Football Pep Rally","mp4"),
-        "THON2019Logo":("THON2019LogoARVideo","mp4"),
-        "HumansUnited":("HumansUnitedARVideo","mov"),
-        "LineDance":("Line Dance","mov"),
-        "LineDanceFull":("Line Dance Full","MP4")
-    ]
     
     @IBAction func MenuButtonPressed(_ sender: Any) {
         animateMenuIn()
@@ -85,16 +77,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Define a variable to hold all your reference images
-        let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: Bundle.main)
-        
         // Create a session configuration
-        let configuration = ARImageTrackingConfiguration()
-        configuration.trackingImages = referenceImages!
-        configuration.maximumNumberOfTrackedImages = 3
+        let configuration = arMode.configuration
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        sceneView.addGestureRecognizer(tapGestureRecognizer)
+        arMode.viewWillAppear(forView: sceneView)
         
         // Run the view's session
         sceneView.session.run(configuration)
@@ -112,43 +98,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-        
-        if let imageAnchor = anchor as? ARImageAnchor {
-            let referenceImageName = imageAnchor.referenceImage.name
-            node.name = referenceImageName
-            let videoPlayer : AVPlayer = {
-                // Load video from bundle
-                guard let url = getURL(imageName: referenceImageName!) else {
-                    
-                    print("Could not find video file.")
-                    
-                    return AVPlayer()
-                }
-                
-                return AVPlayer(url: url)
-            }()
-            videoPlayers[referenceImageName] = videoPlayer
-            let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
-            plane.firstMaterial?.diffuse.contents = videoPlayer
-            videoPlayer.play()
-            
-            let planeNode = SCNNode(geometry: plane)
-            planeNode.eulerAngles.x = -.pi / 2
-            node.addChildNode(planeNode)
-        }
-        
-        return node
-    }
-    
-    func getURL(imageName: String) -> URL? {
-        // if imageName exists in the videoPlayer dictionary
-        if let resourceName = resourceNames[imageName] {
-            return Bundle.main.url(forResource: resourceName.0, withExtension: resourceName.1)
-        } else {
-            print("Could not find image named \(imageName) in resourceNames")
-            return nil
-        }
+        return arMode.render(nodeFor: anchor)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -164,28 +114,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
-    }
-    
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        let tappedView = sender.view as! SCNView
-        let touchLocation = sender.location(in: tappedView)
-        let hitTest = tappedView.hitTest(touchLocation, options: nil)
-        if !hitTest.isEmpty {
-            let result = hitTest.first!
-            updateVideoPlayer(result: result)
-        }
-    }
-    
-    @objc func updateVideoPlayer(result: SCNHitTestResult) {
-        // The nodes of the images are the parent of the SCNHitTestResult node
-        let name = result.node.parent?.name
-        if let videoPlayer = videoPlayers[name] {
-            if videoPlayer.isPlaying {
-                videoPlayer.pause()
-            } else {
-                videoPlayer.play()
-            }
-        }
     }
     
     func updateView() {
@@ -221,7 +149,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             self.menuView.removeFromSuperview()
         }
          */
-        //perform(#selector(flip), with: nil)
         UIView.animate(withDuration: 1.0, animations: {
             let animation = CATransition()
             animation.duration = 1.2
@@ -242,29 +169,5 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             self.menuButton.isHidden = false
             self.menuView.removeFromSuperview()
         }
-    }
-    
-    @objc func flip() {
-        let transitionOptions: UIView.AnimationOptions = [.transitionCurlUp, .showHideTransitionViews]
-        
-        UIView.transition(with: menuView, duration: 1.0, options: transitionOptions, animations: {
-            self.menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-            self.menuView.alpha = 0
-            
-            self.visualEffectView.effect = nil
-            self.menuButton.isHidden = false
-            self.menuView.isHidden = true
-        })
-        
-        UIView.transition(with: sceneView, duration: 1.0, options: transitionOptions, animations: {
-            self.menuView.removeFromSuperview()
-            self.sceneView.isHidden = false
-        })
-    }
-}
-
-extension AVPlayer {
-    var isPlaying: Bool {
-        return (self.rate != 0 && self.error == nil)
     }
 }
