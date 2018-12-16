@@ -35,13 +35,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <blurEffect style="light"/>
                             </visualEffectView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6M3-jH-Y3U">
-                                <rect key="frame" x="279" y="567" width="80" height="80"/>
+                            <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6M3-jH-Y3U">
+                                <rect key="frame" x="279" y="539" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="..."/>
+                                <state key="normal" title="···"/>
                                 <connections>
                                     <action selector="MenuButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fjy-ad-aoe"/>
                                 </connections>
@@ -58,6 +60,7 @@
                     </view>
                     <connections>
                         <outlet property="gameButton" destination="Rvc-ze-vo7" id="U7C-Fh-GGm"/>
+                        <outlet property="menuButton" destination="6M3-jH-Y3U" id="L2P-7v-5Db"/>
                         <outlet property="menuView" destination="yOc-IP-Bke" id="mDa-jW-2az"/>
                         <outlet property="modeLabel" destination="gL7-5R-wBz" id="EBS-tG-VAY"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
