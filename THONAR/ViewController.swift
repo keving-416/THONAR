@@ -14,7 +14,20 @@ import Foundation
 
 class ViewController: UIViewController, ARSCNViewDelegate {
     
+    // Would be an object that defines what that mode does, but for now, to test the passing of data
+    //  from one ViewController to another, it is a simple string
+    var mode: String = "Default"
+    @IBOutlet weak var gameButton: MenuButton!
+    @IBOutlet weak var storybookButton: MenuButton!
+    
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet var menuView: UIView!
+    @IBOutlet weak var visualEffectView: UIVisualEffectView!
+    
+    var effect:UIVisualEffect!
+    
+    @IBOutlet weak var modeLabel: UILabel?
+    
     var videoPlayers = [String?:AVPlayer]()
     let resourceNames = [
         "FootballPepRally":("Football Pep Rally","mp4"),
@@ -23,6 +36,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         "LineDance":("Line Dance","mov"),
         "LineDanceFull":("Line Dance Full","MP4")
     ]
+    
+    @IBAction func MenuButtonPressed(_ sender: Any) {
+        animateMenuIn()
+    }
+    @IBAction func dismissMenu(_ sender: Any) {
+        if let button = sender as? MenuButton {
+            self.mode = button.mode
+        }
+        updateView()
+        animateMenuOut()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +62,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Set the scene to the view
         sceneView.scene = scene
+        
+        visualEffectView.isHidden = true
+        
+        effect = visualEffectView.effect
+        visualEffectView.effect = nil
+        
+        setButtonModes()
+        
+        // Set text of modeLabel
+        modeLabel?.text = mode
+    }
+    
+    func setButtonModes() {
+        gameButton.mode = "Game"
+        storybookButton.mode = "Storybook"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +139,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func getURL(imageName: String) -> URL? {
+        // if imageName exists in the videoPlayer dictionary
         if let resourceName = resourceNames[imageName] {
             return Bundle.main.url(forResource: resourceName.0, withExtension: resourceName.1)
         } else {
@@ -134,6 +174,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @objc func updateVideoPlayer(result: SCNHitTestResult) {
+        // The nodes of the images are the parent of the SCNHitTestResult node
         let name = result.node.parent?.name
         if let videoPlayer = videoPlayers[name] {
             if videoPlayer.isPlaying {
@@ -141,6 +182,37 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             } else {
                 videoPlayer.play()
             }
+        }
+    }
+    
+    func updateView() {
+        modeLabel?.text = self.mode
+    }
+    
+    func animateMenuIn() {
+        self.view.addSubview(menuView)
+        menuView.center = self.view.center
+        
+        menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        menuView.alpha = 0
+        
+        UIView.animate(withDuration: 0.4) {
+            self.visualEffectView.isHidden = false
+            self.visualEffectView.effect = self.effect
+            self.menuView.alpha = 1
+            self.menuView.transform = CGAffineTransform.identity
+        }
+    }
+    
+    func animateMenuOut() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            self.menuView.alpha = 0
+            
+            self.visualEffectView.effect = nil
+            
+        }) { (success:Bool) in
+            self.menuView.removeFromSuperview()
         }
     }
 }

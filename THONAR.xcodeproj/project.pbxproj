@@ -16,6 +16,8 @@
 		B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */; };
 		B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */; };
 		B44FC59621C348C7000A2CD6 /* Football Pep Rally.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */; };
+		B44FC59821C455BF000A2CD6 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59721C455BF000A2CD6 /* MenuController.swift */; };
+		B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59921C45DBA000A2CD6 /* MenuButton.swift */; };
 		B48A874621C329E6000B36BE /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B48A874521C329E6000B36BE /* art.scnassets */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +33,8 @@
 		B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Line Dance Full.MP4"; path = "../../../../../../Line Dance Full.MP4"; sourceTree = "<group>"; };
 		B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = HumansUnitedARVideo.mov; path = "../../../../../../../Library/Mobile Documents/com~apple~QuickTimePlayerX/Documents/HumansUnitedARVideo.mov"; sourceTree = "<group>"; };
 		B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Football Pep Rally.mp4"; path = "../../../../../../../Downloads/Football Pep Rally.mp4"; sourceTree = "<group>"; };
+		B44FC59721C455BF000A2CD6 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		B44FC59921C45DBA000A2CD6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B48A874521C329E6000B36BE /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +71,8 @@
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
 				B40F596921ADEC5700480637 /* Main.storyboard */,
+				B44FC59921C45DBA000A2CD6 /* MenuButton.swift */,
+				B44FC59721C455BF000A2CD6 /* MenuController.swift */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */,
 				B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */,
@@ -155,7 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
+				B44FC59821C455BF000A2CD6 /* MenuController.swift in Sources */,
 				B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
