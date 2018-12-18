@@ -12,10 +12,10 @@
 		B40F596B21ADEC5700480637 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596921ADEC5700480637 /* Main.storyboard */; };
 		B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40F596C21ADEC5A00480637 /* Assets.xcassets */; };
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
-		B4419F7A21C3228100479789 /* Line Dance Full.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = B4419F7921C3228100479789 /* Line Dance Full.MP4 */; };
-		B4419F7C21C3229A00479789 /* Line Dance.mov in Resources */ = {isa = PBXBuildFile; fileRef = B4419F7B21C3229A00479789 /* Line Dance.mov */; };
-		B4419F7E21C322C400479789 /* Football Pep Rally.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B4419F7D21C322C400479789 /* Football Pep Rally.mp4 */; };
-		B4419F8021C322DD00479789 /* HumansUnitedARVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B4419F7F21C322DD00479789 /* HumansUnitedARVideo.mov */; };
+		B44FC58D21C345D5000A2CD6 /* Line Dance.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC58C21C345D5000A2CD6 /* Line Dance.mov */; };
+		B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */; };
+		B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */; };
+		B44FC59621C348C7000A2CD6 /* Football Pep Rally.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */; };
 		B48A874621C329E6000B36BE /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B48A874521C329E6000B36BE /* art.scnassets */; };
 /* End PBXBuildFile section */
 
@@ -27,10 +27,10 @@
 		B40F596C21ADEC5A00480637 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B40F596F21ADEC5A00480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B4419F7921C3228100479789 /* Line Dance Full.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Line Dance Full.MP4"; sourceTree = "<group>"; };
-		B4419F7B21C3229A00479789 /* Line Dance.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = "Line Dance.mov"; sourceTree = "<group>"; };
-		B4419F7D21C322C400479789 /* Football Pep Rally.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Football Pep Rally.mp4"; sourceTree = "<group>"; };
-		B4419F7F21C322DD00479789 /* HumansUnitedARVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = HumansUnitedARVideo.mov; sourceTree = "<group>"; };
+		B44FC58C21C345D5000A2CD6 /* Line Dance.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = "Line Dance.mov"; path = "../../../../../../Line Dance.mov"; sourceTree = "<group>"; };
+		B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Line Dance Full.MP4"; path = "../../../../../../Line Dance Full.MP4"; sourceTree = "<group>"; };
+		B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = HumansUnitedARVideo.mov; path = "../../../../../../../Library/Mobile Documents/com~apple~QuickTimePlayerX/Documents/HumansUnitedARVideo.mov"; sourceTree = "<group>"; };
+		B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Football Pep Rally.mp4"; path = "../../../../../../../Downloads/Football Pep Rally.mp4"; sourceTree = "<group>"; };
 		B48A874521C329E6000B36BE /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,10 +68,10 @@
 				B40F596721ADEC5700480637 /* ViewController.swift */,
 				B40F596921ADEC5700480637 /* Main.storyboard */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
-				B4419F7921C3228100479789 /* Line Dance Full.MP4 */,
-				B4419F7B21C3229A00479789 /* Line Dance.mov */,
-				B4419F7D21C322C400479789 /* Football Pep Rally.mp4 */,
-				B4419F7F21C322DD00479789 /* HumansUnitedARVideo.mov */,
+				B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */,
+				B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */,
+				B44FC58C21C345D5000A2CD6 /* Line Dance.mov */,
+				B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
 				B40F597121ADEC5A00480637 /* Info.plist */,
 				B48A874521C329E6000B36BE /* art.scnassets */,
@@ -137,13 +137,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4419F7A21C3228100479789 /* Line Dance Full.MP4 in Resources */,
+				B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */,
 				B48A874621C329E6000B36BE /* art.scnassets in Resources */,
-				B4419F7E21C322C400479789 /* Football Pep Rally.mp4 in Resources */,
+				B44FC59621C348C7000A2CD6 /* Football Pep Rally.mp4 in Resources */,
+				B44FC58D21C345D5000A2CD6 /* Line Dance.mov in Resources */,
+				B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */,
 				B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */,
-				B4419F7C21C3229A00479789 /* Line Dance.mov in Resources */,
 				B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */,
-				B4419F8021C322DD00479789 /* HumansUnitedARVideo.mov in Resources */,
 				B40F596B21ADEC5700480637 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
