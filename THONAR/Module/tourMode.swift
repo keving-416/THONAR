@@ -24,6 +24,8 @@ class TourMode: Mode {
     override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
+        
+        
         if let imageAnchor = anchor as? ARImageAnchor {
             let referenceImageName = imageAnchor.referenceImage.name
             node.name = referenceImageName

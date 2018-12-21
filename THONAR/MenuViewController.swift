@@ -2,7 +2,7 @@
 //  MenuViewController.swift
 //  THONAR
 //
-//  Created by Kevin Gardner on 12/19/18.
+//  Created by Kevin Gardner on 12/21/18.
 //  Copyright © 2018 THON. All rights reserved.
 //
 
@@ -13,17 +13,15 @@ protocol MenuViewControllerDelegate: class {
 }
 
 class MenuViewController: UIViewController {
-
+    
     weak var menuDelegate: MenuViewControllerDelegate?
+    
     @IBOutlet var menuView: UIView!
     @IBOutlet var backgroundMenuView: UIVisualEffectView!
     
-    @IBOutlet weak var gameButton: MenuButton!
-    @IBOutlet weak var storybookButton: MenuButton!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
         self.menuView.alpha = 0
         
@@ -44,24 +42,10 @@ class MenuViewController: UIViewController {
         }
     }
     
-    func setUpButtons() {
-        gameButton.mode = "Game"
-        gameButton.arMode = GameMode()
-        
-        storybookButton.mode = "Storybook"
-        storybookButton.arMode = TourMode()
-    }
+    // Implement in subclasses
+    func setUpButtons() {}
     
-    @IBAction func menuButtonPressed(_ sender: Any) {
-        if let button = sender as? MenuButton {
-            print("Menu button pressed")
-            menuDelegate?.menuViewControllerMenuButtonTapped(forViewController: self, forSender: button)
-        }
-    }
-    @IBAction func dismissMenu(_ sender: Any) {
-        
-    }
-    
+
     /*
     // MARK: - Navigation
 
