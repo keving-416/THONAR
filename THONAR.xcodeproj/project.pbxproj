@@ -80,10 +80,9 @@
 			children = (
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
-				B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */,
-				B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */,
-				B483627A21CD9550006B8697 /* MenuViewController.swift */,
-				B44FC59F21C61FDB000A2CD6 /* Module */,
+				B483627E21CDBE1C006B8697 /* Menus */,
+				B44FC59F21C61FDB000A2CD6 /* Modes */,
+				B483627F21CDBE44006B8697 /* Custom UI Elements */,
 				B40F596921ADEC5700480637 /* Main.storyboard */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */,
@@ -97,15 +96,32 @@
 			path = THONAR;
 			sourceTree = "<group>";
 		};
-		B44FC59F21C61FDB000A2CD6 /* Module */ = {
+		B44FC59F21C61FDB000A2CD6 /* Modes */ = {
 			isa = PBXGroup;
 			children = (
-				B44FC59921C45DBA000A2CD6 /* MenuButton.swift */,
 				B44FC59B21C615E1000A2CD6 /* mode.swift */,
 				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
 				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
 			);
-			path = Module;
+			path = Modes;
+			sourceTree = "<group>";
+		};
+		B483627E21CDBE1C006B8697 /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				B483627A21CD9550006B8697 /* MenuViewController.swift */,
+				B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */,
+				B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */,
+			);
+			path = Menus;
+			sourceTree = "<group>";
+		};
+		B483627F21CDBE44006B8697 /* Custom UI Elements */ = {
+			isa = PBXGroup;
+			children = (
+				B44FC59921C45DBA000A2CD6 /* MenuButton.swift */,
+			);
+			path = "Custom UI Elements";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

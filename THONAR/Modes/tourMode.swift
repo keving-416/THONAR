@@ -10,9 +10,7 @@ import Foundation
 import ARKit
 
 /// The mode that handles the functionality of the augmented reality tour during THON weekend
-class TourMode: Mode {
-    var videoPlayers = [String?:AVPlayer]()
-    
+class TourMode: Mode {    
     let resourceNames = [
         "FootballPepRally":("Football Pep Rally","mp4"),
         "THON2019Logo":("THON2019LogoARVideo","mp4"),
@@ -25,29 +23,11 @@ class TourMode: Mode {
         let node = SCNNode()
         
         if let imageAnchor = anchor as? ARImageAnchor {
+            // Do something when an image is detected
             let referenceImageName = imageAnchor.referenceImage.name
             node.name = referenceImageName
-            let videoPlayer : AVPlayer = {
-                //Load video from bundle
-                guard let url = getURL(imageName: referenceImageName!) else {
-
-                    print("Could not find video file.")
-
-                    return AVPlayer()
-                }
-                
-                return AVPlayer(url: url)
-            }()
-            videoPlayers[referenceImageName] = videoPlayer
-            let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
-            plane.firstMaterial?.diffuse.contents = videoPlayer
-            videoPlayer.play()
-            
-            let planeNode = SCNNode(geometry: plane)
-            planeNode.eulerAngles.x = -.pi / 2
-            node.addChildNode(planeNode)
-        }
-        
+            node.addChildNode(createVideoPlayerPlaneNode(forResourceDictionary: resourceNames, forImageAnchor: imageAnchor, fromImageName: referenceImageName))
+            }
         return node
     }
     
@@ -64,17 +44,7 @@ class TourMode: Mode {
         view.session.run(self.configuration)
     }
     
-    func getURL(imageName: String) -> URL? {
-        // if imageName exists in the videoPlayer dictionary
-        if let resourceName = resourceNames[imageName] {
-            return Bundle.main.url(forResource: resourceName.0, withExtension: resourceName.1)
-        } else {
-            print("Could not find image named \(imageName) in resourceNames")
-            return nil
-        }
-    }
-    
-    @objc func handleTap(sender: UITapGestureRecognizer) {
+    override func handleTap(sender: UITapGestureRecognizer) {
         let tappedView = sender.view as! SCNView
         let touchLocation = sender.location(in: tappedView)
         let hitTest = tappedView.hitTest(touchLocation, options: nil)
