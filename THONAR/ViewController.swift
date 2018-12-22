@@ -106,6 +106,17 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         arMode.viewWillAppear(forView: sceneView)
     }
     
+    func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
+        if button.arMode != nil {
+            print("mode: \(button.arMode)")
+            self.arMode = button.arMode!
+            self.mode = button.mode
+            self.modeLabel?.text = self.mode
+            remove(asChildViewController: viewController, animated: true)
+            //animateMenuOut()
+        }
+    }
+    
     
     // MARK: - ARSCNViewDelegate
     // Override to create and configure nodes for anchors added to the view's session.
@@ -126,17 +137,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
-    }
-    
-    func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
-        if button.arMode != nil {
-            print("mode: \(button.arMode)")
-            self.arMode = button.arMode!
-            self.mode = button.mode
-            self.modeLabel?.text = self.mode
-            remove(asChildViewController: viewController, animated: true)
-            //animateMenuOut()
-        }
     }
     
 //    func pageTurnAnimation() {

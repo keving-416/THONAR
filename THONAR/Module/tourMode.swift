@@ -24,17 +24,15 @@ class TourMode: Mode {
     override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
-        
-        
         if let imageAnchor = anchor as? ARImageAnchor {
             let referenceImageName = imageAnchor.referenceImage.name
             node.name = referenceImageName
             let videoPlayer : AVPlayer = {
-                // Load video from bundle
+                //Load video from bundle
                 guard let url = getURL(imageName: referenceImageName!) else {
-                    
+
                     print("Could not find video file.")
-                    
+
                     return AVPlayer()
                 }
                 

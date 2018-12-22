@@ -13,16 +13,10 @@ import ARKit
 class Mode {
     var configuration: ARWorldTrackingConfiguration
     
-    func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
-        return nil
-    }
+    // Override in subclasses
+    func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
     
-    func viewWillAppear(forView view: ARSCNView) {
-        view.session.run(self.configuration)
-    }
+    func viewWillAppear(forView view: ARSCNView) { view.session.run(self.configuration) }
         
-    public init() {
-        self.configuration = ARWorldTrackingConfiguration()
-    }
-        
+    public init() { self.configuration = ARWorldTrackingConfiguration() }
 }
