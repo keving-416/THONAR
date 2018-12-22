@@ -20,6 +20,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var arMode: Mode = TourMode() {
         didSet {
             // Update view
+            viewDidLoad()
+            viewWillAppear(false)
             print("update view to \(arMode)")
         }
     }
@@ -90,8 +92,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print("appear")
-        
         arMode.viewWillAppear(forView: sceneView)
     }
     
@@ -108,7 +108,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
         if button.arMode != nil {
-            print("mode: \(button.arMode)")
             self.arMode = button.arMode!
             self.mode = button.mode
             self.modeLabel?.text = self.mode
