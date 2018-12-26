@@ -8,43 +8,20 @@
 
 import UIKit
 
-protocol MenuViewControllerDelegate: class {
-    func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton)
-}
 
-class MenuViewController: UIViewController {
+class FinalRolloutMenuViewController: MenuViewController {
 
-    weak var menuDelegate: MenuViewControllerDelegate?
-    @IBOutlet var menuView: UIView!
-    @IBOutlet var backgroundMenuView: UIVisualEffectView!
-    
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.menuView.alpha = 0
-        
-        // Set button modes
-        setUpButtons()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.4) {
-            self.menuView.alpha = 1
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        // Animation not working because the view is already gone by this point???
-        UIView.animate(withDuration: 0.3) {
-            self.menuView.alpha = 0
-        }
-    }
-    
-    func setUpButtons() {
+    override func setUpButtons() {
         gameButton.mode = "Game"
         gameButton.arMode = GameMode()
         
@@ -58,6 +35,7 @@ class MenuViewController: UIViewController {
             menuDelegate?.menuViewControllerMenuButtonTapped(forViewController: self, forSender: button)
         }
     }
+    
     @IBAction func dismissMenu(_ sender: Any) {
         
     }

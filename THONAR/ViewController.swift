@@ -20,6 +20,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var arMode: Mode = TourMode() {
         didSet {
             // Update view
+            viewDidLoad()
+            viewWillAppear(false)
             print("update view to \(arMode)")
         }
     }
@@ -33,7 +35,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     private lazy var menuViewController: MenuViewController = {
         let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
-        var viewController = storyBoard.instantiateViewController(withIdentifier: "MenuStoryboard") as! MenuViewController
+        // Set the viewController to a specific viewController from the Storyboard
+        var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
         
@@ -64,14 +67,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBAction func MenuButtonPressed(_ sender: Any) {
         add(asChildViewController: menuViewController, animated: true)
     }
-//    @IBAction func dismissMenu(_ sender: Any) {
-//        if let button = sender as? MenuButton {
-//            self.mode = button.mode
-//            self.arMode = button.arMode!
-//        }
-//        updateView()
-//        animateMenuOut()
-//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,8 +92,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        print("appear")
-        
         arMode.viewWillAppear(forView: sceneView)
     }
     
@@ -111,6 +104,16 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillLayoutSubviews() {
         arMode.viewWillAppear(forView: sceneView)
+    }
+    
+    func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
+        if button.arMode != nil {
+            self.arMode = button.arMode!
+            self.mode = button.mode
+            self.modeLabel?.text = self.mode
+            remove(asChildViewController: viewController, animated: true)
+            //animateMenuOut()
+        }
     }
     
     
@@ -135,40 +138,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-//    func updateView() {
-//        modeLabel?.text = self.mode
-//        [self.view .setNeedsDisplay()]
-//    }
-    
-//    func animateMenuIn() {
-//        self.view.addSubview(menuView)
-//        menuView.center = self.view.center
-//
-//        menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-//        menuView.alpha = 0
-//
-//        UIView.animate(withDuration: 0.4) {
-//            self.menuButton.isHidden = true
-//            self.visualEffectView.isHidden = false
-//            self.visualEffectView.effect = self.effect
-//            self.menuView.alpha = 1
-//            self.menuView.transform = CGAffineTransform.identity
-//        }
-//    }
-    
-//    func animateMenuOut() {
-//        /*
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.menuView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
-//            self.menuView.alpha = 0
-//
-//            self.visualEffectView.effect = nil
-//            self.menuButton.isHidden = false
-//
-//        }) { (success:Bool) in
-//            self.menuView.removeFromSuperview()
-//        }
-//         */
+//    func pageTurnAnimation() {
 //        UIView.animate(withDuration: 1.0, animations: {
 //            let animation = CATransition()
 //            animation.duration = 1.2
@@ -192,17 +162,18 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 //    }
 }
 
-
 extension ViewController: MenuViewControllerDelegate {
     func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton) {
-        print("called")
-        if sender.arMode != nil {
-            print("mode: \(sender.arMode)")
-            self.arMode = sender.arMode!
-            self.mode = sender.mode
-            self.modeLabel?.text = self.mode
-            remove(asChildViewController: viewController, animated: true)
-            //animateMenuOut()
+        switch viewController.restorationIdentifier {
+        case "InitialRolloutMenuStoryboard":
+            // Set up view for Initial Rollout
+            setUpView(forViewController: viewController, forButton: sender)
+        case "FinalRolloutMenuStoryboard":
+            // Set up view for Final Rollout
+            setUpView(forViewController: viewController, forButton: sender)
+        default:
+            print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
         }
     }
 }
+

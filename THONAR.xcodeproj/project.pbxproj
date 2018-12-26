@@ -13,7 +13,7 @@
 		B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40F596C21ADEC5A00480637 /* Assets.xcassets */; };
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
 		B430BD8A21C9B7FE00E6F495 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B430BD8921C9B7FE00E6F495 /* art.scnassets */; };
-		B430BD8E21CB127700E6F495 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* MenuViewController.swift */; };
+		B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */; };
 		B44FC58D21C345D5000A2CD6 /* Line Dance.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC58C21C345D5000A2CD6 /* Line Dance.mov */; };
 		B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */; };
 		B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */; };
@@ -22,6 +22,8 @@
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
 		B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */; };
+		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
+		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +35,7 @@
 		B40F596F21ADEC5A00480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B430BD8921C9B7FE00E6F495 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		B430BD8D21CB127700E6F495 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalRolloutMenuViewController.swift; sourceTree = "<group>"; };
 		B44FC58C21C345D5000A2CD6 /* Line Dance.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = "Line Dance.mov"; path = "../../../../../../Line Dance.mov"; sourceTree = "<group>"; };
 		B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Line Dance Full.MP4"; path = "../../../../../../Line Dance Full.MP4"; sourceTree = "<group>"; };
 		B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = HumansUnitedARVideo.mov; path = "../../../../../../../Library/Mobile Documents/com~apple~QuickTimePlayerX/Documents/HumansUnitedARVideo.mov"; sourceTree = "<group>"; };
@@ -42,6 +44,8 @@
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
 		B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gameMode.swift; sourceTree = "<group>"; };
+		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +80,9 @@
 			children = (
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
-				B430BD8D21CB127700E6F495 /* MenuViewController.swift */,
-				B44FC59F21C61FDB000A2CD6 /* Module */,
+				B483627E21CDBE1C006B8697 /* Menus */,
+				B44FC59F21C61FDB000A2CD6 /* Modes */,
+				B483627F21CDBE44006B8697 /* Custom UI Elements */,
 				B40F596921ADEC5700480637 /* Main.storyboard */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */,
@@ -91,15 +96,32 @@
 			path = THONAR;
 			sourceTree = "<group>";
 		};
-		B44FC59F21C61FDB000A2CD6 /* Module */ = {
+		B44FC59F21C61FDB000A2CD6 /* Modes */ = {
+			isa = PBXGroup;
+			children = (
+				B44FC59B21C615E1000A2CD6 /* mode.swift */,
+				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
+				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
+			);
+			path = Modes;
+			sourceTree = "<group>";
+		};
+		B483627E21CDBE1C006B8697 /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				B483627A21CD9550006B8697 /* MenuViewController.swift */,
+				B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */,
+				B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */,
+			);
+			path = Menus;
+			sourceTree = "<group>";
+		};
+		B483627F21CDBE44006B8697 /* Custom UI Elements */ = {
 			isa = PBXGroup;
 			children = (
 				B44FC59921C45DBA000A2CD6 /* MenuButton.swift */,
-				B44FC59B21C615E1000A2CD6 /* mode.swift */,
-				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
-				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
 			);
-			path = Module;
+			path = "Custom UI Elements";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,8 +205,10 @@
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
 				B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */,
 				B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */,
+				B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */,
 				B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */,
-				B430BD8E21CB127700E6F495 /* MenuViewController.swift in Sources */,
+				B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */,
+				B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

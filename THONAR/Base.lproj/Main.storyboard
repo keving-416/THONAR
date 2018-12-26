@@ -60,10 +60,10 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
-        <!--Menu View Controller-->
+        <!--Final Rollout Menu View Controller-->
         <scene sceneID="21k-0k-Zam">
             <objects>
-                <viewController storyboardIdentifier="MenuStoryboard" id="g9N-hw-rz5" customClass="MenuViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FinalRolloutMenuStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g9N-hw-rz5" customClass="FinalRolloutMenuViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VfZ-vp-1bS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -115,14 +115,54 @@
                     </view>
                     <connections>
                         <outlet property="backgroundMenuView" destination="zNo-bT-o1l" id="tQx-38-u3V"/>
-                        <outlet property="gameButton" destination="Rvc-ze-vo7" id="9Ku-SH-16K"/>
+                        <outlet property="gameButton" destination="Rvc-ze-vo7" id="gOQ-kx-svN"/>
                         <outlet property="menuView" destination="VfZ-vp-1bS" id="s8P-Ea-l8d"/>
-                        <outlet property="storybookButton" destination="nLW-a9-jGq" id="ccw-Vf-dG4"/>
+                        <outlet property="storybookButton" destination="nLW-a9-jGq" id="2Ei-Bq-ce9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXx-av-13c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="812" y="134"/>
+        </scene>
+        <!--Initial Rollout Menu View Controller-->
+        <scene sceneID="dCK-gF-agP">
+            <objects>
+                <viewController storyboardIdentifier="InitialRolloutMenuStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n3x-Bs-J0S" customClass="InitialRolloutMenuViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Nac-FS-kon">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1zD-K9-vYU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="Ow8-U1-Y7P">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" alpha="0.64999997615814209" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="19H-pR-hRk">
+                                            <rect key="frame" x="287" y="533" width="80" height="80"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                            <state key="normal" title="···"/>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="TO7-Jr-ynf"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundMenuView" destination="1zD-K9-vYU" id="2vI-xN-Ude"/>
+                        <outlet property="menuView" destination="Nac-FS-kon" id="mzU-ch-FrB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sEJ-jJ-Qqe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1496.8" y="133.5832083958021"/>
         </scene>
     </scenes>
 </document>
