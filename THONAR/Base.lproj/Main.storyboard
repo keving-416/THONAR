@@ -28,16 +28,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zNo-bT-o1l">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="4fK-s2-Lvj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
                             <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6M3-jH-Y3U">
                                 <rect key="frame" x="279" y="539" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
@@ -59,9 +49,7 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
-                        <outlet property="gameButton" destination="Rvc-ze-vo7" id="U7C-Fh-GGm"/>
                         <outlet property="menuButton" destination="6M3-jH-Y3U" id="L2P-7v-5Db"/>
-                        <outlet property="menuView" destination="yOc-IP-Bke" id="mDa-jW-2az"/>
                         <outlet property="modeLabel" destination="gL7-5R-wBz" id="EBS-tG-VAY"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                         <outlet property="storybookButton" destination="nLW-a9-jGq" id="u3Q-6s-SSy"/>
@@ -69,32 +57,72 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="yOc-IP-Bke">
-                    <rect key="frame" x="0.0" y="0.0" width="358" height="234"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nLW-a9-jGq" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
-                            <rect key="frame" x="271" y="184" width="71" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Storybook"/>
-                            <connections>
-                                <action selector="dismissMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fqX-4j-Jy1"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rvc-ze-vo7" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
-                            <rect key="frame" x="296" y="146" width="46" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Game"/>
-                            <connections>
-                                <action selector="dismissMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="rwE-bA-jLY"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <viewLayoutGuide key="safeArea" id="g3N-5h-8Ol"/>
-                </view>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
+        </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="21k-0k-Zam">
+            <objects>
+                <viewController storyboardIdentifier="MenuStoryboard" id="g9N-hw-rz5" customClass="MenuViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VfZ-vp-1bS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zNo-bT-o1l">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="4fK-s2-Lvj">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" alpha="0.64999997615814209" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PrW-Ju-3bu">
+                                            <rect key="frame" x="287" y="538" width="80" height="80"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                            <state key="normal" title="···"/>
+                                            <connections>
+                                                <action selector="MenuButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="V1j-wT-D8R"/>
+                                                <action selector="dismissMenu:" destination="g9N-hw-rz5" eventType="touchUpInside" id="hiL-dZ-AeD"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rvc-ze-vo7" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
+                                <rect key="frame" x="313" y="438" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Game"/>
+                                <connections>
+                                    <action selector="dismissMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="rwE-bA-jLY"/>
+                                    <action selector="menuButtonPressed:" destination="g9N-hw-rz5" eventType="touchUpInside" id="piu-2n-rle"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nLW-a9-jGq" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
+                                <rect key="frame" x="288" y="476" width="71" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Storybook"/>
+                                <connections>
+                                    <action selector="dismissMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="fqX-4j-Jy1"/>
+                                    <action selector="menuButtonPressed:" destination="g9N-hw-rz5" eventType="touchUpInside" id="dYS-yj-Oh2"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="aqi-QZ-WzU"/>
+                    </view>
+                    <connections>
+                        <outlet property="backgroundMenuView" destination="zNo-bT-o1l" id="tQx-38-u3V"/>
+                        <outlet property="gameButton" destination="Rvc-ze-vo7" id="9Ku-SH-16K"/>
+                        <outlet property="menuView" destination="VfZ-vp-1bS" id="s8P-Ea-l8d"/>
+                        <outlet property="storybookButton" destination="nLW-a9-jGq" id="ccw-Vf-dG4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KXx-av-13c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="812" y="134"/>
         </scene>
     </scenes>
 </document>
