@@ -50,9 +50,18 @@ class GameMode: Mode {
     }
 
     override func handleTap(sender: UITapGestureRecognizer) {
-        print("Sender: \(sender.view)")
-        let sceneView = sender.view as! ARSCNView
-        newBubble(forView: sceneView)
+        let sceneView = sender.view as! SCNView
+        let touchLocation = sender.location(in: sceneView)
+        let hitTest = sceneView.hitTest(touchLocation, options: nil)
+        if !hitTest.isEmpty {
+            // remove the tapped bubble
+            let result = hitTest.first!
+            let bubbleNode = result.node
+            bubbleNode.removeFromParentNode()
+        } else {
+            // make a new bubble
+            newBubble(forView: sceneView as! ARSCNView)
+        }
     }
     
     func newBubble(forView sceneView: ARSCNView) {
