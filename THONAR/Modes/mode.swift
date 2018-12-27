@@ -27,6 +27,19 @@ class Mode {
         view.session.run(self.configuration)
     }
     
+    func updateView(view: UIView) {
+        viewWillAppear(forView: view as! ARSCNView)
+        removeAllSubviews(forView: view)
+    }
+    
+    
+    func removeAllSubviews(forView view: UIView) {
+        for view in view.subviews {
+            print("view: \(view.description)")
+            view.removeFromSuperview()
+        }
+    }
+    
     // Override in subclasses
     @objc func handleTap(sender: UITapGestureRecognizer) {}
         
