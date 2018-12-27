@@ -19,12 +19,18 @@ class Bubble: SCNNode {
     override init() {
         super.init()
         let bubble = SCNPlane(width: 0.25, height: 0.25)
-        let material = SCNMaterial()
-        material.diffuse.contents = #imageLiteral(resourceName: "transparent-bubble")
-        material.isDoubleSided = true
-        material.writesToDepthBuffer = false
-        material.blendMode = .screen
-        bubble.materials = [material]
+        let bubbleMaterial = SCNMaterial()
+        bubbleMaterial.diffuse.contents = #imageLiteral(resourceName: "transparent-bubble")
+        
+        let redValue = CGFloat.random(in: 0...1)
+        let greenValue = CGFloat.random(in: 0...1)
+        let blueValue = CGFloat.random(in: 0...1)
+        bubbleMaterial.multiply.contents = UIColor(red: redValue, green: greenValue, blue: blueValue, alpha: 1)
+        
+        bubbleMaterial.isDoubleSided = true
+        bubbleMaterial.writesToDepthBuffer = false
+        bubbleMaterial.blendMode = .screen
+        bubble.materials = [bubbleMaterial]
         self.geometry = bubble
         
     }
