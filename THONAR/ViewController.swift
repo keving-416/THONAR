@@ -143,22 +143,26 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-                switch camera.trackingState {
-                            case .notAvailable:
-                                        break
-                            case .limited:
-                                        break
-                            case .normal:
-                                        ARTrackingIsReady = true
-                                        break
-                            }
-
+        switch camera.trackingState {
+        case .notAvailable:
+            break
+        case .limited:
+            break
+        case .normal:
+            ARTrackingIsReady = true
+            break
+            
+        }
+        
     }
+    
     var ARTrackingIsReady:Bool = false {
-                        didSet{
-                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
-                            }
-                }
+        didSet{
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+            
+        }
+        
+    }
 
 //    func pageTurnAnimation() {
 //        UIView.animate(withDuration: 1.0, animations: {
