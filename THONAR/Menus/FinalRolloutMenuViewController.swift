@@ -23,10 +23,10 @@ class FinalRolloutMenuViewController: MenuViewController {
     
     override func setUpButtons() {
         gameButton.mode = "Game"
-        gameButton.arMode = GameMode()
+        gameButton.arMode = GameMode(forview: sceneView!)
         
         storybookButton.mode = "Storybook"
-        storybookButton.arMode = TourMode()
+        storybookButton.arMode = TourMode(forview: sceneView!)
     }
     
     @IBAction func menuButtonPressed(_ sender: Any) {

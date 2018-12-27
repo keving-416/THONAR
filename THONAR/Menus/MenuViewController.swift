@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ARKit
 
 protocol MenuViewControllerDelegate: class {
     func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton)
@@ -15,6 +16,7 @@ protocol MenuViewControllerDelegate: class {
 class MenuViewController: UIViewController {
     
     weak var menuDelegate: MenuViewControllerDelegate?
+    var sceneView : ARSCNView?
     
     @IBOutlet var menuView: UIView!
     @IBOutlet var backgroundMenuView: UIVisualEffectView!

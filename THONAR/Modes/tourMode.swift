@@ -66,10 +66,9 @@ class TourMode: Mode {
         }
     }
     
-    public override init() {
-        super.init()
+    public override init(forview view:ARSCNView) {
+        super.init(forview:view)
     }
-    
 }
 
 extension AVPlayer {
