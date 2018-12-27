@@ -17,7 +17,12 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     // Would be an object that defines what that mode does, but for now, to test the passing of data
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
-    var arMode: Mode = TourMode() {
+    
+
+    @IBOutlet weak var menuButton: UIButton!
+    
+    @IBOutlet var sceneView: ARSCNView!
+    var arMode: Mode = Mode(forview: ARSCNView()){
         didSet {
             // Update view
             viewDidLoad()
@@ -25,11 +30,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             print("update view to \(arMode)")
         }
     }
-
-    @IBOutlet weak var menuButton: UIButton!
-    
-    @IBOutlet var sceneView: ARSCNView!
-    
     var effect:UIVisualEffect!
     
     private lazy var menuViewController: MenuViewController = {
@@ -39,7 +39,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
-        
+        viewController.sceneView = sceneView
         self.add(asChildViewController: viewController, animated: true)
         
         return viewController
@@ -83,6 +83,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
+        //arMode = TourMode(forview: sceneView!)
         // Set text of modeLabel
         modeLabel?.text = mode
         
@@ -123,6 +124,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         return arMode.renderer(nodeFor: anchor)
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        return arMode.renderer(updateAtTime:time)
+    }
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         
@@ -138,6 +142,24 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+                switch camera.trackingState {
+                            case .notAvailable:
+                                        break
+                            case .limited:
+                                        break
+                            case .normal:
+                                        ARTrackingIsReady = true
+                                        break
+                            }
+
+    }
+    var ARTrackingIsReady:Bool = false {
+                        didSet{
+                                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+                            }
+                }
+
 //    func pageTurnAnimation() {
 //        UIView.animate(withDuration: 1.0, animations: {
 //            let animation = CATransition()
