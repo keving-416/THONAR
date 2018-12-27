@@ -29,9 +29,6 @@ class GameMode: Mode {
     }
 
     override func viewWillAppear(forView view: ARSCNView) {
-
-        view.scene.rootNode.enumerateChildNodes { (node, stop) in
-            node.removeFromParentNode() }
         super.viewWillAppear(forView: view)
         initMicrophone(forView: view)
 
@@ -116,7 +113,6 @@ class GameMode: Mode {
     override func renderer(updateAtTime time: TimeInterval, forView sceneView: ARSCNView) {
         guard let frame = sceneView.session.currentFrame else {
             return
-            
         }
         
         let mat = SCNMatrix4(frame.camera.transform)

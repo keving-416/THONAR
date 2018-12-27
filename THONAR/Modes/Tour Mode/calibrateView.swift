@@ -65,9 +65,9 @@ class calibrateView: UIView{
                             motionManager.stopDeviceMotionUpdates()
                             rotateViewVertical(view: self.phoneImage!, angle:0)
                             self.isHorizontal = true
+                            print("isTrackingReady: \(self.isTrackingReady)")
                             if self.isHorizontal && self.isTrackingReady {
                                 self.stages = .moveLeft
-                                
                             }
                             
                         }
@@ -139,6 +139,7 @@ class calibrateView: UIView{
     }
     
     override init(frame: CGRect) {
+        print("init(frame: CGRect) has begun")
         super.init(frame: frame)
         containerView = UIView(frame: CGRect(x:0,y:self.frame.size.height/4,width:self.frame.size.width,height:self.frame.size.width*0.66))
         self.addSubview(containerView!)
@@ -161,14 +162,13 @@ class calibrateView: UIView{
         
         NotificationCenter.default.addObserver(self, selector: #selector(arTracking(_:)), name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
         startAnimation()
-        
     }
     
     @objc func arTracking(_ notification:NSNotification){
         isTrackingReady = true
+        print("isTrackingReady set to \(isTrackingReady) and isHorizontal is \(isHorizontal)")
         if isTrackingReady && isHorizontal {
             stages = .moveLeft
-            
         }
         
     }

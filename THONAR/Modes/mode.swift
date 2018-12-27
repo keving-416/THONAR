@@ -24,7 +24,7 @@ class Mode {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGestureRecognizer)
         
-        view.session.run(self.configuration)
+        view.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
     func updateView(view: UIView) {

@@ -16,7 +16,6 @@ protocol MenuViewControllerDelegate: class {
 class MenuViewController: UIViewController {
     
     weak var menuDelegate: MenuViewControllerDelegate?
-    var sceneView : ARSCNView?
     
     @IBOutlet var menuView: UIView!
     @IBOutlet var backgroundMenuView: UIVisualEffectView!
