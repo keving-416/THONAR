@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		98C5611121D4490B00CF8FA3 /* calibrateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5611021D4490B00CF8FA3 /* calibrateView.swift */; };
 		98C5611321D449C900CF8FA3 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5611221D449C900CF8FA3 /* bubble.swift */; };
-		98C5611521D458D700CF8FA3 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 98C5611421D458D700CF8FA3 /* art.scnassets */; };
 		98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */; };
 		B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40F596321ADEC5700480637 /* AppDelegate.swift */; };
 		B40F596821ADEC5700480637 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40F596721ADEC5700480637 /* ViewController.swift */; };
@@ -17,6 +16,7 @@
 		B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40F596C21ADEC5A00480637 /* Assets.xcassets */; };
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
 		B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */; };
+		B43A00A821D5421B00067994 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B43A00A721D5421B00067994 /* art.scnassets */; };
 		B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59921C45DBA000A2CD6 /* MenuButton.swift */; };
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
@@ -28,7 +28,6 @@
 /* Begin PBXFileReference section */
 		98C5611021D4490B00CF8FA3 /* calibrateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calibrateView.swift; sourceTree = "<group>"; };
 		98C5611221D449C900CF8FA3 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
-		98C5611421D458D700CF8FA3 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gill-Sans-MT.ttf"; sourceTree = "<group>"; };
 		B40F596021ADEC5700480637 /* THONAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THONAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40F596321ADEC5700480637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +37,7 @@
 		B40F596F21ADEC5A00480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalRolloutMenuViewController.swift; sourceTree = "<group>"; };
+		B43A00A721D5421B00067994 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B44FC59921C45DBA000A2CD6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
@@ -78,7 +78,6 @@
 			children = (
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
-				98C5611021D4490B00CF8FA3 /* calibrateView.swift */,
 				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
 				B483627E21CDBE1C006B8697 /* Menus */,
 				B44FC59F21C61FDB000A2CD6 /* Modes */,
@@ -87,18 +86,27 @@
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
 				B40F597121ADEC5A00480637 /* Info.plist */,
-				98C5611421D458D700CF8FA3 /* art.scnassets */,
+				B43A00A721D5421B00067994 /* art.scnassets */,
 			);
 			path = THONAR;
+			sourceTree = "<group>";
+		};
+		B43A00A621D541AA00067994 /* Tour Mode */ = {
+			isa = PBXGroup;
+			children = (
+				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
+				98C5611221D449C900CF8FA3 /* bubble.swift */,
+				98C5611021D4490B00CF8FA3 /* calibrateView.swift */,
+			);
+			path = "Tour Mode";
 			sourceTree = "<group>";
 		};
 		B44FC59F21C61FDB000A2CD6 /* Modes */ = {
 			isa = PBXGroup;
 			children = (
 				B44FC59B21C615E1000A2CD6 /* mode.swift */,
-				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
 				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
-				98C5611221D449C900CF8FA3 /* bubble.swift */,
+				B43A00A621D541AA00067994 /* Tour Mode */,
 			);
 			path = Modes;
 			sourceTree = "<group>";
@@ -179,7 +187,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98C5611521D458D700CF8FA3 /* art.scnassets in Resources */,
+				B43A00A821D5421B00067994 /* art.scnassets in Resources */,
 				B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */,
 				B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */,
 				98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */,
@@ -351,13 +359,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 784ZFTB9YB;
+				DEVELOPMENT_TEAM = LMC98SH8A3;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -369,13 +377,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 784ZFTB9YB;
+				DEVELOPMENT_TEAM = LMC98SH8A3;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
