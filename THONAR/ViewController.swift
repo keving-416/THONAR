@@ -22,6 +22,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet var sceneView: ARSCNView!
+    
+    // Crashes when initial mode is set to GameMode()
     var arMode: Mode = TourMode() {
         didSet {
             // Update view
@@ -40,7 +42,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
-        viewController.sceneView = sceneView
         self.add(asChildViewController: viewController, animated: true)
         
         return viewController
@@ -145,20 +146,34 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         switch camera.trackingState {
         case .notAvailable:
-            break
-        case .limited:
-            break
+            print("Not available")
+            //break
+        case .limited(.excessiveMotion):
+            print("Excessive motion")
+            //break
+        case .limited(.initializing):
+            print("initializing")
+            if ARTrackingIsReady { ARTrackingIsReady = false }
+            //break
+        case .limited(.insufficientFeatures):
+            print("Insufficient features")
+            //break
+        case .limited(.relocalizing):
+            print("Relocalizing")
+            //break
         case .normal:
+            print("normal")
             ARTrackingIsReady = true
             break
-            
         }
         
     }
     
     var ARTrackingIsReady:Bool = false {
         didSet{
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+            if ARTrackingIsReady {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+            }
             
         }
         
