@@ -66,8 +66,8 @@ class TourMode: Mode {
         }
     }
     
-    public override init(forview view:ARSCNView) {
-        super.init(forview:view)
+    public override init() {
+        super.init()
     }
 }
 

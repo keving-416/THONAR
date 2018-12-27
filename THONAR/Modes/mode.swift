@@ -13,14 +13,12 @@ import ARKit
 class Mode {
     var configuration: ARWorldTrackingConfiguration
     var videoPlayers = [String?:AVPlayer]()
-    let sceneView : ARSCNView
+    
     // Override in subclasses
     func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
     
     //Override in subclasses
-    func renderer(updateAtTime time:TimeInterval){
-        
-    }
+    func renderer(updateAtTime time:TimeInterval, forView sceneView: ARSCNView) {}
     
     func viewWillAppear(forView view: ARSCNView) {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -32,10 +30,7 @@ class Mode {
     // Override in subclasses
     @objc func handleTap(sender: UITapGestureRecognizer) {}
         
-    public init(forview view:ARSCNView) { self.configuration = ARWorldTrackingConfiguration()
-        
-        self.sceneView = view
-    }
+    public init() { self.configuration = ARWorldTrackingConfiguration() }
     
     // Creates a node that displays a video when a certain image is detected
     func createVideoPlayerPlaneNode(forResourceDictionary resourceNames: [String:(String,String)], forImageAnchor imageAnchor: ARImageAnchor, fromImageName name: String?) -> SCNNode {

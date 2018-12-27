@@ -22,7 +22,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet var sceneView: ARSCNView!
-    var arMode: Mode = Mode(forview: ARSCNView()){
+    var arMode: Mode = TourMode() {
         didSet {
             // Update view
             viewDidLoad()
@@ -83,7 +83,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
-        //arMode = TourMode(forview: sceneView!)
         // Set text of modeLabel
         modeLabel?.text = mode
         
@@ -125,7 +124,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        return arMode.renderer(updateAtTime:time)
+        return arMode.renderer(updateAtTime:time, forView: sceneView)
     }
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user

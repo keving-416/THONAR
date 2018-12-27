@@ -33,13 +33,13 @@ class GameMode: Mode {
         view.scene.rootNode.enumerateChildNodes { (node, stop) in
             node.removeFromParentNode() }
         super.viewWillAppear(forView: view)
-        initMicrophone()
+        initMicrophone(forView: view)
 
         // Run the view's session
         view.session.run(self.configuration)
         
-        let calibrationView = calibrateView(frame:sceneView.bounds)
-        sceneView.addSubview(calibrationView)
+        let calibrationView = calibrateView(frame:view.bounds)
+        view.addSubview(calibrationView)
         calibrationView.calibrationDone = { [weak self] done in
             if done {
                 self?.initView(forsceneView: view)
@@ -53,10 +53,12 @@ class GameMode: Mode {
     }
 
     override func handleTap(sender: UITapGestureRecognizer) {
-        newBubble()
+        print("Sender: \(sender.view)")
+        let sceneView = sender.view as! ARSCNView
+        newBubble(forView: sceneView)
     }
     
-    func newBubble(){
+    func newBubble(forView sceneView: ARSCNView) {
         setProgress(Double(bubblesOut)/2.0)
         
         if bubblesOut <= 0 {
@@ -74,7 +76,7 @@ class GameMode: Mode {
         let mat = SCNMatrix4(frame.camera.transform)
         let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
         
-        let position = getNewPosition()
+        let position = getNewPosition(forView: sceneView)
         let newBubble = bubble.clone()
         newBubble.position = position
         newBubble.scale = SCNVector3(1,1,1) * floatBetween(0.6, and: 1)
@@ -99,7 +101,7 @@ class GameMode: Mode {
         
     }
     
-    func getNewPosition() -> (SCNVector3) {
+    func getNewPosition(forView sceneView: ARSCNView) -> (SCNVector3) {
         if let frame = sceneView.session.currentFrame {
             let mat = SCNMatrix4(frame.camera.transform)
             let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33)
@@ -111,7 +113,7 @@ class GameMode: Mode {
         
     }
     
-    override func renderer(updateAtTime time: TimeInterval) {
+    override func renderer(updateAtTime time: TimeInterval, forView sceneView: ARSCNView) {
         guard let frame = sceneView.session.currentFrame else {
             return
             
@@ -139,7 +141,7 @@ class GameMode: Mode {
         
     }
     
-    func initMicrophone(){
+    func initMicrophone(forView sceneView: ARSCNView){
         var recorder: AVAudioRecorder
         let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
         do {
@@ -172,16 +174,23 @@ class GameMode: Mode {
             recorder.prepareToRecord()
             recorder.isMeteringEnabled = true
             recorder.record()
-            _ = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: recorder, repeats: true)
+            let bubbleTimerData = timerData(recorder: recorder, view: sceneView)
+            _ = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
             
         } catch {}
         
     }
     
+    struct timerData {
+        var recorder = AVAudioRecorder()
+        var view = ARSCNView()
+    }
+    
     var avgMic = [Float]()
     
     @objc func timerCallBack(timer:Timer){
-        let recorder: AVAudioRecorder = timer.userInfo as! AVAudioRecorder
+        let bubbleTimerData: timerData = timer.userInfo as! timerData
+        var recorder = bubbleTimerData.recorder
         recorder.updateMeters()
         let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
         if(!arReady){
@@ -191,16 +200,16 @@ class GameMode: Mode {
         } else {
             
             if avgPower > 150 && avgNoise! < Float(120) {
-                newBubble()
+                newBubble(forView: bubbleTimerData.view)
                 Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-                    self.newBubble()
+                    self.newBubble(forView: bubbleTimerData.view)
                     
                 })
                 
             } else if avgNoise! > 150 && avgPower > 136 {
-                newBubble()
+                newBubble(forView: bubbleTimerData.view)
                 Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-                    self.newBubble()
+                    self.newBubble(forView: bubbleTimerData.view)
                     
                 })
                 
@@ -219,8 +228,8 @@ class GameMode: Mode {
         sceneView.addSubview(imageView)
         
     }
-    public override init(forview view:ARSCNView) {
-        super.init(forview:view)
+    public override init() {
+        super.init()
         
     }
     
