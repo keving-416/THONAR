@@ -190,7 +190,7 @@ class GameMode: Mode {
     
     @objc func timerCallBack(timer:Timer){
         let bubbleTimerData: timerData = timer.userInfo as! timerData
-        var recorder = bubbleTimerData.recorder
+        let recorder = bubbleTimerData.recorder
         recorder.updateMeters()
         let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
         if(!arReady){
@@ -226,8 +226,8 @@ class GameMode: Mode {
         imageView.alpha = 0.9
         setProgress(Double(bubblesOut/2))
         sceneView.addSubview(imageView)
-        
     }
+    
     public override init() {
         super.init()
         

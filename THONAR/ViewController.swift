@@ -25,11 +25,12 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var arMode: Mode = TourMode() {
         didSet {
             // Update view
+            arMode.updateView(view: sceneView)
             viewDidLoad()
-            viewWillAppear(false)
             print("update view to \(arMode)")
         }
     }
+    
     var effect:UIVisualEffect!
     
     private lazy var menuViewController: MenuViewController = {
