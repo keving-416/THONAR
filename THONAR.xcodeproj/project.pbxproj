@@ -29,7 +29,7 @@
 		98C5611021D4490B00CF8FA3 /* calibrateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calibrateView.swift; sourceTree = "<group>"; };
 		98C5611221D449C900CF8FA3 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
 		98C5611421D458D700CF8FA3 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Gill-Sans-MT.ttf"; path = "../../../../../../../Desktop/Exported Fonts/Gill Sans MT/Gill-Sans-MT.ttf"; sourceTree = "<group>"; };
+		98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gill-Sans-MT.ttf"; sourceTree = "<group>"; };
 		B40F596021ADEC5700480637 /* THONAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THONAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40F596321ADEC5700480637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B40F596721ADEC5700480637 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };

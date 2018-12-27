@@ -83,7 +83,7 @@ class calibrateView: UIView{
                 motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
                 if motionManager.isDeviceMotionAvailable {
                     motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xArbitraryZVertical, to: OperationQueue.main, withHandler: { (devMotion, error) -> Void in
-                        let degree = min(max(-60, (motionManager.deviceMotion?.attitude.yaw)!  * 180 / Double.pi),60)
+                        let degree = min(max(-60, (motionManager.deviceMotion?.attitude.yaw)! * 180 / Double.pi),60)
                         rotateViewHorizontal(view: self.phoneImage!, angle: CGFloat(degree))
                         self.phoneImage?.frame = CGRect(origin: CGPoint(x:(self.imageViewsFrame?.origin.x)!+(-1.6)*CGFloat(degree),y:(self.imageViewsFrame?.origin.y)!), size: (self.imageViewsFrame?.size)!)
                         if degree > 45 {
@@ -104,7 +104,7 @@ class calibrateView: UIView{
                 instructions?.changeTextAnimated(text: "Done!")
                 instructions?.changeTextAnimated(text: "Now, blow your screen to blow some bubbles!")
                 //instructions?.text = ""
-                dirImage?.changeImageAnimated(image:  #imageLiteral(resourceName: "done"))
+                dirImage?.changeImageAnimated(image: #imageLiteral(resourceName: "done"))
                 phoneImage?.image = nil
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapHandle(_:)))
                 self.addGestureRecognizer(tapGesture)
