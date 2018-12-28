@@ -22,8 +22,6 @@ class GameMode: Mode {
     var bubblesOut = 1000
     var arReady = false
 
-
-
     override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         return nil
     }
@@ -35,6 +33,11 @@ class GameMode: Mode {
         // Run the view's session
         view.session.run(self.configuration)
         
+        setUpCalibrationView(forView: view)
+    }
+    
+    func setUpCalibrationView(forView view: ARSCNView) {
+        view.isUserInteractionEnabled = false
         let calibrationView = calibrateView(frame:view.bounds)
         view.addSubview(calibrationView)
         calibrationView.calibrationDone = { [weak self] done in
@@ -42,11 +45,9 @@ class GameMode: Mode {
                 self?.initView(forsceneView: view)
                 //self?.sceneView.debugOptions = []
                 self?.arReady = true
-                
+                view.isUserInteractionEnabled = true
             }
-            
         }
-        
     }
 
     override func handleTap(sender: UITapGestureRecognizer) {
