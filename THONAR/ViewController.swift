@@ -24,7 +24,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     // Crashes when initial mode is set to GameMode()
-    var arMode: Mode = TourMode() {
+    var arMode: Mode = ShuttershadeMode() {
         didSet {
             // Update view
             arMode.updateView(view: sceneView)
