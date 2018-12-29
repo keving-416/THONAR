@@ -13,6 +13,10 @@ import UIKit
 import CoreAudio
 import AVFoundation
 
+struct timerData {
+    var recorder = AVAudioRecorder()
+    var view = ARSCNView()
+}
 
 final class GameMode: Mode {
 
@@ -48,24 +52,6 @@ final class GameMode: Mode {
             // make a new bubble if possible
             let arSceneView = sender.view as! ARSCNView
             newBubble(forView: arSceneView)
-        }
-    }
-
-    override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
-        return nil
-    }
-    
-    override func renderer(updateAtTime time: TimeInterval, forView sceneView: ARSCNView) {
-        guard let frame = sceneView.session.currentFrame else {
-            return
-        }
-        
-        let mat = SCNMatrix4(frame.camera.transform)
-        let pos = SCNVector3(mat.m41, mat.m42, mat.m43)
-        
-        
-        for node in sceneView.scene.rootNode.childNodes {
-            node.look(at: pos)
         }
     }
 
@@ -135,11 +121,6 @@ final class GameMode: Mode {
         
     }
     
-    struct timerData {
-        var recorder = AVAudioRecorder()
-        var view = ARSCNView()
-    }
-    
     var avgMic = [Float]()
     
     @objc func timerCallBack(timer:Timer){
@@ -179,6 +160,21 @@ final class GameMode: Mode {
     
     public override init() {
         super.init()
+    }
+    
+    // MARK: - ARSCNViewDelegate
+    override func renderer(updateAtTime time: TimeInterval, forView sceneView: ARSCNView) {
+        guard let frame = sceneView.session.currentFrame else {
+            return
+        }
+        
+        let mat = SCNMatrix4(frame.camera.transform)
+        let pos = SCNVector3(mat.m41, mat.m42, mat.m43)
+        
+        
+        for node in sceneView.scene.rootNode.childNodes {
+            node.look(at: pos)
+        }
     }
 }
 
