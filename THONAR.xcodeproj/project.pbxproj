@@ -16,7 +16,7 @@
 		B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40F596C21ADEC5A00480637 /* Assets.xcassets */; };
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
 		B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */; };
-		B43A00A821D5421B00067994 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B43A00A721D5421B00067994 /* art.scnassets */; };
+		B43A00AA21D70FD200067994 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B43A00A921D70FD200067994 /* art.scnassets */; };
 		B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59921C45DBA000A2CD6 /* MenuButton.swift */; };
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
@@ -37,7 +37,7 @@
 		B40F596F21ADEC5A00480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalRolloutMenuViewController.swift; sourceTree = "<group>"; };
-		B43A00A721D5421B00067994 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		B43A00A921D70FD200067994 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B44FC59921C45DBA000A2CD6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
 				B40F597121ADEC5A00480637 /* Info.plist */,
-				B43A00A721D5421B00067994 /* art.scnassets */,
+				B43A00A921D70FD200067994 /* art.scnassets */,
 			);
 			path = THONAR;
 			sourceTree = "<group>";
@@ -187,9 +187,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B43A00A821D5421B00067994 /* art.scnassets in Resources */,
 				B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */,
 				B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */,
+				B43A00AA21D70FD200067994 /* art.scnassets in Resources */,
 				98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */,
 				B40F596B21ADEC5700480637 /* Main.storyboard in Resources */,
 			);
@@ -359,13 +359,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 784ZFTB9YB;
+				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.THON.THON-AR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -377,13 +377,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 784ZFTB9YB;
+				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.THON.THON-AR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -39,6 +39,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
         // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
@@ -88,12 +89,12 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set text of modeLabel
         modeLabel?.text = mode
         
+        // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         arMode.viewWillAppear(forView: sceneView)
     }
     
@@ -147,20 +148,20 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         switch camera.trackingState {
         case .notAvailable:
             print("Not available")
-            //break
+            break
         case .limited(.excessiveMotion):
             print("Excessive motion")
-            //break
+            break
         case .limited(.initializing):
             print("initializing")
             if ARTrackingIsReady { ARTrackingIsReady = false }
-            //break
+            break
         case .limited(.insufficientFeatures):
             print("Insufficient features")
-            //break
+            break
         case .limited(.relocalizing):
             print("Relocalizing")
-            //break
+            break
         case .normal:
             print("normal")
             ARTrackingIsReady = true
@@ -174,9 +175,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             if ARTrackingIsReady {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
             }
-            
         }
-        
     }
 
 //    func pageTurnAnimation() {
