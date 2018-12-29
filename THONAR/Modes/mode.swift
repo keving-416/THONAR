@@ -14,18 +14,15 @@ class Mode {
     var configuration: ARWorldTrackingConfiguration
     var videoPlayers = [String?:AVPlayer]()
     
-    // Override in subclasses
-    func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
-    
-    //Override in subclasses
-    func renderer(updateAtTime time:TimeInterval, forView sceneView: ARSCNView) {}
-    
     func viewWillAppear(forView view: ARSCNView) {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGestureRecognizer)
         
         view.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
+    
+    // Override in subclasses
+    @objc func handleTap(sender: UITapGestureRecognizer) {}
     
     func updateView(view: UIView) {
         viewWillAppear(forView: view as! ARSCNView)
@@ -39,9 +36,6 @@ class Mode {
             view.removeFromSuperview()
         }
     }
-    
-    // Override in subclasses
-    @objc func handleTap(sender: UITapGestureRecognizer) {}
         
     public init() { self.configuration = ARWorldTrackingConfiguration() }
     
@@ -77,4 +71,11 @@ class Mode {
             return nil
         }
     }
+    
+    // MARK: - ARSCNViewDelegate
+    // Override in subclasses
+    func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
+    
+    //Override in subclasses
+    func renderer(updateAtTime time:TimeInterval, forView sceneView: ARSCNView) {}
 }
