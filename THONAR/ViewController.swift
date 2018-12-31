@@ -17,11 +17,11 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     // Would be an object that defines what that mode does, but for now, to test the passing of data
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
-    var arMode: Mode = TourMode() {
+    var arMode: Mode = Mode() {
         didSet {
             // Update view
-            viewDidLoad()
-            viewWillAppear(false)
+            arMode.updateView()
+            reloadView()
             print("update view to \(arMode)")
         }
     }
@@ -39,6 +39,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
+        viewController.sceneView = sceneView
         
         self.add(asChildViewController: viewController, animated: true)
         
@@ -86,13 +87,36 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set text of modeLabel
         modeLabel?.text = mode
         
+        arMode = TourMode(forView: sceneView)
+        
+        menuButton.layer.cornerRadius = menuButton.frame.width/2
+    }
+    
+    func reloadView() {
+        super.viewDidLoad()
+        
+        // Set the view's delegate
+        sceneView.delegate = self
+        
+        // Show statistics such as fps and timing information
+        sceneView.showsStatistics = true
+        
+        // Create a new scene
+        let scene = SCNScene()
+        
+        // Set the scene to the view
+        sceneView.scene = scene
+        
+        // Set text of modeLabel
+        modeLabel?.text = mode
+        
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        arMode.viewWillAppear(forView: sceneView)
+        arMode.viewWillAppear()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -103,7 +127,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override func viewWillLayoutSubviews() {
-        arMode.viewWillAppear(forView: sceneView)
+        arMode.viewWillAppear()
     }
     
     func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
