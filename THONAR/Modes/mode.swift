@@ -13,21 +13,43 @@ import ARKit
 class Mode {
     var configuration: ARWorldTrackingConfiguration
     var videoPlayers = [String?:AVPlayer]()
+    let sceneView: ARSCNView
     
     // Override in subclasses
     func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
     
-    func viewWillAppear(forView view: ARSCNView) {
+    func viewWillAppear() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGestureRecognizer)
+        sceneView.addGestureRecognizer(tapGestureRecognizer)
         
-        view.session.run(self.configuration)
+        sceneView.session.run(self.configuration)
+    }
+    
+    func updateView() {
+        viewWillAppear()
+        removeAllSubviews()
+    }
+    
+    func removeAllSubviews() {
+        let castedView = sceneView as UIView
+        for view in castedView.subviews {
+            print("view: \(view.description)")
+            view.removeFromSuperview()
+        }
     }
     
     // Override in subclasses
     @objc func handleTap(sender: UITapGestureRecognizer) {}
         
-    public init() { self.configuration = ARWorldTrackingConfiguration() }
+    public init() {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = ARSCNView()
+    }
+    
+    public init(forView view: ARSCNView) {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = view
+    }
     
     // Creates a node that displays a video when a certain image is detected
     func createVideoPlayerPlaneNode(forResourceDictionary resourceNames: [String:(String,String)], forImageAnchor imageAnchor: ARImageAnchor, fromImageName name: String?) -> SCNNode {
