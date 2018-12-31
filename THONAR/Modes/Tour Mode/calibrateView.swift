@@ -113,12 +113,10 @@ class calibrateView: UIView{
             }
             
         }
-        
     }
     
     @objc func tapHandle(_ recognizer:UITapGestureRecognizer){
         removeSelfAnimated()
-        
     }
     
     @objc func removeSelfAnimated(){
@@ -170,19 +168,15 @@ class calibrateView: UIView{
         if isTrackingReady && isHorizontal {
             stages = .moveLeft
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     func startAnimation(){
         stages = .holdUpright
-        
     }
-    
 }
 
 private func rotateViewHorizontal(view:UIView, angle:CGFloat) {
