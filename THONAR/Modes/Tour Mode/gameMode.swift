@@ -39,6 +39,7 @@ final class GameMode: Mode {
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
+        print("Start")
         let sceneView = sender.view as! SCNView
         let touchLocation = sender.location(in: sceneView)
         let hitTest = sceneView.hitTest(touchLocation, options: nil)
@@ -62,8 +63,8 @@ final class GameMode: Mode {
             } else {
                 let bubble = Bubble(forFrame: frame, forImageView: imageView)
                 view.scene.rootNode.addChildNode(bubble)
-                setProgress(Double(bubblesOut)/2.0)
                 bubblesOut -= 1
+                print(bubblesOut)
             }
         }
     }
@@ -80,16 +81,6 @@ final class GameMode: Mode {
                 view.isUserInteractionEnabled = true
             }
         }
-    }
-    
-    private func setProgress(_ progress:Double) {
-        print(progress)
-        let mutablePath = CGMutablePath()
-        mutablePath.addRect(CGRect(x: 0, y: 0, width: imageView.frame.size.width, height: imageView.frame.size.height*CGFloat(progress)))
-        let mask = CAShapeLayer()
-        mask.path = mutablePath
-        mask.fillColor = UIColor.white.cgColor
-        imageView.layer.mask = mask
     }
     
     func initMicrophone(forView sceneView: ARSCNView) {
@@ -122,6 +113,7 @@ final class GameMode: Mode {
     }
     
     var avgMic = [Float]()
+    var lastdB = Float()
     
     @objc func timerCallBack(timer:Timer){
         let bubbleTimerData: timerData = timer.userInfo as! timerData
@@ -129,24 +121,80 @@ final class GameMode: Mode {
         recorder.updateMeters()
         let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
         if(!arReady){
+            print("avgMic: \(avgMic)")
             avgMic.append(avgPower)
             avgNoise = avgMic.average
-            
+            lastdB = avgPower
         } else {
-            
-            if avgPower > 150 && avgNoise! < Float(120) {
-                newBubble(forView: bubbleTimerData.view)
-                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-                    self.newBubble(forView: bubbleTimerData.view)
-                })
-                
-            } else if avgNoise! > 150 && avgPower > 136 {
+            print("avgPower: \(avgPower)     avgNoise: \(avgNoise)")
+//            let minDiff: Float = setMinDiff(forlastdB: lastdB)
+//            if avgPower >= lastdB + minDiff {
+//                print("blow")
+//                newBubble(forView: bubbleTimerData.view)
+//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+//                    self.newBubble(forView: bubbleTimerData.view)
+//                })
+//            }
+//            let minDiff: Float = setMinDiff(forlastdB: avgNoise!)
+//            print(minDiff)
+//            if avgPower > avgNoise! + minDiff {
+//                //print("blow")
+//                newBubble(forView: bubbleTimerData.view)
+//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+//                    self.newBubble(forView: bubbleTimerData.view)
+//                })
+//            } else {
+//                avgMic.append(avgPower)
+//                avgNoise = avgMic.average
+//            }
+            if avgPower > 150 {
                 newBubble(forView: bubbleTimerData.view)
                 Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
                     self.newBubble(forView: bubbleTimerData.view)
                 })
             }
+//
+//            } else if avgNoise! > 150 && avgPower > 136 {
+//                newBubble(forView: bubbleTimerData.view)
+//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+//                    self.newBubble(forView: bubbleTimerData.view)
+//                })
+//            }
         }
+    }
+    
+    func setMinDiff(forlastdB dB: Float) -> Float {
+        let min: Float = 120
+        let diffForMin: Float = 20
+        let max: Float = 146
+        let diffForMax: Float = 8
+        if dB < min {
+            return diffForMin
+        } else if dB > max {
+            return diffForMax
+        } else {
+            // linear equation between values above
+            /*
+            let slope: Float = (diffForMax - diffForMin) / (max - min)
+            let b: Float = diffForMax - (slope * max)
+            return (slope * dB) + b
+             */
+            
+            // logarithmic equation between values above
+            let asymptoteX: Float = min - 1
+            let B = diffForMin
+            let logBase: Float = Float(M_E)
+            let A = getA(forAsymptoteX: asymptoteX, forBase: logBase, forB: B, forPoint: (max, diffForMax))
+            return (A * logC(val: (dB - asymptoteX), forBase: logBase)) + B
+        }
+    }
+    
+    func getA(forAsymptoteX asymptote: Float, forBase base: Float, forB B: Float, forPoint point: (Float, Float)) -> Float {
+        return (point.1 - B) / logC(val: (point.0 - asymptote), forBase: base)
+    }
+    
+    func logC(val: Float, forBase base: Float) -> Float {
+        return log(val)/log(base)
     }
     
     func initView(forsceneView sceneView:ARSCNView){
@@ -154,12 +202,18 @@ final class GameMode: Mode {
         imageView.contentMode = .scaleAspectFit
         imageView.image = #imageLiteral(resourceName: "white-bubble-wand")
         imageView.alpha = 0.9
-        //bubble.setProgress(Double(bubble.bubblesOut/2), forImageView: imageView)
         sceneView.addSubview(imageView)
     }
     
     public override init() {
+        print("wrong init")
         super.init()
+    }
+    
+    public init(forView view: ARSCNView) {
+        print("right init")
+        super.init()
+        self.mySceneView = view
     }
     
     // MARK: - ARSCNViewDelegate
