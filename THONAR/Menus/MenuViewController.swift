@@ -20,6 +20,8 @@ class MenuViewController: UIViewController {
     @IBOutlet var menuView: UIView!
     @IBOutlet var backgroundMenuView: UIVisualEffectView!
     
+    var sceneView: ARSCNView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

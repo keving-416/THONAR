@@ -11,6 +11,7 @@ import SceneKit
 import ARKit
 import AVFoundation
 import Foundation
+import CloudKit
 
 final class ViewController: UIViewController, ARSCNViewDelegate {
     
@@ -18,17 +19,18 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
     
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet var sceneView: ARSCNView!
     
     // Crashes when initial mode is set to GameMode()
-    var arMode: Mode = TourMode() {
+    var arMode: Mode = Mode() {
         didSet {
             // Update view
-            arMode.updateView(view: sceneView)
-            viewDidLoad()
+            arMode.updateView()
+            reloadView()
             print("update view to \(arMode)")
         }
     }
@@ -43,6 +45,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
+        viewController.sceneView = sceneView
         self.add(asChildViewController: viewController, animated: true)
         
         return viewController
@@ -89,13 +92,38 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set text of modeLabel
         modeLabel?.text = mode
         
+        // Set default Mode
+        arMode = GameMode(forView: sceneView)
+        
+        // Make menu button a circle
+        menuButton.layer.cornerRadius = menuButton.frame.width/2
+    }
+    
+    func reloadView() {
+        super.viewDidLoad()
+        
+        // Set the view's delegate
+        sceneView.delegate = self
+        
+        // Show statistics such as fps and timing information
+        sceneView.showsStatistics = true
+        
+        // Create a new scene
+        let scene = SCNScene()
+        
+        // Set the scene to the view
+        sceneView.scene = scene
+        
+        // Set text of modeLabel
+        modeLabel?.text = mode
+        
         // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        arMode.viewWillAppear(forView: sceneView)
+        arMode.viewWillAppear()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -106,7 +134,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override func viewWillLayoutSubviews() {
-        arMode.viewWillAppear(forView: sceneView)
+        arMode.viewWillAppear()
     }
     
     func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
@@ -127,7 +155,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        return arMode.renderer(updateAtTime:time, forView: sceneView)
+        return arMode.renderer(updateAtTime:time)
     }
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user

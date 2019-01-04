@@ -13,31 +13,41 @@ import ARKit
 class Mode {
     var configuration: ARWorldTrackingConfiguration
     var videoPlayers = [String?:AVPlayer]()
+    let sceneView: ARSCNView
     
-    func viewWillAppear(forView view: ARSCNView) {
+    func viewWillAppear() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGestureRecognizer)
+        sceneView.addGestureRecognizer(tapGestureRecognizer)
         
-        view.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
+        sceneView.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
     // Override in subclasses
     @objc func handleTap(sender: UITapGestureRecognizer) {}
     
-    func updateView(view: UIView) {
-        viewWillAppear(forView: view as! ARSCNView)
-        removeAllSubviews(forView: view)
+    func updateView() {
+        viewWillAppear()
+        removeAllSubviews()
     }
     
     
-    func removeAllSubviews(forView view: UIView) {
+    func removeAllSubviews() {
+        let view = sceneView as UIView
         for view in view.subviews {
             print("view: \(view.description)")
             view.removeFromSuperview()
         }
     }
         
-    public init() { self.configuration = ARWorldTrackingConfiguration() }
+    public init() {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = ARSCNView()
+    }
+    
+    public init(forView view: ARSCNView) {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = view
+    }
     
     // Creates a node that displays a video when a certain image is detected
     func createVideoPlayerPlaneNode(forResourceDictionary resourceNames: [String:(String,String)], forImageAnchor imageAnchor: ARImageAnchor, fromImageName name: String?) -> SCNNode {
@@ -77,5 +87,5 @@ class Mode {
     func renderer(nodeFor anchor: ARAnchor) -> SCNNode? { return nil }
     
     //Override in subclasses
-    func renderer(updateAtTime time:TimeInterval, forView sceneView: ARSCNView) {}
+    func renderer(updateAtTime time:TimeInterval) {}
 }

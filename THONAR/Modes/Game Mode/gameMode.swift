@@ -25,17 +25,17 @@ final class GameMode: Mode {
     var avgNoise:Float?
     var arReady = false
     
-    override func viewWillAppear(forView view: ARSCNView) {
-        super.viewWillAppear(forView: view)
+    override func viewWillAppear() {
+        super.viewWillAppear()
         
         // initialize microphone for bubbl
-        initMicrophone(forView: view)
+        initMicrophone()
         
         // Run the view's session
-        view.session.run(self.configuration)
+        sceneView.session.run(self.configuration)
         
         // Set up the view that calibrates the camera for the AR Session
-        setUpCalibrationView(forView: view)
+        setUpCalibrationView()
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
@@ -51,39 +51,38 @@ final class GameMode: Mode {
             bubblesOut += 1
         } else {
             // make a new bubble if possible
-            let arSceneView = sender.view as! ARSCNView
-            newBubble(forView: arSceneView)
+            newBubble()
         }
     }
 
-    private func newBubble(forView view: ARSCNView) {
-        if let frame = view.session.currentFrame {
+    private func newBubble() {
+        if let frame = sceneView.session.currentFrame {
             if bubblesOut <= 0 {
                 return
             } else {
                 let bubble = Bubble(forFrame: frame, forImageView: imageView)
-                view.scene.rootNode.addChildNode(bubble)
+                sceneView.scene.rootNode.addChildNode(bubble)
                 bubblesOut -= 1
                 print(bubblesOut)
             }
         }
     }
     
-    private func setUpCalibrationView(forView view: ARSCNView) {
-        view.isUserInteractionEnabled = false
-        let calibrationView = calibrateView(frame:view.bounds)
-        view.addSubview(calibrationView)
+    private func setUpCalibrationView() {
+        sceneView.isUserInteractionEnabled = false
+        let calibrationView = calibrateView(frame: sceneView.bounds)
+        sceneView.addSubview(calibrationView)
         calibrationView.calibrationDone = { [weak self] done in
             if done {
-                self?.initView(forsceneView: view)
+                self?.initView()
                 //self?.sceneView.debugOptions = []
                 self?.arReady = true
-                view.isUserInteractionEnabled = true
+                self!.sceneView.isUserInteractionEnabled = true
             }
         }
     }
     
-    func initMicrophone(forView sceneView: ARSCNView) {
+    func initMicrophone() {
         var recorder: AVAudioRecorder
         let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
         do {
@@ -148,9 +147,9 @@ final class GameMode: Mode {
 //                avgNoise = avgMic.average
 //            }
             if avgPower > 150 {
-                newBubble(forView: bubbleTimerData.view)
+                newBubble()
                 Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-                    self.newBubble(forView: bubbleTimerData.view)
+                    self.newBubble()
                 })
             }
 //
@@ -197,7 +196,7 @@ final class GameMode: Mode {
         return log(val)/log(base)
     }
     
-    func initView(forsceneView sceneView:ARSCNView){
+    func initView() {
         imageView = UIImageView(frame: CGRect(x: 0, y: sceneView.frame.size.height*0.5, width: sceneView.frame.size.width, height: sceneView.frame.size.height*0.5))
         imageView.contentMode = .scaleAspectFit
         imageView.image = #imageLiteral(resourceName: "white-bubble-wand")
@@ -206,18 +205,15 @@ final class GameMode: Mode {
     }
     
     public override init() {
-        print("wrong init")
         super.init()
     }
     
-    public init(forView view: ARSCNView) {
-        print("right init")
-        super.init()
-        self.mySceneView = view
+    public override init(forView view: ARSCNView) {
+        super.init(forView: view)
     }
     
     // MARK: - ARSCNViewDelegate
-    override func renderer(updateAtTime time: TimeInterval, forView sceneView: ARSCNView) {
+    override func renderer(updateAtTime time: TimeInterval) {
         guard let frame = sceneView.session.currentFrame else {
             return
         }
