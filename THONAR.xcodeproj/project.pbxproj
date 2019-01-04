@@ -17,6 +17,7 @@
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
 		B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */; };
 		B43A00AA21D70FD200067994 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B43A00A921D70FD200067994 /* art.scnassets */; };
+		B43A00B421DD609C00067994 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B43A00B321DD609C00067994 /* CloudKit.framework */; };
 		B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59921C45DBA000A2CD6 /* MenuButton.swift */; };
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
@@ -38,6 +39,8 @@
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalRolloutMenuViewController.swift; sourceTree = "<group>"; };
 		B43A00A921D70FD200067994 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		B43A00B121DD607900067994 /* THONAR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = THONAR.entitlements; sourceTree = "<group>"; };
+		B43A00B321DD609C00067994 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B44FC59921C45DBA000A2CD6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
@@ -51,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B43A00B421DD609C00067994 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +66,7 @@
 			children = (
 				B40F596221ADEC5700480637 /* THONAR */,
 				B40F596121ADEC5700480637 /* Products */,
+				B43A00B221DD609C00067994 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,6 +81,7 @@
 		B40F596221ADEC5700480637 /* THONAR */ = {
 			isa = PBXGroup;
 			children = (
+				B43A00B121DD607900067994 /* THONAR.entitlements */,
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
 				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
@@ -91,14 +97,22 @@
 			path = THONAR;
 			sourceTree = "<group>";
 		};
-		B43A00A621D541AA00067994 /* Tour Mode */ = {
+		B43A00A621D541AA00067994 /* Game Mode */ = {
 			isa = PBXGroup;
 			children = (
 				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
 				98C5611221D449C900CF8FA3 /* bubble.swift */,
 				98C5611021D4490B00CF8FA3 /* calibrateView.swift */,
 			);
-			path = "Tour Mode";
+			path = "Game Mode";
+			sourceTree = "<group>";
+		};
+		B43A00B221DD609C00067994 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B43A00B321DD609C00067994 /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B44FC59F21C61FDB000A2CD6 /* Modes */ = {
@@ -106,7 +120,7 @@
 			children = (
 				B44FC59B21C615E1000A2CD6 /* mode.swift */,
 				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
-				B43A00A621D541AA00067994 /* Tour Mode */,
+				B43A00A621D541AA00067994 /* Game Mode */,
 			);
 			path = Modes;
 			sourceTree = "<group>";
@@ -161,6 +175,14 @@
 				TargetAttributes = {
 					B40F595F21ADEC5700480637 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -358,6 +380,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = THONAR/THONAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
@@ -376,6 +399,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = THONAR/THONAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
