@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import ARKit
+
 
 class FinalRolloutMenuViewController: MenuViewController {
 
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,10 +23,10 @@ class FinalRolloutMenuViewController: MenuViewController {
     
     override func setUpButtons() {
         gameButton.mode = "Game"
-        gameButton.arMode = GameMode(forView: sceneView!)
+        gameButton.arMode = GameMode()
         
         storybookButton.mode = "Storybook"
-        storybookButton.arMode = TourMode(forView: sceneView!)
+        storybookButton.arMode = TourMode()
     }
     
     @IBAction func menuButtonPressed(_ sender: Any) {

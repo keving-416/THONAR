@@ -31,16 +31,17 @@ class TourMode: Mode {
         return node
     }
     
-    override func viewWillAppear() {
-        super.viewWillAppear()
-        
+    override func viewWillAppear(forView view: ARSCNView) {
         // Define a variable to hold all your reference images
         let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: Bundle.main)
         self.configuration.detectionImages = referenceImages!
         self.configuration.maximumNumberOfTrackedImages = 3
         
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
         // Run the view's session
-        sceneView.session.run(self.configuration)
+        view.session.run(self.configuration)
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
@@ -67,10 +68,6 @@ class TourMode: Mode {
     
     public override init() {
         super.init()
-    }
-    
-    public override init(forView view: ARSCNView) {
-        super.init(forView: view)
     }
     
 }
