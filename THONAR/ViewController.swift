@@ -35,6 +35,12 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    var resources = NSMutableDictionary(dictionary: [:]) {
+        didSet {
+            print("viewController resources set")
+        }
+    }
+    
     var effect:UIVisualEffect!
     
     private lazy var menuViewController: MenuViewController = {
@@ -46,6 +52,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
         viewController.menuDelegate = self
         viewController.sceneView = sceneView
+        viewController.resourceGroup = resources
         self.add(asChildViewController: viewController, animated: true)
         
         return viewController
@@ -93,7 +100,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         modeLabel?.text = mode
         
         // Set default Mode
-        arMode = GameMode(forView: sceneView)
+        arMode = GameMode(forView: sceneView, forResourceGroup: resources)
+        
+        // Start querying data from server
+        arMode.fetchEstablishments()
         
         // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
@@ -128,9 +138,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
+        //arMode.viewWillDisappear()
     }
     
     override func viewWillLayoutSubviews() {
@@ -173,37 +181,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        switch camera.trackingState {
-        case .notAvailable:
-            print("Not available")
-            break
-        case .limited(.excessiveMotion):
-            print("Excessive motion")
-            break
-        case .limited(.initializing):
-            print("initializing")
-            if ARTrackingIsReady { ARTrackingIsReady = false }
-            break
-        case .limited(.insufficientFeatures):
-            print("Insufficient features")
-            break
-        case .limited(.relocalizing):
-            print("Relocalizing")
-            break
-        case .normal:
-            print("normal")
-            ARTrackingIsReady = true
-            break
-        }
-        
-    }
-    
-    var ARTrackingIsReady:Bool = false {
-        didSet{
-            if ARTrackingIsReady {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
-            }
-        }
+        arMode.session(forCamera: camera)
     }
 
 //    func pageTurnAnimation() {

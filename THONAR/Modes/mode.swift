@@ -8,26 +8,66 @@
 
 import Foundation
 import ARKit
+import AVFoundation
+import CloudKit
+
+
+struct resource {
+    let image: URL
+    let video: URL
+}
 
 /// Default mode to be subclassed for specific types of modes
 class Mode {
     var configuration: ARWorldTrackingConfiguration
     var videoPlayers = [String?:AVPlayer]()
     let sceneView: ARSCNView
+    var resources: NSMutableDictionary? {
+        didSet {
+            //updateForNewResources()
+            print("resources has been updated \(resources)")
+        }
+    }
+    var ready: Bool = false
+    var record: Bool = true
+    
+    var ARTrackingIsReady:Bool = false {
+        didSet{
+            if ARTrackingIsReady {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+            }
+        }
+    }
+    
+    // Override in subclasses
+    func session(forCamera camera: ARCamera) {
+        
+    }
+    
+    // Override in subclasses
+    func updateForNewResources() {
+        
+    }
     
     func viewWillAppear() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
-        
+        print("gestureRecognizer should have been added")
+        //sceneView.isUserInteractionEnabled = true
         sceneView.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
     // Override in subclasses
-    @objc func handleTap(sender: UITapGestureRecognizer) {}
+    @objc func handleTap(sender: UITapGestureRecognizer) {print("super view ran handle tap")}
     
     func updateView() {
         viewWillAppear()
         removeAllSubviews()
+    }
+    
+    func viewWillDisappear() {
+        // Pause the view's session
+        sceneView.session.pause()
     }
     
     
@@ -80,6 +120,100 @@ class Mode {
             print("Could not find image named \(imageName) in resourceNames")
             return nil
         }
+    }
+    
+    func createVideoPlayerPlaneNode(forURL url: URL, forResourceName resourceName: String, forImageAnchor imageAnchor: ARImageAnchor) -> SCNNode {
+        let videoPlayer : AVPlayer = {
+            //Load video from bundle
+            print(url)
+            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let destinationPath = documentsPath + "/filename.mp4"
+            do {
+                let data: Data = try Data(contentsOf: url)
+                FileManager.default.createFile(atPath: destinationPath, contents: data, attributes: nil)
+                let player = AVPlayer(url: URL(fileURLWithPath: destinationPath))
+                print(player.status)
+                return player
+            } catch {
+                print("error with video data/ url")
+                return AVPlayer()
+            }
+            
+        }()
+        videoPlayers[resourceName] = videoPlayer
+        let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
+        plane.firstMaterial?.diffuse.contents = videoPlayer
+        videoPlayer.play()
+        
+        let planeNode = SCNNode(geometry: plane)
+        planeNode.eulerAngles.x = -.pi / 2
+        return planeNode
+    }
+    
+    func fetchEstablishments() {
+        print("begin")
+        let predicate = NSPredicate(value: true)
+        let establishmentType = "videos"
+        let query = CKQuery(recordType: establishmentType, predicate: predicate)
+        // 4
+        publicDatabase.perform(query, inZoneWith: nil) { (results, error) in
+            if let error = error {
+                DispatchQueue.main.async {
+                    //self.delegate?.errorUpdating(error as NSError)
+                    print("Cloud Query Error - Fetch Establishments: \(error)")
+                }
+                return
+            }
+            
+            results?.forEach({ (record: CKRecord) in
+                print(record.recordID.recordName)
+                guard let imageAsset = record["Image"] as? CKAsset else {
+                    return
+                }
+                
+                let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
+                print(self.resources)
+                self.resources![record["Name"]!] = newResource
+            })
+            
+            DispatchQueue.main.async {
+                //self.update()
+                print("Query Complete")
+            }
+        }
+    }
+    
+    func update() {
+        let referenceImages = getImages()
+        self.configuration.detectionImages = referenceImages
+        self.configuration.maximumNumberOfTrackedImages = 3
+        
+        // Run the view's session
+        sceneView.session.run(self.configuration)
+        print("Update")
+    }
+    
+    func getImages() -> Set<ARReferenceImage>? {
+        var set = Set<ARReferenceImage>()
+        for resource in resources! {
+            let imageData: Data
+            do {
+                imageData = try Data(contentsOf: (resource.value as! resource).image)
+            } catch {
+                return nil
+            }
+            
+            let image = UIImage(data: imageData)
+            print(image)
+            
+            let ciImage = CIImage(image: UIImage(data: imageData)!)
+            let context = CIContext(options: nil)
+            let cgImage = context.createCGImage(ciImage!, from: ciImage!.extent)
+            let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.2)
+            referenceImage.name = resource.key as! String
+            set.insert(referenceImage)
+        }
+        return set
     }
     
     // MARK: - ARSCNViewDelegate

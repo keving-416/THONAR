@@ -28,14 +28,19 @@ final class GameMode: Mode {
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        // initialize microphone for bubbl
+        record = true
+        // initialize microphone for bubble
         initMicrophone()
-        
-        // Run the view's session
-        sceneView.session.run(self.configuration)
         
         // Set up the view that calibrates the camera for the AR Session
         setUpCalibrationView()
+    }
+    
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        
+        record = false
+        print("record: \(record)")
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
@@ -70,7 +75,8 @@ final class GameMode: Mode {
     
     private func setUpCalibrationView() {
         sceneView.isUserInteractionEnabled = false
-        let calibrationView = calibrateView(frame: sceneView.bounds)
+        print("sceneView.isUserInteractionEnabled: \(sceneView.isUserInteractionEnabled)")
+        let calibrationView = calibrateView(frame: sceneView.superview!.bounds)
         sceneView.addSubview(calibrationView)
         calibrationView.calibrationDone = { [weak self] done in
             if done {
@@ -78,6 +84,7 @@ final class GameMode: Mode {
                 //self?.sceneView.debugOptions = []
                 self?.arReady = true
                 self!.sceneView.isUserInteractionEnabled = true
+                print("sceneView.isUserInteractionEnabled completion: \(self!.sceneView.isUserInteractionEnabled)")
             }
         }
     }
@@ -105,60 +112,62 @@ final class GameMode: Mode {
             recorder.isMeteringEnabled = true
             recorder.record()
             let bubbleTimerData = timerData(recorder: recorder, view: sceneView)
-            _ = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
-            
+            let temp = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
         } catch {}
         
+    }
+    
+    override func session(forCamera camera: ARCamera) {
+        switch camera.trackingState {
+        case .notAvailable:
+            print("Not available")
+            break
+        case .limited(.excessiveMotion):
+            print("Excessive motion")
+            break
+        case .limited(.initializing):
+            print("initializing")
+            if ARTrackingIsReady { ARTrackingIsReady = false }
+            break
+        case .limited(.insufficientFeatures):
+            print("Insufficient features")
+            break
+        case .limited(.relocalizing):
+            print("Relocalizing")
+            break
+        case .normal:
+            print("normal")
+            ARTrackingIsReady = true
+            break
+        }
     }
     
     var avgMic = [Float]()
     var lastdB = Float()
     
-    @objc func timerCallBack(timer:Timer){
-        let bubbleTimerData: timerData = timer.userInfo as! timerData
-        let recorder = bubbleTimerData.recorder
-        recorder.updateMeters()
-        let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
-        if(!arReady){
-            print("avgMic: \(avgMic)")
-            avgMic.append(avgPower)
-            avgNoise = avgMic.average
-            lastdB = avgPower
-        } else {
-            print("avgPower: \(avgPower)     avgNoise: \(avgNoise)")
-//            let minDiff: Float = setMinDiff(forlastdB: lastdB)
-//            if avgPower >= lastdB + minDiff {
-//                print("blow")
-//                newBubble(forView: bubbleTimerData.view)
-//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-//                    self.newBubble(forView: bubbleTimerData.view)
-//                })
-//            }
-//            let minDiff: Float = setMinDiff(forlastdB: avgNoise!)
-//            print(minDiff)
-//            if avgPower > avgNoise! + minDiff {
-//                //print("blow")
-//                newBubble(forView: bubbleTimerData.view)
-//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-//                    self.newBubble(forView: bubbleTimerData.view)
-//                })
-//            } else {
-//                avgMic.append(avgPower)
-//                avgNoise = avgMic.average
-//            }
-            if avgPower > 150 {
-                newBubble()
-                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-                    self.newBubble()
-                })
+    @objc func timerCallBack(timer:Timer) {
+        if record {
+            let bubbleTimerData: timerData = timer.userInfo as! timerData
+            let recorder = bubbleTimerData.recorder
+            recorder.updateMeters()
+            let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
+            if(!arReady){
+                print("avgMic: \(avgMic)")
+                avgMic.append(avgPower)
+                avgNoise = avgMic.average
+                lastdB = avgPower
+            } else {
+                //print("avgPower: \(avgPower)     avgNoise: \(avgNoise)")
+                if avgPower > 150 {
+                    newBubble()
+                    Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
+                        self.newBubble()
+                    })
+                }
             }
-//
-//            } else if avgNoise! > 150 && avgPower > 136 {
-//                newBubble(forView: bubbleTimerData.view)
-//                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
-//                    self.newBubble(forView: bubbleTimerData.view)
-//                })
-//            }
+        } else {
+            timer.invalidate()
+
         }
     }
     
@@ -208,8 +217,9 @@ final class GameMode: Mode {
         super.init()
     }
     
-    public override init(forView view: ARSCNView) {
+    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableDictionary) {
         super.init(forView: view)
+        self.resources = resources
     }
     
     // MARK: - ARSCNViewDelegate
@@ -228,6 +238,10 @@ final class GameMode: Mode {
     }
 }
 
+func dbToGain(dB:Float) -> Float {
+    return pow(2, dB/6)
+}
+
 // MARK: - Array extension
 extension Array where Element: FloatingPoint {
     /// Returns the sum of all elements in the array
@@ -242,8 +256,6 @@ extension Array where Element: FloatingPoint {
     }
 }
 
-func dbToGain(dB:Float) -> Float {
-    return pow(2, dB/6)
-}
+
 
 

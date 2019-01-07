@@ -21,6 +21,7 @@ class MenuViewController: UIViewController {
     @IBOutlet var backgroundMenuView: UIVisualEffectView!
     
     var sceneView: ARSCNView?
+    var resourceGroup: NSMutableDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
