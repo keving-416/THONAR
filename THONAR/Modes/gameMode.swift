@@ -16,19 +16,15 @@ class GameMode: Mode {
         return nil
     }
     
-    override func viewWillAppear() {
-        sceneView.scene.rootNode.enumerateChildNodes { (node, stop) in
+    override func viewWillAppear(forView view: ARSCNView) {
+        view.scene.rootNode.enumerateChildNodes { (node, stop) in
             node.removeFromParentNode() }
         
         // Run the view's session
-        sceneView.session.run(self.configuration)
+        view.session.run(self.configuration)
     }
     
     public override init() {
         super.init()
-    }
-    
-    public override init(forView view: ARSCNView) {
-        super.init(forView: view)
     }
 }

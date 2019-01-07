@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ARKit
 
 protocol MenuViewControllerDelegate: class {
     func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton)
@@ -19,8 +18,6 @@ class MenuViewController: UIViewController {
     
     @IBOutlet var menuView: UIView!
     @IBOutlet var backgroundMenuView: UIVisualEffectView!
-    
-    var sceneView: ARSCNView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
