@@ -210,7 +210,7 @@ class Mode {
             let context = CIContext(options: nil)
             let cgImage = context.createCGImage(ciImage!, from: ciImage!.extent)
             let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.2)
-            referenceImage.name = resource.key as! String
+            referenceImage.name = resource.key as? String
             set.insert(referenceImage)
         }
         return set
