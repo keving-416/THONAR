@@ -22,6 +22,8 @@
 		B472411A21E3FC80007DB29B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B472411921E3FC80007DB29B /* art.scnassets */; };
 		B472411C21E3FFFC007DB29B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B472411B21E3FFFC007DB29B /* CloudKit.framework */; };
 		B472411F21E6A78D007DB29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B472411D21E6A78D007DB29B /* Main.storyboard */; };
+		B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */; };
+		B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */; };
 		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
 		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +47,8 @@
 		B472411921E3FC80007DB29B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B472411B21E3FFFC007DB29B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B472411E21E6A78D007DB29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMessageViewController.swift; sourceTree = "<group>"; };
+		B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageProtocol.swift; sourceTree = "<group>"; };
 		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,10 +88,12 @@
 				B43A00B121DD607900067994 /* THONAR.entitlements */,
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
+				B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */,
 				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
 				B483627E21CDBE1C006B8697 /* Menus */,
 				B44FC59F21C61FDB000A2CD6 /* Modes */,
 				B483627F21CDBE44006B8697 /* Custom UI Elements */,
+				B472412421E7F175007DB29B /* Protocols */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
 				B472411D21E6A78D007DB29B /* Main.storyboard */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
@@ -123,6 +129,14 @@
 				B43A00A621D541AA00067994 /* Game Mode */,
 			);
 			path = Modes;
+			sourceTree = "<group>";
+		};
+		B472412421E7F175007DB29B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B483627E21CDBE1C006B8697 /* Menus */ = {
@@ -224,9 +238,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */,
 				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
 				B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */,
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
+				B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */,
 				B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */,
 				98C5611121D4490B00CF8FA3 /* calibrateView.swift in Sources */,
 				98C5611321D449C900CF8FA3 /* bubble.swift in Sources */,

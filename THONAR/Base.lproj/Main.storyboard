@@ -71,6 +71,51 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
+        <!--Large Message View Controller-->
+        <scene sceneID="VRZ-E3-Cny">
+            <objects>
+                <viewController storyboardIdentifier="LargeMessageAlertStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dLH-OA-kS4" customClass="LargeMessageViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qtv-fS-Y9A">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="THt-bs-q1F">
+                                <rect key="frame" x="87.5" y="233.5" width="200" height="200"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UYm-g4-khr">
+                                        <rect key="frame" x="8" y="8" width="184" height="184"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GillSansMT" family="Gill Sans MT" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="0aK-pL-JIF"/>
+                                    <constraint firstAttribute="height" constant="200" id="hBk-IE-Y7V"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="THt-bs-q1F" firstAttribute="centerX" secondItem="qtv-fS-Y9A" secondAttribute="centerX" id="Tmr-g2-Oxd"/>
+                            <constraint firstItem="THt-bs-q1F" firstAttribute="centerY" secondItem="qtv-fS-Y9A" secondAttribute="centerY" id="ySe-yx-AYV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="t9a-Ng-dMp"/>
+                    </view>
+                    <connections>
+                        <outlet property="message" destination="UYm-g4-khr" id="TCo-sF-n5k"/>
+                        <outlet property="messageView" destination="THt-bs-q1F" id="rck-fY-PDJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xcC-gg-zdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="452" y="-618.44077961019491"/>
+        </scene>
         <!--Final Rollout Menu View Controller-->
         <scene sceneID="21k-0k-Zam">
             <objects>

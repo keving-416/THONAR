@@ -28,8 +28,9 @@ class Mode {
             print("resources has been updated \(resources)")
         }
     }
-    var ready: Bool = false
     let description: String
+    var alertMessageDelegate: AlertMessageDelegate?
+    
     
     // Override in subclasses
     func session(forCamera camera: ARCamera) {
@@ -90,6 +91,7 @@ class Mode {
             guard let url = getURL(forResourceDictionary: resourceNames, forImageName: name!) else {
                 
                 print("Could not find video file.")
+                alertMessageDelegate?.showAlert(forMessage: "Could not find video file.")
                 
                 return AVPlayer()
             }

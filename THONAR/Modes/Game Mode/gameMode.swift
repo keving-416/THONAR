@@ -51,6 +51,7 @@ final class GameMode: Mode {
         initMicrophone()
         
         // Set up the view that calibrates the camera for the AR Session
+        print("Set up calibration view")
         setUpCalibrationView()
     }
     
@@ -106,7 +107,7 @@ final class GameMode: Mode {
                 //self?.sceneView.debugOptions = []
                 self?.arReady = true
                 self!.sceneView.isUserInteractionEnabled = true
-                print("sceneView.isUserInteractionEnabled completion: \(self!.sceneView.isUserInteractionEnabled)")
+                //print("sceneView.isUserInteractionEnabled completion: \(self!.sceneView.isUserInteractionEnabled)")
             }
         }
     }
@@ -153,12 +154,14 @@ final class GameMode: Mode {
             break
         case .limited(.insufficientFeatures):
             print("Insufficient features")
+            alertMessageDelegate?.showAlert(forMessage: "Insufficient features")
             break
         case .limited(.relocalizing):
             print("Relocalizing")
             break
         case .normal:
             print("normal")
+            alertMessageDelegate?.dismissAlert()
             ARTrackingIsReady = true
             break
         }
@@ -248,6 +251,7 @@ final class GameMode: Mode {
     var ARTrackingIsReady:Bool = false {
         didSet{
             if ARTrackingIsReady {
+                print("# of subviews: \(sceneView.subviews.count)")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
             }
         }

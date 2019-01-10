@@ -20,6 +20,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var mode: String = "Default"
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var alertIsDisplayed: Bool = false
 
     @IBOutlet weak var menuButton: UIButton!
     
@@ -58,6 +59,20 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         viewController.sceneView = sceneView
         viewController.resourceGroup = resources
         self.add(asChildViewController: viewController, animated: true)
+        
+        return viewController
+    }()
+    
+    private lazy var largeMessageViewController: LargeMessageViewController = {
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
+        var viewController = storyBoard.instantiateViewController(withIdentifier: "LargeMessageAlertStoryboard") as! LargeMessageViewController
+        
+        viewController.isDisplayed = false
+        self.add(asChildViewController: viewController, animated: true)
+        print("added")
         
         return viewController
     }()
@@ -109,6 +124,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Start querying data from server
         arMode.fetchEstablishments()
         
+        // Set arMode's alert message delegate
+        arMode.alertMessageDelegate = self
+        
         // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
@@ -131,6 +149,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set text of modeLabel
         modeLabel?.text = mode
         
+        // Set arMode's alert message delegate
+        arMode.alertMessageDelegate = self
+        
         // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
@@ -143,10 +164,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //arMode.viewWillDisappear()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        arMode.viewWillAppear()
     }
     
     func setUpView(forMenuViewController viewController: MenuViewController, forButton pressedButton: MenuButton) {
@@ -236,6 +253,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 //    }
 }
 
+// MARK: - MenuViewControllerDelegate
 extension ViewController: MenuViewControllerDelegate {
     func menuViewControllerMenuButtonTapped(forViewController viewController: MenuViewController, forSender sender: UIButton) {
         if let button = sender as? MenuButton {
@@ -254,5 +272,28 @@ extension ViewController: MenuViewControllerDelegate {
             dismissMenu(forViewController: viewController)
         }
     }
+}
+
+// MARK: - AlertMessageDelegate
+extension ViewController: AlertMessageDelegate {
+    func showAlert(forMessage message: String) {
+        print("showAlert")
+        add(asChildViewController: largeMessageViewController, animated: false)
+        largeMessageViewController.message.text = message
+        alertIsDisplayed = true
+    }
+    
+    func dismissAlert() {
+        print("dismissAlert")
+        if alertIsDisplayed {
+            UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                self.largeMessageViewController.view.alpha = 0
+            }) { (success) in
+                self.remove(asChildViewController: self.largeMessageViewController, animated: false)
+                self.largeMessageViewController.isDisplayed = false
+            }
+        }
+    }
+    
 }
 

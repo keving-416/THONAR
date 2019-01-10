@@ -110,20 +110,14 @@ class calibrateView: UIView{
                 //instructions?.text = ""
                 dirImage?.changeImageAnimated(image: #imageLiteral(resourceName: "done"))
                 phoneImage?.image = nil
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapHandle(_:)))
-                self.addGestureRecognizer(tapGesture)
                 Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(removeSelfAnimated), userInfo: nil, repeats: false)
-                
             }
             
         }
     }
     
-    @objc func tapHandle(_ recognizer:UITapGestureRecognizer){
-        removeSelfAnimated()
-    }
-    
     @objc func removeSelfAnimated(){
+        print("removed")
         UIView.setAnimationCurve(.easeIn)
         UIView.animate(withDuration: 0.2, animations: {
             self.alpha = 0
@@ -133,9 +127,7 @@ class calibrateView: UIView{
             if finished {
                 self.removeFromSuperview()
                 self.calibrationDone?(true)
-                
             }
-            
         }
         
     }
