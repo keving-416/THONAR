@@ -9,6 +9,6 @@
 import Foundation
 
 protocol AlertMessageDelegate {
-    func showAlert(forMessage message: String)
+    func showAlert(forMessage message: String, withDismissAnimation animated: Bool)
     func dismissAlert()
 }

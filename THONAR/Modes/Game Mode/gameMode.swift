@@ -154,7 +154,7 @@ final class GameMode: Mode {
             break
         case .limited(.insufficientFeatures):
             print("Insufficient features")
-            alertMessageDelegate?.showAlert(forMessage: "Insufficient features")
+            alertMessageDelegate?.showAlert(forMessage: "Insufficient features", withDismissAnimation: false)
             break
         case .limited(.relocalizing):
             print("Relocalizing")

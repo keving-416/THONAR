@@ -276,11 +276,14 @@ extension ViewController: MenuViewControllerDelegate {
 
 // MARK: - AlertMessageDelegate
 extension ViewController: AlertMessageDelegate {
-    func showAlert(forMessage message: String) {
+    func showAlert(forMessage message: String, withDismissAnimation animated: Bool) {
         print("showAlert")
         add(asChildViewController: largeMessageViewController, animated: false)
         largeMessageViewController.message.text = message
         alertIsDisplayed = true
+        if animated {
+            dismissAlert()
+        }
     }
     
     func dismissAlert() {
