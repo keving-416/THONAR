@@ -13,6 +13,7 @@ class FinalRolloutMenuViewController: MenuViewController {
 
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
+    @IBOutlet weak var dismissMenuButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -24,20 +25,22 @@ class FinalRolloutMenuViewController: MenuViewController {
     override func setUpButtons() {
         gameButton.mode = "Game"
         gameButton.arMode = GameMode(forView: sceneView!, forResourceGroup: resourceGroup!)
+        buttons?.append(gameButton)
         
         storybookButton.mode = "Storybook"
         storybookButton.arMode = TourMode(forView: sceneView!, forResourceGroup: resourceGroup!)
+        buttons?.append(storybookButton)
+        
+        // Make menu button a circle
+        dismissMenuButton.layer.cornerRadius = dismissMenuButton.frame.width/2
+        buttons?.append(dismissMenuButton)
     }
     
     @IBAction func menuButtonPressed(_ sender: Any) {
-        if let button = sender as? MenuButton {
+        if let button = sender as? UIButton {
             print("Menu button pressed")
             menuDelegate?.menuViewControllerMenuButtonTapped(forViewController: self, forSender: button)
         }
-    }
-    
-    @IBAction func dismissMenu(_ sender: Any) {
-        
     }
     
     /*

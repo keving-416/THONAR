@@ -29,15 +29,7 @@ class Mode {
         }
     }
     var ready: Bool = false
-    var record: Bool = true
-    
-    var ARTrackingIsReady:Bool = false {
-        didSet{
-            if ARTrackingIsReady {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
-            }
-        }
-    }
+    let description: String
     
     // Override in subclasses
     func session(forCamera camera: ARCamera) {
@@ -82,11 +74,13 @@ class Mode {
     public init() {
         self.configuration = ARWorldTrackingConfiguration()
         self.sceneView = ARSCNView()
+        self.description = "Mode"
     }
     
-    public init(forView view: ARSCNView) {
+    public init(forView view: ARSCNView, withDescription description: String = "Mode") {
         self.configuration = ARWorldTrackingConfiguration()
         self.sceneView = view
+        self.description = description
     }
     
     // Creates a node that displays a video when a certain image is detected
@@ -156,31 +150,52 @@ class Mode {
         let establishmentType = "videos"
         let query = CKQuery(recordType: establishmentType, predicate: predicate)
         // 4
-        publicDatabase.perform(query, inZoneWith: nil) { (results, error) in
-            if let error = error {
-                DispatchQueue.main.async {
-                    //self.delegate?.errorUpdating(error as NSError)
-                    print("Cloud Query Error - Fetch Establishments: \(error)")
-                }
+        let queryOperation = CKQueryOperation()
+        queryOperation.query = query
+        queryOperation.resultsLimit = 2
+        queryOperation.qualityOfService = .userInteractive
+        queryOperation.recordFetchedBlock = { record in
+            print(record.recordID.recordName)
+            guard let imageAsset = record["Image"] as? CKAsset else {
                 return
             }
             
-            results?.forEach({ (record: CKRecord) in
-                print(record.recordID.recordName)
-                guard let imageAsset = record["Image"] as? CKAsset else {
-                    return
-                }
-                
-                let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
-                print(self.resources)
-                self.resources![record["Name"]!] = newResource
-            })
-            
+            let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
+            print("video: \((record["Video"] as? CKAsset)!.fileURL)")
+            print("image: \(imageAsset.fileURL)")
+            print(self.resources)
+            //let newResource = resource(image: URL(fileURLWithPath: record["imageURL"]!), video: URL(fileURLWithPath: record["videoURL"]!))
+            self.resources![record["Name"]!] = newResource
+        }
+//        publicDatabase.perform(query, inZoneWith: nil) { (results, error) in
+//            if let error = error {
+//                DispatchQueue.main.async {
+//                    //self.delegate?.errorUpdating(error as NSError)
+//                    print("Cloud Query Error - Fetch Establishments: \(error)")
+//                }
+//                return
+//            }
+//
+//            results?.forEach({ (record: CKRecord) in
+//                print(record.recordID.recordName)
+//                guard let imageAsset = record["Image"] as? CKAsset else {
+//                    return
+//                }
+//
+//                let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
+//                print("video: \((record["Video"] as? CKAsset)!.fileURL)")
+//                print("image: \(imageAsset.fileURL)")
+//                print(self.resources)
+//                //let newResource = resource(image: URL(fileURLWithPath: record["imageURL"]!), video: URL(fileURLWithPath: record["videoURL"]!))
+//                self.resources![record["Name"]!] = newResource
+//            })
+        queryOperation.queryCompletionBlock = { queryCursor, error in
             DispatchQueue.main.async {
                 //self.update()
                 print("Query Complete")
             }
         }
+        publicDatabase.add(queryOperation)
     }
     
     func update() {
@@ -193,11 +208,15 @@ class Mode {
         print("Update")
     }
     
+    // Override in subclasses
+    func clean() {}
+    
     func getImages() -> Set<ARReferenceImage>? {
         var set = Set<ARReferenceImage>()
         for resource in resources! {
             let imageData: Data
             do {
+                print((resource.value as! resource).image)
                 imageData = try Data(contentsOf: (resource.value as! resource).image)
             } catch {
                 return nil

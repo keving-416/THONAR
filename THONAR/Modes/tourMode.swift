@@ -18,14 +18,6 @@ public var publicDatabase: CKDatabase  = container.publicCloudDatabase
 
 /// The mode that handles the functionality of the augmented reality tour during THON weekend
 final class TourMode: Mode {
-    let resourceNames = [
-        "FootballPepRally":("Football Pep Rally","mp4"),
-        "THON2019Logo":("THON2019LogoARVideo","mp4"),
-        "HumansUnited":("HumansUnitedARVideo","mov"),
-        "LineDance":("Line Dance","mov"),
-        "LineDanceFull":("Line Dance Full","MP4")
-    ]
-    
     override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
@@ -52,8 +44,8 @@ final class TourMode: Mode {
     }
     
     override func viewWillAppear() {
-        record = false
-        print("!resources.isEmpty: \(resources?.underestimatedCount)")
+        print("Tour Mode ViewWillAppear")
+        //print("!resources.isEmpty: \(resources?.underestimatedCount)")
         let referenceImages = getImages()
         self.configuration.detectionImages = referenceImages
         self.configuration.maximumNumberOfTrackedImages = 3
@@ -90,7 +82,7 @@ final class TourMode: Mode {
     }
     
     public init(forView view: ARSCNView, forResourceGroup resources: NSMutableDictionary) {
-        super.init(forView: view)
+        super.init(forView: view, withDescription: "Tour Mode")
         self.resources = resources
     }
 }

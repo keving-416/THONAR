@@ -24,6 +24,24 @@ final class GameMode: Mode {
     var bubblesOut = 1000
     var avgNoise:Float?
     var arReady = false
+    var record: Bool = true
+    var recorder: AVAudioRecorder?
+    var timer: Timer?
+    var audioSession: AVAudioSession?
+    
+    override func clean() {
+        print("gameMode cleaned")
+        record = false
+        recorder?.stop()
+        recorder = nil
+        //timer!.invalidate()
+        //timer = nil
+        do {
+            //try audioSession?.setActive(false)
+        } catch {
+            print("error with deactivating the audioSession")
+        }
+    }
     
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -77,7 +95,11 @@ final class GameMode: Mode {
         sceneView.isUserInteractionEnabled = false
         print("sceneView.isUserInteractionEnabled: \(sceneView.isUserInteractionEnabled)")
         let calibrationView = calibrateView(frame: sceneView.superview!.bounds)
+        calibrationView.alpha = 0
         sceneView.addSubview(calibrationView)
+        UIView.animate(withDuration: 0.3) {
+            calibrationView.alpha = 1
+        }
         calibrationView.calibrationDone = { [weak self] done in
             if done {
                 self?.initView()
@@ -90,11 +112,10 @@ final class GameMode: Mode {
     }
     
     func initMicrophone() {
-        var recorder: AVAudioRecorder
-        let audioSession: AVAudioSession = AVAudioSession.sharedInstance()
+        audioSession = AVAudioSession.sharedInstance()
         do {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
-            try audioSession.setActive(true)
+            try audioSession!.setActive(true)
             
         } catch {}
         
@@ -108,11 +129,12 @@ final class GameMode: Mode {
         
         do {
             try recorder = AVAudioRecorder(url: url, settings: settings)
-            recorder.prepareToRecord()
-            recorder.isMeteringEnabled = true
-            recorder.record()
-            let bubbleTimerData = timerData(recorder: recorder, view: sceneView)
-            let temp = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
+            recorder!.prepareToRecord()
+            recorder!.isMeteringEnabled = true
+            recorder!.record()
+            let bubbleTimerData = timerData(recorder: recorder!, view: sceneView)
+            timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
+            print("timer set")
         } catch {}
         
     }
@@ -145,14 +167,15 @@ final class GameMode: Mode {
     var avgMic = [Float]()
     var lastdB = Float()
     
-    @objc func timerCallBack(timer:Timer) {
+    @objc func timerCallBack( timer: Timer) {
+        //print("timerCallBack \n record: \(record)")
         if record {
             let bubbleTimerData: timerData = timer.userInfo as! timerData
             let recorder = bubbleTimerData.recorder
             recorder.updateMeters()
             let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
             if(!arReady){
-                print("avgMic: \(avgMic)")
+                //print("avgMic: \(avgMic)")
                 avgMic.append(avgPower)
                 avgNoise = avgMic.average
                 lastdB = avgPower
@@ -167,7 +190,7 @@ final class GameMode: Mode {
             }
         } else {
             timer.invalidate()
-
+            print("Timer \(timer) invalidated")
         }
     }
     
@@ -218,12 +241,21 @@ final class GameMode: Mode {
     }
     
     public init(forView view: ARSCNView, forResourceGroup resources: NSMutableDictionary) {
-        super.init(forView: view)
+        super.init(forView: view, withDescription: "Game Mode")
         self.resources = resources
+    }
+    
+    var ARTrackingIsReady:Bool = false {
+        didSet{
+            if ARTrackingIsReady {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
+            }
+        }
     }
     
     // MARK: - ARSCNViewDelegate
     override func renderer(updateAtTime time: TimeInterval) {
+        //print("Renderer updateAtTime")
         guard let frame = sceneView.session.currentFrame else {
             return
         }

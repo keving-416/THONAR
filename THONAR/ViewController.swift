@@ -29,9 +29,13 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var arMode: Mode = Mode() {
         didSet {
             // Update view
-            arMode.updateView()
-            reloadView()
-            print("update view to \(arMode)")
+            print("oldValue: \(oldValue)")
+            if oldValue.description != "Mode" {
+                oldValue.clean()
+                reloadView()
+                arMode.updateView()
+                print("update view to \(arMode)")
+            }
         }
     }
     
@@ -145,14 +149,38 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         arMode.viewWillAppear()
     }
     
-    func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
-        if button.arMode != nil {
-            self.arMode = button.arMode!
-            self.mode = button.mode
-            self.modeLabel?.text = self.mode
-            remove(asChildViewController: viewController, animated: true)
-            //animateMenuOut()
+    func setUpView(forMenuViewController viewController: MenuViewController, forButton pressedButton: MenuButton) {
+        if pressedButton.arMode != nil {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                viewController.backgroundMenuView.blurRadius = 30
+                viewController.backgroundMenuView.colorTintAlpha = 1.0
+            }) { (success) in
+                self.arMode = pressedButton.arMode!
+                self.mode = pressedButton.mode
+                self.modeLabel?.text = self.mode
+                UIView.animate(withDuration: 0.4, delay: 0.05, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    for button in viewController.buttons! {
+                        button.alpha = 0
+                    }
+                    viewController.backgroundMenuView.blurRadius = 0
+                    viewController.backgroundMenuView.colorTintAlpha = 0
+                }, completion: { (success) in
+                    self.remove(asChildViewController: viewController, animated: false)
+                    for button in viewController.buttons! {
+                        button.alpha = 1
+                    }
+                })
+            }
         }
+    }
+    
+    func dismissMenu(forViewController viewController: MenuViewController) {
+        UIView.animate(withDuration: 0.3, animations: {
+            viewController.menuView.alpha = 0
+        }) { (success) in
+            self.remove(asChildViewController: viewController, animated: false)
+        }
+        
     }
     
     
@@ -209,16 +237,21 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 }
 
 extension ViewController: MenuViewControllerDelegate {
-    func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton) {
-        switch viewController.restorationIdentifier {
-        case "InitialRolloutMenuStoryboard":
-            // Set up view for Initial Rollout
-            setUpView(forViewController: viewController, forButton: sender)
-        case "FinalRolloutMenuStoryboard":
-            // Set up view for Final Rollout
-            setUpView(forViewController: viewController, forButton: sender)
-        default:
-            print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
+    func menuViewControllerMenuButtonTapped(forViewController viewController: MenuViewController, forSender sender: UIButton) {
+        if let button = sender as? MenuButton {
+            print("sender as? MenuButton")
+            switch viewController.restorationIdentifier {
+            case "InitialRolloutMenuStoryboard":
+                // Set up view for Initial Rollout
+                setUpView(forMenuViewController: viewController, forButton: button)
+            case "FinalRolloutMenuStoryboard":
+                // Set up view for Final Rollout
+                setUpView(forMenuViewController: viewController, forButton: button)
+            default:
+                print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
+            }
+        } else {
+            dismissMenu(forViewController: viewController)
         }
     }
 }

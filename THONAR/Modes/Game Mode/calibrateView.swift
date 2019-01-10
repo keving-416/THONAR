@@ -58,7 +58,11 @@ class calibrateView: UIView{
                 motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
                 if motionManager.isDeviceMotionAvailable {
                     motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xArbitraryZVertical, to: OperationQueue.main, withHandler: { (devMotion, error) -> Void in
-                        let degree = min(max((motionManager.deviceMotion?.attitude.pitch)! * 180 / Double.pi, 40),90)
+                        guard let deviceMotion = motionManager.deviceMotion else {
+                            print("ERROR - motionManager.deviveMotion? -> \(motionManager.deviceMotion)")
+                            return
+                        }
+                        let degree = min(max(deviceMotion.attitude.pitch * 180 / Double.pi, 40),90)
                         rotateViewVertical(view: self.phoneImage!, angle: 90-CGFloat(degree))
                         if degree > 70 {
                             print("vertical")
