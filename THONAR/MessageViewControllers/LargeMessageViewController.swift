@@ -13,8 +13,6 @@ class LargeMessageViewController: UIViewController {
     @IBOutlet weak var messageView: UIView!
     @IBOutlet weak var message: UILabel!
     
-    var isDisplayed: Bool?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

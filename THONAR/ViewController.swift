@@ -70,7 +70,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Choose which menu to configure
         var viewController = storyBoard.instantiateViewController(withIdentifier: "LargeMessageAlertStoryboard") as! LargeMessageViewController
         
-        viewController.isDisplayed = false
         self.add(asChildViewController: viewController, animated: true)
         print("added")
         
@@ -276,24 +275,26 @@ extension ViewController: MenuViewControllerDelegate {
 
 // MARK: - AlertMessageDelegate
 extension ViewController: AlertMessageDelegate {
-    func showAlert(forMessage message: String, withDismissAnimation animated: Bool) {
+    
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool) {
         print("showAlert")
         add(asChildViewController: largeMessageViewController, animated: false)
         largeMessageViewController.message.text = message
         alertIsDisplayed = true
         if animated {
-            dismissAlert()
+            dismissAlert(ofSize: size)
+            alertIsDisplayed = false
         }
     }
     
-    func dismissAlert() {
+    func dismissAlert(ofSize size: AlertSize) {
         print("dismissAlert")
         if alertIsDisplayed {
             UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
                 self.largeMessageViewController.view.alpha = 0
             }) { (success) in
                 self.remove(asChildViewController: self.largeMessageViewController, animated: false)
-                self.largeMessageViewController.isDisplayed = false
+                self.alertIsDisplayed = false
             }
         }
     }

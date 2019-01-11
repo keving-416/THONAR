@@ -8,7 +8,13 @@
 
 import Foundation
 
-protocol AlertMessageDelegate {
-    func showAlert(forMessage message: String, withDismissAnimation animated: Bool)
-    func dismissAlert()
+enum AlertSize {
+    case small
+    case large
 }
+protocol AlertMessageDelegate {
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool)
+    func dismissAlert(ofSize size: AlertSize)
+}
+
+

@@ -24,6 +24,7 @@
 		B472411F21E6A78D007DB29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B472411D21E6A78D007DB29B /* Main.storyboard */; };
 		B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */; };
 		B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */; };
+		B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412721E82FC5007DB29B /* SmallMessageViewController.swift */; };
 		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
 		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		B472411E21E6A78D007DB29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMessageViewController.swift; sourceTree = "<group>"; };
 		B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageProtocol.swift; sourceTree = "<group>"; };
+		B472412721E82FC5007DB29B /* SmallMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMessageViewController.swift; sourceTree = "<group>"; };
 		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,8 +90,8 @@
 				B43A00B121DD607900067994 /* THONAR.entitlements */,
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
-				B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */,
 				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
+				B472412921E82FCB007DB29B /* MessageViewControllers */,
 				B483627E21CDBE1C006B8697 /* Menus */,
 				B44FC59F21C61FDB000A2CD6 /* Modes */,
 				B483627F21CDBE44006B8697 /* Custom UI Elements */,
@@ -137,6 +139,15 @@
 				B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B472412921E82FCB007DB29B /* MessageViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */,
+				B472412721E82FC5007DB29B /* SmallMessageViewController.swift */,
+			);
+			path = MessageViewControllers;
 			sourceTree = "<group>";
 		};
 		B483627E21CDBE1C006B8697 /* Menus */ = {
@@ -240,6 +251,7 @@
 			files = (
 				B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */,
 				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
+				B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */,
 				B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */,
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
 				B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */,

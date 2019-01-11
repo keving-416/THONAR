@@ -154,14 +154,14 @@ final class GameMode: Mode {
             break
         case .limited(.insufficientFeatures):
             print("Insufficient features")
-            alertMessageDelegate?.showAlert(forMessage: "Insufficient features", withDismissAnimation: false)
+            alertMessageDelegate?.showAlert(forMessage: "Insufficient features", ofSize: AlertSize.large, withDismissAnimation: false)
             break
         case .limited(.relocalizing):
             print("Relocalizing")
             break
         case .normal:
             print("normal")
-            alertMessageDelegate?.dismissAlert()
+            alertMessageDelegate?.dismissAlert(ofSize: AlertSize.large)
             ARTrackingIsReady = true
             break
         }

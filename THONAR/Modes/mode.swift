@@ -91,7 +91,7 @@ class Mode {
             guard let url = getURL(forResourceDictionary: resourceNames, forImageName: name!) else {
                 
                 print("Could not find video file.")
-                alertMessageDelegate?.showAlert(forMessage: "Could not find video file.", withDismissAnimation: true)
+                alertMessageDelegate?.showAlert(forMessage: "Could not find video file.", ofSize: AlertSize.large, withDismissAnimation: true)
                 
                 return AVPlayer()
             }
@@ -132,7 +132,7 @@ class Mode {
                 return player
             } catch {
                 print("error with video data/ url")
-                alertMessageDelegate?.showAlert(forMessage: "Error with video data/ url", withDismissAnimation: true)
+                alertMessageDelegate?.showAlert(forMessage: "Error with video data/ url", ofSize: AlertSize.large, withDismissAnimation: true)
                 return AVPlayer()
             }
             
@@ -149,6 +149,7 @@ class Mode {
     
     func fetchEstablishments() {
         print("begin")
+        alertMessageDelegate?.showAlert(forMessage: "Querying Videos", ofSize: AlertSize.small, withDismissAnimation: true)
         let predicate = NSPredicate(value: true)
         let establishmentType = "videos"
         let query = CKQuery(recordType: establishmentType, predicate: predicate)
@@ -195,13 +196,13 @@ class Mode {
         queryOperation.queryCompletionBlock = { queryCursor, error in
             if let error = error {
                 DispatchQueue.main.async {
-                    self.alertMessageDelegate?.showAlert(forMessage: "Cloud Query Error - Fetch Establishments: \(error)", withDismissAnimation: true)
+                    self.alertMessageDelegate?.showAlert(forMessage: "Cloud Query Error - Fetch Establishments: \(error)", ofSize: AlertSize.large, withDismissAnimation: true)
                 }
             }
             DispatchQueue.main.async {
                 //self.update()
                 print("Query Complete")
-                self.alertMessageDelegate?.showAlert(forMessage: "Query Complete", withDismissAnimation: true)
+                self.alertMessageDelegate?.showAlert(forMessage: "Query Complete", ofSize: AlertSize.large, withDismissAnimation: true)
             }
         }
         publicDatabase.add(queryOperation)
@@ -228,7 +229,7 @@ class Mode {
                 print((resource.value as! resource).image)
                 imageData = try Data(contentsOf: (resource.value as! resource).image)
             } catch {
-                alertMessageDelegate?.showAlert(forMessage: "Error - imageData failed", withDismissAnimation: true)
+                alertMessageDelegate?.showAlert(forMessage: "Error - imageData failed", ofSize: AlertSize.large, withDismissAnimation: true)
                 return nil
             }
             
