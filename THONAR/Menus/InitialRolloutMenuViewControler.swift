@@ -16,6 +16,7 @@ class InitialRolloutMenuViewController: MenuViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        setUpButtons()
     }
     
     override func setUpButtons() {

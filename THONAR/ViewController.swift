@@ -11,24 +11,41 @@ import SceneKit
 import ARKit
 import AVFoundation
 import Foundation
+import CloudKit
 
 final class ViewController: UIViewController, ARSCNViewDelegate {
     
     // Would be an object that defines what that mode does, but for now, to test the passing of data
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
-    var arMode: Mode = TourMode() {
-        didSet {
-            // Update view
-            viewDidLoad()
-            viewWillAppear(false)
-            print("update view to \(arMode)")
-        }
-    }
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var smallAlertIsDisplayed: Bool = false
+    var largeAlertIsDisplayed: Bool = false
 
     @IBOutlet weak var menuButton: UIButton!
     
     @IBOutlet var sceneView: ARSCNView!
+    
+    // Crashes when initial mode is set to GameMode()
+    var arMode: Mode = Mode() {
+        didSet {
+            // Update view
+            print("oldValue: \(oldValue)")
+            if oldValue.description != "Mode" {
+                oldValue.clean()
+                reloadView()
+                arMode.updateView()
+                print("update view to \(arMode)")
+            }
+        }
+    }
+    
+    var resources = NSMutableDictionary(dictionary: [:]) {
+        didSet {
+            print("viewController resources set")
+        }
+    }
     
     var effect:UIVisualEffect!
     
@@ -36,11 +53,39 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
         // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
         var viewController = storyBoard.instantiateViewController(withIdentifier: "FinalRolloutMenuStoryboard") as! FinalRolloutMenuViewController
         
         viewController.menuDelegate = self
+        viewController.sceneView = sceneView
+        viewController.resourceGroup = resources
+        self.add(asChildViewController: viewController, animated: true)
+        
+        return viewController
+    }()
+    
+    private lazy var largeMessageViewController: LargeMessageViewController = {
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
+        var viewController = storyBoard.instantiateViewController(withIdentifier: "LargeMessageAlertStoryboard") as! LargeMessageViewController
         
         self.add(asChildViewController: viewController, animated: true)
+        print("added")
+        
+        return viewController
+    }()
+    
+    private lazy var smallMessageViewController: SmallMessageViewController = {
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
+        var viewController = storyBoard.instantiateViewController(withIdentifier: "SmallMessageAlertStoryboard") as! SmallMessageViewController
+        
+        self.add(asChildViewController: viewController, animated: true)
+        print("added")
         
         return viewController
     }()
@@ -86,34 +131,86 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set text of modeLabel
         modeLabel?.text = mode
         
+        // Set default Mode
+        arMode = GameMode(forView: sceneView, forResourceGroup: resources)
+        
+        // Start querying data from server
+        arMode.fetchEstablishments()
+        
+        // Set arMode's alert message delegate
+        arMode.alertMessageDelegate = self
+        
+        // Make menu button a circle
+        menuButton.layer.cornerRadius = menuButton.frame.width/2
+    }
+    
+    func reloadView() {
+        super.viewDidLoad()
+        
+        // Set the view's delegate
+        sceneView.delegate = self
+        
+        // Show statistics such as fps and timing information
+        sceneView.showsStatistics = true
+        
+        // Create a new scene
+        let scene = SCNScene()
+        
+        // Set the scene to the view
+        sceneView.scene = scene
+        
+        // Set text of modeLabel
+        modeLabel?.text = mode
+        
+        // Set arMode's alert message delegate
+        arMode.alertMessageDelegate = self
+        
+        // Make menu button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        arMode.viewWillAppear(forView: sceneView)
+        arMode.viewWillAppear()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
-        sceneView.session.pause()
+        //arMode.viewWillDisappear()
     }
     
-    override func viewWillLayoutSubviews() {
-        arMode.viewWillAppear(forView: sceneView)
-    }
-    
-    func setUpView(forViewController viewController: UIViewController, forButton button: MenuButton) {
-        if button.arMode != nil {
-            self.arMode = button.arMode!
-            self.mode = button.mode
-            self.modeLabel?.text = self.mode
-            remove(asChildViewController: viewController, animated: true)
-            //animateMenuOut()
+    func setUpView(forMenuViewController viewController: MenuViewController, forButton pressedButton: MenuButton) {
+        if pressedButton.arMode != nil {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
+                viewController.backgroundMenuView.blurRadius = 30
+                viewController.backgroundMenuView.colorTintAlpha = 1.0
+            }) { (success) in
+                self.arMode = pressedButton.arMode!
+                self.mode = pressedButton.mode
+                self.modeLabel?.text = self.mode
+                UIView.animate(withDuration: 0.4, delay: 0.05, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    for button in viewController.buttons! {
+                        button.alpha = 0
+                    }
+                    viewController.backgroundMenuView.blurRadius = 0
+                    viewController.backgroundMenuView.colorTintAlpha = 0
+                }, completion: { (success) in
+                    self.remove(asChildViewController: viewController, animated: false)
+                    for button in viewController.buttons! {
+                        button.alpha = 1
+                    }
+                })
+            }
         }
+    }
+    
+    func dismissMenu(forViewController viewController: MenuViewController) {
+        UIView.animate(withDuration: 0.3, animations: {
+            viewController.menuView.alpha = 0
+        }) { (success) in
+            self.remove(asChildViewController: viewController, animated: false)
+        }
+        
     }
     
     
@@ -123,21 +220,34 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         return arMode.renderer(nodeFor: anchor)
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        return arMode.renderer(updateAtTime:time)
+    }
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
+        arMode.didFailWithError(error) { (success) in
+            reloadView()
+            arMode.update()
+        }
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
+        arMode.sessionWasInterrupted(session)
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+        arMode.sessionInterruptionEnded(session) { (success) in
+            reloadView()
+            arMode.update()
+        }
     }
     
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        arMode.session(forCamera: camera)
+    }
+
 //    func pageTurnAnimation() {
 //        UIView.animate(withDuration: 1.0, animations: {
 //            let animation = CATransition()
@@ -162,18 +272,101 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 //    }
 }
 
+// MARK: - MenuViewControllerDelegate
 extension ViewController: MenuViewControllerDelegate {
-    func menuViewControllerMenuButtonTapped(forViewController viewController: UIViewController, forSender sender: MenuButton) {
-        switch viewController.restorationIdentifier {
-        case "InitialRolloutMenuStoryboard":
-            // Set up view for Initial Rollout
-            setUpView(forViewController: viewController, forButton: sender)
-        case "FinalRolloutMenuStoryboard":
-            // Set up view for Final Rollout
-            setUpView(forViewController: viewController, forButton: sender)
-        default:
-            print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
+    func menuViewControllerMenuButtonTapped(forViewController viewController: MenuViewController, forSender sender: UIButton) {
+        if let button = sender as? MenuButton {
+            print("sender as? MenuButton")
+            switch viewController.restorationIdentifier {
+            case "InitialRolloutMenuStoryboard":
+                // Set up view for Initial Rollout
+                setUpView(forMenuViewController: viewController, forButton: button)
+            case "FinalRolloutMenuStoryboard":
+                // Set up view for Final Rollout
+                setUpView(forMenuViewController: viewController, forButton: button)
+            default:
+                print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
+            }
+        } else {
+            dismissMenu(forViewController: viewController)
         }
     }
+}
+
+// MARK: - AlertMessageDelegate
+extension ViewController: AlertMessageDelegate {
+    
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool) {
+        print("showAlert")
+        switch size {
+        case .large:
+            add(asChildViewController: largeMessageViewController, animated: false)
+            largeMessageViewController.message.text = message
+            largeAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                largeAlertIsDisplayed = false
+            }
+        case .small:
+            add(asChildViewController: smallMessageViewController, animated: false)
+            smallMessageViewController.message.text = message
+            smallAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                smallAlertIsDisplayed = false
+            }
+        }
+        
+    }
+    
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool, withDelay delay: Double) {
+        switch size {
+        case .large:
+            largeMessageViewController.delay = delay
+            add(asChildViewController: largeMessageViewController, animated: false)
+            largeMessageViewController.message.text = message
+            largeAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                largeAlertIsDisplayed = false
+                largeMessageViewController.delay = 0.0
+            }
+        case .small:
+            smallMessageViewController.delay = delay
+            add(asChildViewController: smallMessageViewController, animated: false)
+            smallMessageViewController.message.text = message
+            smallAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                smallAlertIsDisplayed = false
+                smallMessageViewController.delay = 0.0
+            }
+        }
+    }
+    
+    func dismissAlert(ofSize size: AlertSize) {
+        print("dismissAlert")
+        switch size {
+        case .large:
+            if largeAlertIsDisplayed {
+                UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    self.largeMessageViewController.view.alpha = 0
+                }) { (success) in
+                    self.remove(asChildViewController: self.largeMessageViewController, animated: false)
+                    self.largeAlertIsDisplayed = false
+                }
+            }
+        case .small:
+            if smallAlertIsDisplayed {
+                UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    self.smallMessageViewController.view.alpha = 0
+                }) { (success) in
+                    self.remove(asChildViewController: self.smallMessageViewController, animated: false)
+                    self.smallAlertIsDisplayed = false
+                }
+            }
+        }
+    }
+    
 }
 

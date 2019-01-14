@@ -7,43 +7,50 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		98C5611121D4490B00CF8FA3 /* calibrateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5611021D4490B00CF8FA3 /* calibrateView.swift */; };
+		98C5611321D449C900CF8FA3 /* bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C5611221D449C900CF8FA3 /* bubble.swift */; };
+		98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */; };
 		B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40F596321ADEC5700480637 /* AppDelegate.swift */; };
 		B40F596821ADEC5700480637 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40F596721ADEC5700480637 /* ViewController.swift */; };
-		B40F596B21ADEC5700480637 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596921ADEC5700480637 /* Main.storyboard */; };
 		B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40F596C21ADEC5A00480637 /* Assets.xcassets */; };
 		B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */; };
-		B430BD8A21C9B7FE00E6F495 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B430BD8921C9B7FE00E6F495 /* art.scnassets */; };
 		B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */; };
-		B44FC58D21C345D5000A2CD6 /* Line Dance.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC58C21C345D5000A2CD6 /* Line Dance.mov */; };
-		B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */; };
-		B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */; };
-		B44FC59621C348C7000A2CD6 /* Football Pep Rally.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */; };
 		B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59921C45DBA000A2CD6 /* MenuButton.swift */; };
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
 		B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */; };
+		B472411A21E3FC80007DB29B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B472411921E3FC80007DB29B /* art.scnassets */; };
+		B472411C21E3FFFC007DB29B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B472411B21E3FFFC007DB29B /* CloudKit.framework */; };
+		B472411F21E6A78D007DB29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B472411D21E6A78D007DB29B /* Main.storyboard */; };
+		B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */; };
+		B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */; };
+		B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412721E82FC5007DB29B /* SmallMessageViewController.swift */; };
 		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
 		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		98C5611021D4490B00CF8FA3 /* calibrateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = calibrateView.swift; sourceTree = "<group>"; };
+		98C5611221D449C900CF8FA3 /* bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bubble.swift; sourceTree = "<group>"; };
+		98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gill-Sans-MT.ttf"; sourceTree = "<group>"; };
 		B40F596021ADEC5700480637 /* THONAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = THONAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40F596321ADEC5700480637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B40F596721ADEC5700480637 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B40F596A21ADEC5700480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B40F596C21ADEC5A00480637 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B40F596F21ADEC5A00480637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B40F597121ADEC5A00480637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B430BD8921C9B7FE00E6F495 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B430BD8D21CB127700E6F495 /* FinalRolloutMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalRolloutMenuViewController.swift; sourceTree = "<group>"; };
-		B44FC58C21C345D5000A2CD6 /* Line Dance.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = "Line Dance.mov"; path = "../../../../../../Line Dance.mov"; sourceTree = "<group>"; };
-		B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Line Dance Full.MP4"; path = "../../../../../../Line Dance Full.MP4"; sourceTree = "<group>"; };
-		B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; name = HumansUnitedARVideo.mov; path = "../../../../../../../Library/Mobile Documents/com~apple~QuickTimePlayerX/Documents/HumansUnitedARVideo.mov"; sourceTree = "<group>"; };
-		B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Football Pep Rally.mp4"; path = "../../../../../../../Downloads/Football Pep Rally.mp4"; sourceTree = "<group>"; };
+		B43A00B121DD607900067994 /* THONAR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = THONAR.entitlements; sourceTree = "<group>"; };
 		B44FC59921C45DBA000A2CD6 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
 		B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gameMode.swift; sourceTree = "<group>"; };
+		B472411921E3FC80007DB29B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		B472411B21E3FFFC007DB29B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		B472411E21E6A78D007DB29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMessageViewController.swift; sourceTree = "<group>"; };
+		B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageProtocol.swift; sourceTree = "<group>"; };
+		B472412721E82FC5007DB29B /* SmallMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMessageViewController.swift; sourceTree = "<group>"; };
 		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -53,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B472411C21E3FFFC007DB29B /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +72,7 @@
 			children = (
 				B40F596221ADEC5700480637 /* THONAR */,
 				B40F596121ADEC5700480637 /* Products */,
+				B43A00B221DD609C00067994 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,32 +87,67 @@
 		B40F596221ADEC5700480637 /* THONAR */ = {
 			isa = PBXGroup;
 			children = (
+				B43A00B121DD607900067994 /* THONAR.entitlements */,
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
+				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
+				B472412921E82FCB007DB29B /* MessageViewControllers */,
 				B483627E21CDBE1C006B8697 /* Menus */,
 				B44FC59F21C61FDB000A2CD6 /* Modes */,
 				B483627F21CDBE44006B8697 /* Custom UI Elements */,
-				B40F596921ADEC5700480637 /* Main.storyboard */,
+				B472412421E7F175007DB29B /* Protocols */,
 				B40F596C21ADEC5A00480637 /* Assets.xcassets */,
-				B44FC59521C348C7000A2CD6 /* Football Pep Rally.mp4 */,
-				B44FC59321C348B3000A2CD6 /* HumansUnitedARVideo.mov */,
-				B44FC58C21C345D5000A2CD6 /* Line Dance.mov */,
-				B44FC59121C346F1000A2CD6 /* Line Dance Full.MP4 */,
+				B472411D21E6A78D007DB29B /* Main.storyboard */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
 				B40F597121ADEC5A00480637 /* Info.plist */,
-				B430BD8921C9B7FE00E6F495 /* art.scnassets */,
+				B472411921E3FC80007DB29B /* art.scnassets */,
 			);
 			path = THONAR;
+			sourceTree = "<group>";
+		};
+		B43A00A621D541AA00067994 /* Game Mode */ = {
+			isa = PBXGroup;
+			children = (
+				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
+				98C5611221D449C900CF8FA3 /* bubble.swift */,
+				98C5611021D4490B00CF8FA3 /* calibrateView.swift */,
+			);
+			path = "Game Mode";
+			sourceTree = "<group>";
+		};
+		B43A00B221DD609C00067994 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B472411B21E3FFFC007DB29B /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B44FC59F21C61FDB000A2CD6 /* Modes */ = {
 			isa = PBXGroup;
 			children = (
 				B44FC59B21C615E1000A2CD6 /* mode.swift */,
-				B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */,
 				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
+				B43A00A621D541AA00067994 /* Game Mode */,
 			);
 			path = Modes;
+			sourceTree = "<group>";
+		};
+		B472412421E7F175007DB29B /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		B472412921E82FCB007DB29B /* MessageViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */,
+				B472412721E82FC5007DB29B /* SmallMessageViewController.swift */,
+			);
+			path = MessageViewControllers;
 			sourceTree = "<group>";
 		};
 		B483627E21CDBE1C006B8697 /* Menus */ = {
@@ -156,6 +200,17 @@
 				TargetAttributes = {
 					B40F595F21ADEC5700480637 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -182,14 +237,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B44FC59221C346F1000A2CD6 /* Line Dance Full.MP4 in Resources */,
-				B430BD8A21C9B7FE00E6F495 /* art.scnassets in Resources */,
-				B44FC59621C348C7000A2CD6 /* Football Pep Rally.mp4 in Resources */,
-				B44FC58D21C345D5000A2CD6 /* Line Dance.mov in Resources */,
-				B44FC59421C348B3000A2CD6 /* HumansUnitedARVideo.mov in Resources */,
 				B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */,
+				B472411F21E6A78D007DB29B /* Main.storyboard in Resources */,
 				B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */,
-				B40F596B21ADEC5700480637 /* Main.storyboard in Resources */,
+				B472411A21E3FC80007DB29B /* art.scnassets in Resources */,
+				98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,10 +252,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */,
 				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
+				B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */,
 				B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */,
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
+				B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */,
 				B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */,
+				98C5611121D4490B00CF8FA3 /* calibrateView.swift in Sources */,
+				98C5611321D449C900CF8FA3 /* bubble.swift in Sources */,
 				B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */,
 				B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */,
 				B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */,
@@ -215,20 +272,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B40F596921ADEC5700480637 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B40F596A21ADEC5700480637 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B40F596F21ADEC5A00480637 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B472411D21E6A78D007DB29B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B472411E21E6A78D007DB29B /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -354,14 +411,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = THONAR/THONAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LMC98SH8A3;
+				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.THON.THON-AR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -372,14 +430,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = THONAR/THONAR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LMC98SH8A3;
+				DEVELOPMENT_TEAM = 42V62P2MF9;
 				INFOPLIST_FILE = THONAR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.THON.THONAR;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.THON.THON-AR";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

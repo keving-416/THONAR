@@ -8,46 +8,64 @@
 
 import Foundation
 import ARKit
+import CloudKit
+import AVFoundation
+
+
+
+var container: CKContainer = CKContainer.default()
+public var publicDatabase: CKDatabase  = container.publicCloudDatabase
 
 /// The mode that handles the functionality of the augmented reality tour during THON weekend
-class TourMode: Mode {    
-    let resourceNames = [
-        "FootballPepRally":("Football Pep Rally","mp4"),
-        "THON2019Logo":("THON2019LogoARVideo","mp4"),
-        "HumansUnited":("HumansUnitedARVideo","mov"),
-        "LineDance":("Line Dance","mov"),
-        "LineDanceFull":("Line Dance Full","MP4")
-    ]
-    
+final class TourMode: Mode {
     override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
         if let imageAnchor = anchor as? ARImageAnchor {
             // Do something when an image is detected
             let referenceImageName = imageAnchor.referenceImage.name
+            print("referenceImageName: \(referenceImageName)")
             node.name = referenceImageName
-            node.addChildNode(createVideoPlayerPlaneNode(forResourceDictionary: resourceNames, forImageAnchor: imageAnchor, fromImageName: referenceImageName))
-            }
+            
+            let url = (resources![referenceImageName!] as! resource).video
+            
+            node.addChildNode(createVideoPlayerPlaneNode(forURL: url, forResourceName: referenceImageName!, forImageAnchor: imageAnchor))
+        }
         return node
     }
     
-    override func viewWillAppear(forView view: ARSCNView) {
-        // Define a variable to hold all your reference images
-        let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: Bundle.main)
-        self.configuration.detectionImages = referenceImages!
+    @objc override func playerDidFinishPlaying(note: Notification) {
+        super.playerDidFinishPlaying(note: note)
+        print("userInfo for planeNode: \(note.userInfo)")
+        if let planeNode = note.userInfo?["planeNode"] as? SCNNode {
+            planeNode.removeFromParentNode()
+        }
+    }
+    
+    override func updateForNewResources() {
+        let referenceImages = getImages()
+        self.configuration.detectionImages = referenceImages
+        self.configuration.maximumNumberOfTrackedImages = 3
+
+        // Run the view's session
+        sceneView.session.run(self.configuration, options: [.resetTracking, .removeExistingAnchors])
+    }
+    
+    override func viewWillAppear() {
+        print("Tour Mode ViewWillAppear")
+        //print("!resources.isEmpty: \(resources?.underestimatedCount)")
+        let referenceImages = getImages()
+        self.configuration.detectionImages = referenceImages
         self.configuration.maximumNumberOfTrackedImages = 3
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGestureRecognizer)
-        
-        // Run the view's session
-        view.session.run(self.configuration)
+        super.viewWillAppear()
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
         let tappedView = sender.view as! SCNView
         let touchLocation = sender.location(in: tappedView)
         let hitTest = tappedView.hitTest(touchLocation, options: nil)
+        print("hitTest: \(hitTest)")
         if !hitTest.isEmpty {
             let result = hitTest.first!
             updateVideoPlayer(result: result)
@@ -57,6 +75,7 @@ class TourMode: Mode {
     @objc func updateVideoPlayer(result: SCNHitTestResult) {
         // The nodes of the images are the parent of the SCNHitTestResult node
         let name = result.node.parent?.name
+        print("videoPlayer name: \(name)")
         if let videoPlayer = videoPlayers[name] {
             if videoPlayer.isPlaying {
                 videoPlayer.pause()
@@ -70,6 +89,10 @@ class TourMode: Mode {
         super.init()
     }
     
+    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableDictionary) {
+        super.init(forView: view, withDescription: "Tour Mode")
+        self.resources = resources
+    }
 }
 
 extension AVPlayer {
