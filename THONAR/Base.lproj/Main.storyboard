@@ -119,17 +119,16 @@
         <!--Small Message View Controller-->
         <scene sceneID="gxV-nt-yZz">
             <objects>
-                <viewController id="48i-oa-4ts" customClass="SmallMessageViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SmallMessageAlertStoryboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="48i-oa-4ts" customClass="SmallMessageViewController" customModule="THONAR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="veb-Vp-zY7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wsW-Le-mS0">
-                                <rect key="frame" x="67.5" y="20" width="240" height="45"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ala-ei-YJX">
+                                <rect key="frame" x="25" y="34" width="325" height="64"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kSQ-su-NYl">
-                                        <rect key="frame" x="8" y="8" width="224" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ecq-jW-FSn">
+                                        <rect key="frame" x="8" y="8" width="309" height="48"/>
                                         <fontDescription key="fontDescription" name="GillSansMT" family="Gill Sans MT" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -137,21 +136,27 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="JgE-Wz-frR"/>
-                                    <constraint firstAttribute="height" constant="45" id="vYc-Os-ZwQ"/>
+                                    <constraint firstItem="ecq-jW-FSn" firstAttribute="leading" secondItem="ala-ei-YJX" secondAttribute="leading" constant="8" id="Ki9-OX-XTo"/>
+                                    <constraint firstAttribute="height" constant="64" id="YMU-hu-GEQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="ecq-jW-FSn" secondAttribute="bottom" constant="8" id="fFJ-RS-4qa"/>
+                                    <constraint firstAttribute="width" constant="325" id="ghd-mY-DvV"/>
+                                    <constraint firstAttribute="trailing" secondItem="ecq-jW-FSn" secondAttribute="trailing" constant="8" id="ji6-XA-Gzi"/>
+                                    <constraint firstItem="ecq-jW-FSn" firstAttribute="top" secondItem="ala-ei-YJX" secondAttribute="top" constant="8" id="yLR-bl-8mP"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="n9b-US-B54" firstAttribute="bottom" secondItem="wsW-Le-mS0" secondAttribute="bottom" constant="602" id="7Pl-qN-3EM"/>
-                            <constraint firstItem="wsW-Le-mS0" firstAttribute="centerX" secondItem="veb-Vp-zY7" secondAttribute="centerX" id="k54-mf-zQK"/>
+                            <constraint firstItem="n9b-US-B54" firstAttribute="bottom" secondItem="ala-ei-YJX" secondAttribute="bottom" constant="569" id="4PT-g5-6Zb"/>
+                            <constraint firstItem="ala-ei-YJX" firstAttribute="top" secondItem="n9b-US-B54" secondAttribute="top" constant="14" id="SlK-61-84f"/>
+                            <constraint firstItem="ala-ei-YJX" firstAttribute="leading" secondItem="n9b-US-B54" secondAttribute="leading" constant="25" id="fWU-HJ-76e"/>
+                            <constraint firstItem="n9b-US-B54" firstAttribute="trailing" secondItem="ala-ei-YJX" secondAttribute="trailing" constant="25" id="noV-9l-uvz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="n9b-US-B54"/>
                     </view>
                     <connections>
-                        <outlet property="messageLabel" destination="kSQ-su-NYl" id="b9E-EJ-v78"/>
-                        <outlet property="messageView" destination="wsW-Le-mS0" id="dXI-Is-b87"/>
+                        <outlet property="message" destination="ecq-jW-FSn" id="Toz-bR-juv"/>
+                        <outlet property="messageView" destination="ala-ei-YJX" id="g3n-Hd-F1q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U6J-zf-Aei" userLabel="First Responder" sceneMemberID="firstResponder"/>

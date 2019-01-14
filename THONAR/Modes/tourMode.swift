@@ -34,6 +34,14 @@ final class TourMode: Mode {
         return node
     }
     
+    @objc override func playerDidFinishPlaying(note: Notification) {
+        super.playerDidFinishPlaying(note: note)
+        print("userInfo for planeNode: \(note.userInfo)")
+        if let planeNode = note.userInfo?["planeNode"] as? SCNNode {
+            planeNode.removeFromParentNode()
+        }
+    }
+    
     override func updateForNewResources() {
         let referenceImages = getImages()
         self.configuration.detectionImages = referenceImages

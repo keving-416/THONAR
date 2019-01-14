@@ -96,7 +96,7 @@ final class GameMode: Mode {
         sceneView.isUserInteractionEnabled = false
         print("sceneView.isUserInteractionEnabled: \(sceneView.isUserInteractionEnabled)")
         let calibrationView = calibrateView(frame: sceneView.superview!.bounds)
-        calibrationView.alpha = 0
+        calibrationView.alpha = 1
         sceneView.addSubview(calibrationView)
         UIView.animate(withDuration: 0.3) {
             calibrationView.alpha = 1
@@ -147,6 +147,7 @@ final class GameMode: Mode {
             break
         case .limited(.excessiveMotion):
             print("Excessive motion")
+            alertMessageDelegate?.showAlert(forMessage: "Excessive Motion - Please steady the camera", ofSize: AlertSize.large, withDismissAnimation: false)
             break
         case .limited(.initializing):
             print("initializing")

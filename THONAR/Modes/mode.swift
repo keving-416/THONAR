@@ -17,6 +17,7 @@ struct resource {
     let video: URL
 }
 
+
 /// Default mode to be subclassed for specific types of modes
 class Mode {
     var configuration: ARWorldTrackingConfiguration
@@ -54,8 +55,8 @@ class Mode {
     @objc func handleTap(sender: UITapGestureRecognizer) {print("super view ran handle tap")}
     
     func updateView() {
-        viewWillAppear()
         removeAllSubviews()
+        viewWillAppear()
     }
     
     func viewWillDisappear() {
@@ -144,12 +145,18 @@ class Mode {
         
         let planeNode = SCNNode(geometry: plane)
         planeNode.eulerAngles.x = -.pi / 2
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(note:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.currentItem)
+        NotificationCenter.default.post(name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.currentItem, userInfo: ["planeNode":planeNode])
         return planeNode
+    }
+    
+    // Override in subclasses
+    @objc func playerDidFinishPlaying(note: Notification) {
+        print("Video Finished")
     }
     
     func fetchEstablishments() {
         print("begin")
-        alertMessageDelegate?.showAlert(forMessage: "Querying Videos", ofSize: AlertSize.small, withDismissAnimation: true)
         let predicate = NSPredicate(value: true)
         let establishmentType = "videos"
         let query = CKQuery(recordType: establishmentType, predicate: predicate)
@@ -244,6 +251,19 @@ class Mode {
             set.insert(referenceImage)
         }
         return set
+    }
+    
+    func didFailWithError(_ error: Error, completion: (Bool) -> Void) {
+        alertMessageDelegate?.showAlert(forMessage: "Error - \(error)", ofSize: AlertSize.large, withDismissAnimation: true)
+    }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        alertMessageDelegate?.showAlert(forMessage: "Session has been interrupted", ofSize: AlertSize.large, withDismissAnimation: true)
+        session.pause()
+    }
+    
+    func sessionInterruptionEnded(_ session: ARSession, completion: (Bool) -> Void) {
+        alertMessageDelegate?.showAlert(forMessage: "Session has resumed and will reset", ofSize: AlertSize.large, withDismissAnimation: true)
     }
     
     // MARK: - ARSCNViewDelegate

@@ -20,7 +20,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var mode: String = "Default"
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var alertIsDisplayed: Bool = false
+    var smallAlertIsDisplayed: Bool = false
+    var largeAlertIsDisplayed: Bool = false
 
     @IBOutlet weak var menuButton: UIButton!
     
@@ -69,6 +70,19 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the viewController to a specific viewController from the Storyboard
         // Choose which menu to configure
         var viewController = storyBoard.instantiateViewController(withIdentifier: "LargeMessageAlertStoryboard") as! LargeMessageViewController
+        
+        self.add(asChildViewController: viewController, animated: true)
+        print("added")
+        
+        return viewController
+    }()
+    
+    private lazy var smallMessageViewController: SmallMessageViewController = {
+        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        
+        // Set the viewController to a specific viewController from the Storyboard
+        // Choose which menu to configure
+        var viewController = storyBoard.instantiateViewController(withIdentifier: "SmallMessageAlertStoryboard") as! SmallMessageViewController
         
         self.add(asChildViewController: viewController, animated: true)
         print("added")
@@ -211,17 +225,23 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
+        arMode.didFailWithError(error) { (success) in
+            reloadView()
+            arMode.update()
+        }
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
+        arMode.sessionWasInterrupted(session)
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+        arMode.sessionInterruptionEnded(session) { (success) in
+            reloadView()
+            arMode.update()
+        }
     }
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -278,23 +298,72 @@ extension ViewController: AlertMessageDelegate {
     
     func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool) {
         print("showAlert")
-        add(asChildViewController: largeMessageViewController, animated: false)
-        largeMessageViewController.message.text = message
-        alertIsDisplayed = true
-        if animated {
-            dismissAlert(ofSize: size)
-            alertIsDisplayed = false
+        switch size {
+        case .large:
+            add(asChildViewController: largeMessageViewController, animated: false)
+            largeMessageViewController.message.text = message
+            largeAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                largeAlertIsDisplayed = false
+            }
+        case .small:
+            add(asChildViewController: smallMessageViewController, animated: false)
+            smallMessageViewController.message.text = message
+            smallAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                smallAlertIsDisplayed = false
+            }
+        }
+        
+    }
+    
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool, withDelay delay: Double) {
+        switch size {
+        case .large:
+            largeMessageViewController.delay = delay
+            add(asChildViewController: largeMessageViewController, animated: false)
+            largeMessageViewController.message.text = message
+            largeAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                largeAlertIsDisplayed = false
+                largeMessageViewController.delay = 0.0
+            }
+        case .small:
+            smallMessageViewController.delay = delay
+            add(asChildViewController: smallMessageViewController, animated: false)
+            smallMessageViewController.message.text = message
+            smallAlertIsDisplayed = true
+            if animated {
+                dismissAlert(ofSize: size)
+                smallAlertIsDisplayed = false
+                smallMessageViewController.delay = 0.0
+            }
         }
     }
     
     func dismissAlert(ofSize size: AlertSize) {
         print("dismissAlert")
-        if alertIsDisplayed {
-            UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
-                self.largeMessageViewController.view.alpha = 0
-            }) { (success) in
-                self.remove(asChildViewController: self.largeMessageViewController, animated: false)
-                self.alertIsDisplayed = false
+        switch size {
+        case .large:
+            if largeAlertIsDisplayed {
+                UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    self.largeMessageViewController.view.alpha = 0
+                }) { (success) in
+                    self.remove(asChildViewController: self.largeMessageViewController, animated: false)
+                    self.largeAlertIsDisplayed = false
+                }
+            }
+        case .small:
+            if smallAlertIsDisplayed {
+                UIView.animate(withDuration: 0.2, delay: 2.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                    self.smallMessageViewController.view.alpha = 0
+                }) { (success) in
+                    self.remove(asChildViewController: self.smallMessageViewController, animated: false)
+                    self.smallAlertIsDisplayed = false
+                }
             }
         }
     }

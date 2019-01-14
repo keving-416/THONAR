@@ -14,6 +14,7 @@ enum AlertSize {
 }
 protocol AlertMessageDelegate {
     func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool)
+    func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool, withDelay delay: Double)
     func dismissAlert(ofSize size: AlertSize)
 }
 

@@ -13,6 +13,8 @@ class LargeMessageViewController: UIViewController {
     @IBOutlet weak var messageView: UIView!
     @IBOutlet weak var message: UILabel!
     
+    var delay: Double = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +25,7 @@ class LargeMessageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIView.AnimationOptions.curveLinear, animations: {
+        UIView.animate(withDuration: 0.3, delay: delay, options: UIView.AnimationOptions.curveLinear, animations: {
             self.view.alpha = 1
         })
     }
