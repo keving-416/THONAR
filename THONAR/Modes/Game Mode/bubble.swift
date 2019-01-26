@@ -16,8 +16,6 @@ import AVFoundation
 
 class Bubble: SCNNode {
     
-    //var bubblesOut = 1000
-    
     override init() {
         super.init()
         setGeometry()

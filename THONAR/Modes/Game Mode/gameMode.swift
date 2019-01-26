@@ -24,46 +24,32 @@ final class GameMode: Mode {
     var bubblesOut = 1000
     var avgNoise:Float?
     var arReady = false
-    var record: Bool = true
     var recorder: AVAudioRecorder?
     var timer: Timer?
     var audioSession: AVAudioSession?
     
     override func clean() {
-        print("gameMode cleaned")
-        record = false
         recorder?.stop()
         recorder = nil
-        //timer!.invalidate()
-        //timer = nil
-        do {
-            //try audioSession?.setActive(false)
-        } catch {
-            print("error with deactivating the audioSession")
-        }
+        timer?.invalidate()
+        timer = nil
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        record = true
         // initialize microphone for bubble
         initMicrophone()
         
         // Set up the view that calibrates the camera for the AR Session
-        print("Set up calibration view")
         setUpCalibrationView()
     }
     
     override func viewWillDisappear() {
         super.viewWillDisappear()
-        
-        record = false
-        print("record: \(record)")
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
-        print("Start")
         let sceneView = sender.view as! SCNView
         let touchLocation = sender.location(in: sceneView)
         let hitTest = sceneView.hitTest(touchLocation, options: nil)
@@ -87,14 +73,12 @@ final class GameMode: Mode {
                 let bubble = Bubble(forFrame: frame, forImageView: imageView)
                 sceneView.scene.rootNode.addChildNode(bubble)
                 bubblesOut -= 1
-                print(bubblesOut)
             }
         }
     }
     
     private func setUpCalibrationView() {
         sceneView.isUserInteractionEnabled = false
-        print("sceneView.isUserInteractionEnabled: \(sceneView.isUserInteractionEnabled)")
         let calibrationView = calibrateView(frame: sceneView.superview!.bounds)
         calibrationView.alpha = 1
         sceneView.addSubview(calibrationView)
@@ -104,10 +88,8 @@ final class GameMode: Mode {
         calibrationView.calibrationDone = { [weak self] done in
             if done {
                 self?.initView()
-                //self?.sceneView.debugOptions = []
                 self?.arReady = true
                 self!.sceneView.isUserInteractionEnabled = true
-                //print("sceneView.isUserInteractionEnabled completion: \(self!.sceneView.isUserInteractionEnabled)")
             }
         }
     }
@@ -115,53 +97,56 @@ final class GameMode: Mode {
     func initMicrophone() {
         audioSession = AVAudioSession.sharedInstance()
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
-            try audioSession!.setActive(true)
-            
+            try audioSession?.setCategory(.playAndRecord, mode: .default, options: [])
+            try audioSession?.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {}
         
-        let url = URL(fileURLWithPath:"/dev/null")
+        /*
+         * Main Thread Checker: UI API called on a background thread: -[UIApplication applicationState]
+         * PID: 25982, TID: 8931726, Thread name: com.apple.CoreMotion.MotionThread, Queue name: com.apple.root.default-qos.overcommit, QoS: com.apple.CoreMotion.MotionThread
+         */
         
-        var settings = Dictionary<String, NSNumber>()
-        settings[AVSampleRateKey] = 44100.0
-        settings[AVFormatIDKey] = kAudioFormatAppleLossless as NSNumber
-        settings[AVNumberOfChannelsKey] = 1
-        settings[AVEncoderAudioQualityKey] = 0x7F //max quality hex
+        //let url = URL(fileURLWithPath:"/dev/null")
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let audioFilename = paths[0].appendingPathComponent("record.m4a")
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatAppleLossless),
+            AVSampleRateKey: 44100.0,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue // max quality hex
+        ]
         
         do {
-            try recorder = AVAudioRecorder(url: url, settings: settings)
+            try recorder = AVAudioRecorder(url: audioFilename, settings: settings)
             recorder!.prepareToRecord()
             recorder!.isMeteringEnabled = true
+            recorder?.prepareToRecord()
             recorder!.record()
             let bubbleTimerData = timerData(recorder: recorder!, view: sceneView)
             timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(timerCallBack(timer:)), userInfo: bubbleTimerData, repeats: true)
-            print("timer set")
-        } catch {}
+        } catch {
+            print("Error - recorder was not initialized")
+        }
         
     }
     
     override func session(forCamera camera: ARCamera) {
         switch camera.trackingState {
         case .notAvailable:
-            print("Not available")
+            print("camera not available")
             break
         case .limited(.excessiveMotion):
-            print("Excessive motion")
             alertMessageDelegate?.showAlert(forMessage: "Excessive Motion - Please steady the camera", ofSize: AlertSize.large, withDismissAnimation: false)
             break
         case .limited(.initializing):
-            print("initializing")
             if ARTrackingIsReady { ARTrackingIsReady = false }
             break
         case .limited(.insufficientFeatures):
-            print("Insufficient features")
             alertMessageDelegate?.showAlert(forMessage: "Insufficient features", ofSize: AlertSize.large, withDismissAnimation: false)
             break
         case .limited(.relocalizing):
-            print("Relocalizing")
             break
         case .normal:
-            print("normal")
             alertMessageDelegate?.dismissAlert(ofSize: AlertSize.large)
             ARTrackingIsReady = true
             break
@@ -172,19 +157,15 @@ final class GameMode: Mode {
     var lastdB = Float()
     
     @objc func timerCallBack( timer: Timer) {
-        //print("timerCallBack \n record: \(record)")
-        if record {
             let bubbleTimerData: timerData = timer.userInfo as! timerData
             let recorder = bubbleTimerData.recorder
             recorder.updateMeters()
             let avgPower: Float = 160+recorder.averagePower(forChannel: 0)
             if(!arReady){
-                //print("avgMic: \(avgMic)")
                 avgMic.append(avgPower)
                 avgNoise = avgMic.average
                 lastdB = avgPower
             } else {
-                //print("avgPower: \(avgPower)     avgNoise: \(avgNoise)")
                 if avgPower > 150 {
                     newBubble()
                     Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { (timer) in
@@ -192,10 +173,6 @@ final class GameMode: Mode {
                     })
                 }
             }
-        } else {
-            timer.invalidate()
-            print("Timer \(timer) invalidated")
-        }
     }
     
     func setMinDiff(forlastdB dB: Float) -> Float {
@@ -244,7 +221,7 @@ final class GameMode: Mode {
         super.init()
     }
     
-    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableDictionary) {
+    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableArray) {
         super.init(forView: view, withDescription: "Game Mode")
         self.resources = resources
     }
@@ -252,7 +229,6 @@ final class GameMode: Mode {
     var ARTrackingIsReady:Bool = false {
         didSet{
             if ARTrackingIsReady {
-                print("# of subviews: \(sceneView.subviews.count)")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
             }
         }
@@ -260,7 +236,6 @@ final class GameMode: Mode {
     
     // MARK: - ARSCNViewDelegate
     override func renderer(updateAtTime time: TimeInterval) {
-        //print("Renderer updateAtTime")
         guard let frame = sceneView.session.currentFrame else {
             return
         }

@@ -53,27 +53,23 @@ class calibrateView: UIView{
                     }
                     
                 })
-                
                 let motionManager = CMMotionManager()
                 motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
                 if motionManager.isDeviceMotionAvailable {
                     motionManager.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xArbitraryZVertical, to: OperationQueue.main, withHandler: { (devMotion, error) -> Void in
                         guard let deviceMotion = motionManager.deviceMotion else {
-                            print("ERROR - motionManager.deviveMotion? -> \(motionManager.deviceMotion)")
+                            print("ERROR - motionManager.deviveMotion? -> \(String(describing: motionManager.deviceMotion))")
                             return
                         }
                         let degree = min(max(deviceMotion.attitude.pitch * 180 / Double.pi, 40),90)
                         rotateViewVertical(view: self.phoneImage!, angle: 90-CGFloat(degree))
                         if degree > 70 {
-                            print("vertical")
                             motionManager.stopDeviceMotionUpdates()
                             rotateViewVertical(view: self.phoneImage!, angle:0)
                             self.isHorizontal = true
-                            print("isTrackingReady: \(self.isTrackingReady)")
                             if self.isHorizontal && self.isTrackingReady {
                                 self.stages = .moveLeft
                             }
-                            
                         }
                         
                     })}
@@ -117,7 +113,6 @@ class calibrateView: UIView{
     }
     
     @objc func removeSelfAnimated(){
-        print("removed")
         UIView.setAnimationCurve(.easeIn)
         UIView.animate(withDuration: 0.2, animations: {
             self.alpha = 0
@@ -133,7 +128,6 @@ class calibrateView: UIView{
     }
     
     override init(frame: CGRect) {
-        print("init(frame: CGRect) has begun")
         super.init(frame: frame)
         containerView = UIView(frame: CGRect(x:0,y:self.frame.size.height/4,width:self.frame.size.width,height:self.frame.size.width*0.66))
         self.addSubview(containerView!)
@@ -160,7 +154,6 @@ class calibrateView: UIView{
     
     @objc func arTracking(_ notification:NSNotification){
         isTrackingReady = true
-        print("isTrackingReady set to \(isTrackingReady) and isHorizontal is \(isHorizontal)")
         if isTrackingReady && isHorizontal {
             stages = .moveLeft
         }

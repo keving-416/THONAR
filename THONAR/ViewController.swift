@@ -11,7 +11,6 @@ import SceneKit
 import ARKit
 import AVFoundation
 import Foundation
-import CloudKit
 
 final class ViewController: UIViewController, ARSCNViewDelegate {
     
@@ -31,19 +30,17 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var arMode: Mode = Mode() {
         didSet {
             // Update view
-            print("oldValue: \(oldValue)")
             if oldValue.description != "Mode" {
                 oldValue.clean()
                 reloadView()
                 arMode.updateView()
-                print("update view to \(arMode)")
             }
         }
     }
     
-    var resources = NSMutableDictionary(dictionary: [:]) {
+    var resources = NSMutableArray(array: []) {
         didSet {
-            print("viewController resources set")
+            //print("viewController resources set")
         }
     }
     
@@ -72,7 +69,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "LargeMessageAlertStoryboard") as! LargeMessageViewController
         
         self.add(asChildViewController: viewController, animated: true)
-        print("added")
         
         return viewController
     }()
@@ -85,7 +81,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         var viewController = storyBoard.instantiateViewController(withIdentifier: "SmallMessageAlertStoryboard") as! SmallMessageViewController
         
         self.add(asChildViewController: viewController, animated: true)
-        print("added")
         
         return viewController
     }()
@@ -93,12 +88,14 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     func add(asChildViewController viewController: UIViewController, animated: Bool) {
         addChild(viewController)
         
-        view.addSubview(viewController.view)
-        
-        viewController.view.frame = view.bounds
-        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        viewController.didMove(toParent: self)
+        DispatchQueue.main.async {
+            self.view.addSubview(viewController.view)
+            
+            viewController.view.frame = self.view.bounds
+            viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            viewController.didMove(toParent: self)
+        }
     }
     
     func remove(asChildViewController viewController: UIViewController, animated: Bool) {
@@ -120,7 +117,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        //sceneView.showsStatistics = false
         
         // Create a new scene
         let scene = SCNScene()
@@ -130,12 +127,17 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Set text of modeLabel
         modeLabel?.text = mode
+        modeLabel?.alpha = 0.0
         
         // Set default Mode
         arMode = GameMode(forView: sceneView, forResourceGroup: resources)
         
+        let cloudkitHandler = CloudKitHandler()
         // Start querying data from server
-        arMode.fetchEstablishments()
+        cloudkitHandler.fetchEstablishments()
+        
+        // Set up cloudkit subscriptions
+        cloudkitHandler.setUpSubscription()
         
         // Set arMode's alert message delegate
         arMode.alertMessageDelegate = self
@@ -151,7 +153,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        //sceneView.showsStatistics = true
         
         // Create a new scene
         let scene = SCNScene()
@@ -171,6 +173,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear on main viewController called")
         arMode.viewWillAppear()
     }
     
@@ -213,7 +216,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    
     // MARK: - ARSCNViewDelegate
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
@@ -223,6 +225,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         return arMode.renderer(updateAtTime:time)
     }
+    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         arMode.didFailWithError(error) { (success) in
@@ -276,7 +279,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 extension ViewController: MenuViewControllerDelegate {
     func menuViewControllerMenuButtonTapped(forViewController viewController: MenuViewController, forSender sender: UIButton) {
         if let button = sender as? MenuButton {
-            print("sender as? MenuButton")
             switch viewController.restorationIdentifier {
             case "InitialRolloutMenuStoryboard":
                 // Set up view for Initial Rollout
@@ -285,7 +287,7 @@ extension ViewController: MenuViewControllerDelegate {
                 // Set up view for Final Rollout
                 setUpView(forMenuViewController: viewController, forButton: button)
             default:
-                print("ERROR - viewController has no restorationIdentifier or \(viewController.restorationIdentifier) is not a switch case")
+                print("ERROR - viewController has no restorationIdentifier or \(String(describing: viewController.restorationIdentifier)) is not a switch case")
             }
         } else {
             dismissMenu(forViewController: viewController)
@@ -296,24 +298,29 @@ extension ViewController: MenuViewControllerDelegate {
 // MARK: - AlertMessageDelegate
 extension ViewController: AlertMessageDelegate {
     
+    // add(asChildViewController:,animated:) is done on the main thread, which means the implementation of the alertMessageViewController
+    //  also needs to be on the main thread.
     func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool) {
-        print("showAlert")
         switch size {
         case .large:
             add(asChildViewController: largeMessageViewController, animated: false)
-            largeMessageViewController.message.text = message
-            largeAlertIsDisplayed = true
-            if animated {
-                dismissAlert(ofSize: size)
-                largeAlertIsDisplayed = false
+            DispatchQueue.main.async {
+                self.largeMessageViewController.message.text = message
+                self.largeAlertIsDisplayed = true
+                if animated {
+                    self.dismissAlert(ofSize: size)
+                    self.largeAlertIsDisplayed = false
+                }
             }
         case .small:
             add(asChildViewController: smallMessageViewController, animated: false)
-            smallMessageViewController.message.text = message
-            smallAlertIsDisplayed = true
-            if animated {
-                dismissAlert(ofSize: size)
-                smallAlertIsDisplayed = false
+            DispatchQueue.main.async {
+                self.smallMessageViewController.message.text = message
+                self.smallAlertIsDisplayed = true
+                if animated {
+                    self.dismissAlert(ofSize: size)
+                    self.smallAlertIsDisplayed = false
+                }
             }
         }
         
@@ -322,30 +329,41 @@ extension ViewController: AlertMessageDelegate {
     func showAlert(forMessage message: String, ofSize size: AlertSize, withDismissAnimation animated: Bool, withDelay delay: Double) {
         switch size {
         case .large:
-            largeMessageViewController.delay = delay
+            DispatchQueue.main.async {
+                self.largeMessageViewController.delay = delay
+            }
+            
             add(asChildViewController: largeMessageViewController, animated: false)
-            largeMessageViewController.message.text = message
-            largeAlertIsDisplayed = true
-            if animated {
-                dismissAlert(ofSize: size)
-                largeAlertIsDisplayed = false
-                largeMessageViewController.delay = 0.0
+            
+            DispatchQueue.main.async {
+                self.largeMessageViewController.message.text = message
+                self.largeAlertIsDisplayed = true
+                if animated {
+                    self.dismissAlert(ofSize: size)
+                    self.largeAlertIsDisplayed = false
+                    self.largeMessageViewController.delay = 0.0
+                }
             }
         case .small:
-            smallMessageViewController.delay = delay
+            DispatchQueue.main.async {
+                self.smallMessageViewController.delay = delay
+            }
+            
             add(asChildViewController: smallMessageViewController, animated: false)
-            smallMessageViewController.message.text = message
-            smallAlertIsDisplayed = true
-            if animated {
-                dismissAlert(ofSize: size)
-                smallAlertIsDisplayed = false
-                smallMessageViewController.delay = 0.0
+            
+            DispatchQueue.main.async {
+                self.smallMessageViewController.message.text = message
+                self.smallAlertIsDisplayed = true
+                if animated {
+                    self.dismissAlert(ofSize: size)
+                    self.smallAlertIsDisplayed = false
+                    self.smallMessageViewController.delay = 0.0
+                }
             }
         }
     }
     
     func dismissAlert(ofSize size: AlertSize) {
-        print("dismissAlert")
         switch size {
         case .large:
             if largeAlertIsDisplayed {

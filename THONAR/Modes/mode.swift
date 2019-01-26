@@ -9,28 +9,21 @@
 import Foundation
 import ARKit
 import AVFoundation
-import CloudKit
-
-
-struct resource {
-    let image: URL
-    let video: URL
-}
-
 
 /// Default mode to be subclassed for specific types of modes
 class Mode {
     var configuration: ARWorldTrackingConfiguration
-    var videoPlayers = [String?:AVPlayer]()
+    var videoNodes = [String?:(SCNNode,ARImageAnchor)]()
     let sceneView: ARSCNView
-    var resources: NSMutableDictionary? {
+    var resources: NSMutableArray? {
         didSet {
             //updateForNewResources()
-            print("resources has been updated \(resources)")
+            print("resources has been updated ----- resources.count: \(String(describing: resources?.count))")
         }
     }
     let description: String
     var alertMessageDelegate: AlertMessageDelegate?
+    let coreDataHandler = CoreDataHandler()
     
     
     // Override in subclasses
@@ -46,13 +39,29 @@ class Mode {
     func viewWillAppear() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
-        print("gestureRecognizer should have been added")
-        //sceneView.isUserInteractionEnabled = true
+        
         sceneView.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
+    func printNSManagedObjects(forArray array: NSMutableArray?) {
+        if let resourceArray = array {
+            for resource in resourceArray {
+                print("-----------------------------------------")
+                print("object named \(String(describing: coreDataHandler.getStringData(forNSManagedObject: resource, forKey: "name")))")
+                print("has image? \(String(describing: coreDataHandler.getData(forNSManagedObject: resource, forKey: "photo") != nil))")
+                print("has video? \(String(describing: coreDataHandler.getData(forNSManagedObject: resource, forKey: "video")  != nil))")
+                print("-----------------------------------------")
+            }
+        } else {
+            print("Array not initialized yet")
+        }
+    }
+    
     // Override in subclasses
-    @objc func handleTap(sender: UITapGestureRecognizer) {print("super view ran handle tap")}
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        print("super view ran handle tap")
+        
+    }
     
     func updateView() {
         removeAllSubviews()
@@ -68,7 +77,6 @@ class Mode {
     func removeAllSubviews() {
         let view = sceneView as UIView
         for view in view.subviews {
-            print("view: \(view.description)")
             view.removeFromSuperview()
         }
     }
@@ -91,7 +99,6 @@ class Mode {
             //Load video from bundle
             guard let url = getURL(forResourceDictionary: resourceNames, forImageName: name!) else {
                 
-                print("Could not find video file.")
                 alertMessageDelegate?.showAlert(forMessage: "Could not find video file.", ofSize: AlertSize.large, withDismissAnimation: true)
                 
                 return AVPlayer()
@@ -99,7 +106,7 @@ class Mode {
             
             return AVPlayer(url: url)
         }()
-        videoPlayers[name!] = videoPlayer
+        //videoPlayers[name!] = videoPlayer
         let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
         plane.firstMaterial?.diffuse.contents = videoPlayer
         videoPlayer.play()
@@ -119,100 +126,32 @@ class Mode {
         }
     }
     
-    func createVideoPlayerPlaneNode(forURL url: URL, forResourceName resourceName: String, forImageAnchor imageAnchor: ARImageAnchor) -> SCNNode {
+    func createVideoPlayerPlaneNode(forData data: Data, forResourceName resourceName: String, forImageAnchor imageAnchor: ARImageAnchor) -> SCNNode {
         let videoPlayer : AVPlayer = {
             //Load video from bundle
-            print(url)
+            print("create video player node for resourceName: \(resourceName)")
             let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
             let destinationPath = documentsPath + "/filename.mp4"
-            do {
-                let data: Data = try Data(contentsOf: url)
-                FileManager.default.createFile(atPath: destinationPath, contents: data, attributes: nil)
-                let player = AVPlayer(url: URL(fileURLWithPath: destinationPath))
-                print(player.status)
-                return player
-            } catch {
-                print("error with video data/ url")
-                alertMessageDelegate?.showAlert(forMessage: "Error with video data/ url", ofSize: AlertSize.large, withDismissAnimation: true)
-                return AVPlayer()
-            }
-            
+            FileManager.default.createFile(atPath: destinationPath, contents: data, attributes: nil)
+            let player = AVPlayer(url: URL(fileURLWithPath: destinationPath))
+            return player
         }()
-        videoPlayers[resourceName] = videoPlayer
+        
+        //videoPlayers[resourceName] = videoPlayer
         let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
         plane.firstMaterial?.diffuse.contents = videoPlayer
         videoPlayer.play()
         
         let planeNode = SCNNode(geometry: plane)
         planeNode.eulerAngles.x = -.pi / 2
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(note:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.currentItem)
-        NotificationCenter.default.post(name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.currentItem, userInfo: ["planeNode":planeNode])
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(_:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: (planeNode.geometry?.firstMaterial?.diffuse.contents as! AVPlayer).currentItem)
+        //NotificationCenter.default.post(name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: videoPlayer.currentItem, userInfo: ["planeNode":planeNode])
         return planeNode
     }
     
     // Override in subclasses
-    @objc func playerDidFinishPlaying(note: Notification) {
+    @objc func playerDidFinishPlaying(_ note: Notification) {
         print("Video Finished")
-    }
-    
-    func fetchEstablishments() {
-        print("begin")
-        let predicate = NSPredicate(value: true)
-        let establishmentType = "videos"
-        let query = CKQuery(recordType: establishmentType, predicate: predicate)
-        // 4
-        let queryOperation = CKQueryOperation()
-        queryOperation.query = query
-        queryOperation.resultsLimit = 2
-        queryOperation.qualityOfService = .userInteractive
-        queryOperation.recordFetchedBlock = { record in
-            print(record.recordID.recordName)
-            guard let imageAsset = record["Image"] as? CKAsset else {
-                return
-            }
-            
-            let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
-            print("video: \((record["Video"] as? CKAsset)!.fileURL)")
-            print("image: \(imageAsset.fileURL)")
-            print(self.resources)
-            //let newResource = resource(image: URL(fileURLWithPath: record["imageURL"]!), video: URL(fileURLWithPath: record["videoURL"]!))
-            self.resources![record["Name"]!] = newResource
-        }
-//        publicDatabase.perform(query, inZoneWith: nil) { (results, error) in
-//            if let error = error {
-//                DispatchQueue.main.async {
-//                    //self.delegate?.errorUpdating(error as NSError)
-//                    print("Cloud Query Error - Fetch Establishments: \(error)")
-//                }
-//                return
-//            }
-//
-//            results?.forEach({ (record: CKRecord) in
-//                print(record.recordID.recordName)
-//                guard let imageAsset = record["Image"] as? CKAsset else {
-//                    return
-//                }
-//
-//                let newResource = resource(image: imageAsset.fileURL, video: (record["Video"] as? CKAsset)!.fileURL)
-//                print("video: \((record["Video"] as? CKAsset)!.fileURL)")
-//                print("image: \(imageAsset.fileURL)")
-//                print(self.resources)
-//                //let newResource = resource(image: URL(fileURLWithPath: record["imageURL"]!), video: URL(fileURLWithPath: record["videoURL"]!))
-//                self.resources![record["Name"]!] = newResource
-//            })
-        queryOperation.queryCompletionBlock = { queryCursor, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.alertMessageDelegate?.showAlert(forMessage: "Cloud Query Error - Fetch Establishments: \(error)", ofSize: AlertSize.large, withDismissAnimation: true)
-                }
-            }
-            DispatchQueue.main.async {
-                //self.update()
-                print("Query Complete")
-                self.alertMessageDelegate?.showAlert(forMessage: "Query Complete", ofSize: AlertSize.large, withDismissAnimation: true)
-            }
-        }
-        publicDatabase.add(queryOperation)
     }
     
     func update() {
@@ -222,7 +161,6 @@ class Mode {
         
         // Run the view's session
         sceneView.session.run(self.configuration)
-        print("Update")
     }
     
     // Override in subclasses
@@ -230,25 +168,27 @@ class Mode {
     
     func getImages() -> Set<ARReferenceImage>? {
         var set = Set<ARReferenceImage>()
-        for resource in resources! {
-            let imageData: Data
-            do {
-                print((resource.value as! resource).image)
-                imageData = try Data(contentsOf: (resource.value as! resource).image)
-            } catch {
-                alertMessageDelegate?.showAlert(forMessage: "Error - imageData failed", ofSize: AlertSize.large, withDismissAnimation: true)
-                return nil
+        
+        // Safely unwrap resources
+        guard let dataArray = resources else {
+            return nil
+        }
+        
+        // Loop through NSManagedObjects to create a set of reference images
+        for resource in dataArray {
+            
+            if let imageData = coreDataHandler.getData(forNSManagedObject: resource, forKey: "photo") {
+                let image = UIImage(data: imageData)
+                
+                let ciImage = CIImage(image: image!)
+                let context = CIContext(options: nil)
+                let cgImage = context.createCGImage(ciImage!, from: ciImage!.extent)
+                let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.2)
+                referenceImage.name = coreDataHandler.getStringData(forNSManagedObject: resource, forKey: "name")
+                set.insert(referenceImage)
+            } else {
+                print("error with image data")
             }
-            
-            let image = UIImage(data: imageData)
-            print(image)
-            
-            let ciImage = CIImage(image: UIImage(data: imageData)!)
-            let context = CIContext(options: nil)
-            let cgImage = context.createCGImage(ciImage!, from: ciImage!.extent)
-            let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.2)
-            referenceImage.name = resource.key as? String
-            set.insert(referenceImage)
         }
         return set
     }

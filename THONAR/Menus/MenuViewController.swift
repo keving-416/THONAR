@@ -23,7 +23,7 @@ class MenuViewController: UIViewController {
     var buttons: [UIButton]?
     
     var sceneView: ARSCNView?
-    var resourceGroup: NSMutableDictionary?
+    var resourceGroup: NSMutableArray?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,10 +36,10 @@ class MenuViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let color = UIColor(red: 254, green: 203, blue: 26, alpha: 1)
+        let color = UIColor(red: 0.996, green: 0.796, blue: 0.102, alpha: 1)
         UIView.animate(withDuration: 0.4) {
             self.menuView.alpha = 1
-            self.backgroundMenuView.colorTint = .yellow
+            self.backgroundMenuView.colorTint = color
             self.backgroundMenuView.colorTintAlpha = 0.4
             self.backgroundMenuView.blurRadius = 10
         }
