@@ -32,8 +32,10 @@ public class CloudKitHandler {
             
             if fetchedArray.count == 0 {
                 fetched.setValue(false, forKey: "subscriptionFetched")
+                print("subscription fetch block 1")
                 saveSubscription(forNSManagedObject: fetched)
-            } else if !((fetchedArray[0] as NSManagedObject).value(forKey: "subscriptionFetched") as! Bool) {
+            } else if !((fetchedArray[0] as NSManagedObject).value(forKey: "subscriptionFetched") as? Bool ?? true) {
+                print("subscription fetch block 2")
                 saveSubscription(forNSManagedObject: fetched)
             } else {
                 print("Subscription already saved")
@@ -107,7 +109,7 @@ public class CloudKitHandler {
                 self.setUpSubscription()
             } else if !((fetchedArray[0] as NSManagedObject).value(forKey: "cloudkitFetched") as! Bool) {
                 print("fetched block 2")
-                coreDataHandler.batchDeleteRecords(forEntityName: "VideoPhotoBundle")
+                // coreDataHandler.batchDeleteRecords(forEntityName: "VideoPhotoBundle")
                 self.query(forManagedContext: managedContext)
                 self.setUpSubscription()
             } else {

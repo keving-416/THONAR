@@ -106,11 +106,20 @@ public class CoreDataHandler {
     public func batchDeleteRecords(forEntityName entity: String) {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        fetchRequest.returnsObjectsAsFaults = false
         
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        //let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
         do {
-            try managedContext.execute(batchDeleteRequest)
+            //try managedContext.execute(batchDeleteRequest)
+            let results = try managedContext.fetch(fetchRequest)
+            
+            for managedObject in results {
+                let managedObjectData: NSManagedObject = managedObject as! NSManagedObject
+                managedContext.delete(managedObjectData)
+            }
+            //try managedContext.save()
+            print("records deleted")
         } catch {
             print("Error - batchDeleteRequest could not be handled")
         }
