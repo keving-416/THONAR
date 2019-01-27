@@ -36,11 +36,20 @@ class MenuViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        // sets color to the yellow used for THON
         let color = UIColor(red: 0.996, green: 0.796, blue: 0.102, alpha: 1)
+        
+        // Fades in the menu
         UIView.animate(withDuration: 0.4) {
             self.menuView.alpha = 1
+            
+            // Sets the tint of the blur to color
             self.backgroundMenuView.colorTint = color
+            
+            // Sets the alpha of the tint
             self.backgroundMenuView.colorTintAlpha = 0.4
+            
+            // Sets the blur radius (changes how blurred the background is)
             self.backgroundMenuView.blurRadius = 10
         }
     }

@@ -22,6 +22,7 @@ class FinalRolloutMenuViewController: MenuViewController {
         // Do any additional setup after loading the view.
     }
     
+    // Called in super class
     override func setUpButtons() {
         gameButton.mode = "Game"
         gameButton.arMode = GameMode(forView: sceneView!, forResourceGroup: resourceGroup!)
@@ -39,6 +40,7 @@ class FinalRolloutMenuViewController: MenuViewController {
     @IBAction func menuButtonPressed(_ sender: Any) {
         if let button = sender as? UIButton {
             print("Menu button pressed")
+            // Call on the menuDelegate to handle what happens when a button is tapped
             menuDelegate?.menuViewControllerMenuButtonTapped(forViewController: self, forSender: button)
         }
     }

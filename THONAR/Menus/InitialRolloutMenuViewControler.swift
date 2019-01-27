@@ -26,6 +26,7 @@ class InitialRolloutMenuViewController: MenuViewController {
     @IBAction func menuButtonPressed(_ sender: Any) {
         if let button = sender as? MenuButton {
             print("Menu button pressed")
+            // Call on the menuDelegate to handle what happens when a button is tapped
             menuDelegate?.menuViewControllerMenuButtonTapped(forViewController: self, forSender: button)
         }
     }

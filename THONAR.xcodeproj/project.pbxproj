@@ -22,12 +22,12 @@
 		B465A9E021F5482B00C48CD8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9DF21F5482B00C48CD8 /* Reachability.swift */; };
 		B465A9E221FBAF9000C48CD8 /* CloudkitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */; };
 		B465A9E421FBB55200C48CD8 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */; };
+		B465A9E721FE2C4C00C48CD8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B465A9E621FE2C4C00C48CD8 /* CloudKit.framework */; };
 		B472411A21E3FC80007DB29B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B472411921E3FC80007DB29B /* art.scnassets */; };
 		B472411F21E6A78D007DB29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B472411D21E6A78D007DB29B /* Main.storyboard */; };
 		B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */; };
 		B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */; };
 		B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412721E82FC5007DB29B /* SmallMessageViewController.swift */; };
-		B472412B21ED0949007DB29B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B472412A21ED0949007DB29B /* CloudKit.framework */; };
 		B472412E21ED4F12007DB29B /* THONARProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B472412C21ED4F12007DB29B /* THONARProject.xcdatamodeld */; };
 		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
 		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
@@ -52,12 +52,12 @@
 		B465A9DF21F5482B00C48CD8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudkitHandler.swift; sourceTree = "<group>"; };
 		B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
+		B465A9E621FE2C4C00C48CD8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B472411921E3FC80007DB29B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B472411E21E6A78D007DB29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMessageViewController.swift; sourceTree = "<group>"; };
 		B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageProtocol.swift; sourceTree = "<group>"; };
 		B472412721E82FC5007DB29B /* SmallMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMessageViewController.swift; sourceTree = "<group>"; };
-		B472412A21ED0949007DB29B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		B472412D21ED4F12007DB29B /* THONARProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = THONARProject.xcdatamodel; sourceTree = "<group>"; };
 		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B472412B21ED0949007DB29B /* CloudKit.framework in Frameworks */,
+				B465A9E721FE2C4C00C48CD8 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +128,7 @@
 		B43A00B221DD609C00067994 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B472412A21ED0949007DB29B /* CloudKit.framework */,
+				B465A9E621FE2C4C00C48CD8 /* CloudKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -231,7 +231,7 @@
 								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
 								enabled = 0;

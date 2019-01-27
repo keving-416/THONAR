@@ -239,6 +239,7 @@ class Mode {
     }
     
     // Override in subclasses
+    // Called when the mode changes to invalidate any timers or stop AVPlayers
     func clean() {}
     
     // Gets images from CoreData and returns a set of ARReferenceImages for ARKit's detection images
