@@ -38,11 +38,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    var resources = NSMutableArray(array: []) {
-        didSet {
-            //print("viewController resources set")
-        }
-    }
+    
+    var resources = NSMutableArray(array: [])
     
     var effect:UIVisualEffect!
     
@@ -85,6 +82,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         return viewController
     }()
     
+    // Adds a viewController as a child to the main viewController
     func add(asChildViewController viewController: UIViewController, animated: Bool) {
         addChild(viewController)
         
@@ -97,7 +95,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             viewController.didMove(toParent: self)
         }
     }
-    
+    // Removes a viewController from it's parent
     func remove(asChildViewController viewController: UIViewController, animated: Bool) {
         viewController.willMove(toParent: self)
         viewController.view.removeFromSuperview()
@@ -107,6 +105,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var modeLabel: UILabel?
     
     @IBAction func MenuButtonPressed(_ sender: Any) {
+        // Add menuViewController as a child to the main viewController
         add(asChildViewController: menuViewController, animated: true)
     }
     
@@ -133,11 +132,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         arMode = GameMode(forView: sceneView, forResourceGroup: resources)
         
         let cloudkitHandler = CloudKitHandler()
+        
         // Start querying data from server
         cloudkitHandler.fetchEstablishments()
-        
-        // Set up cloudkit subscriptions
-        cloudkitHandler.setUpSubscription()
         
         // Set arMode's alert message delegate
         arMode.alertMessageDelegate = self
@@ -146,6 +143,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         menuButton.layer.cornerRadius = menuButton.frame.width/2
     }
     
+    // Called everytime the mode changes
+    // modeLabel is not updated, the mode is not set, and nothing is fetched from cloudKit within reloadView versus viewDidLoad
     func reloadView() {
         super.viewDidLoad()
         
@@ -182,7 +181,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         //arMode.viewWillDisappear()
     }
     
+    
     func setUpView(forMenuViewController viewController: MenuViewController, forButton pressedButton: MenuButton) {
+        // If the button pressed has a mode, change the mode and transition back to the main viewController
         if pressedButton.arMode != nil {
             UIView.animate(withDuration: 0.3, delay: 0.0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
                 viewController.backgroundMenuView.blurRadius = 30
@@ -226,6 +227,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         return arMode.renderer(updateAtTime:time)
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        arMode.renderer(didAdd: node, for: anchor)
+    }
+    
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
         arMode.didFailWithError(error) { (success) in
@@ -241,6 +246,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
+        print("ended")
         arMode.sessionInterruptionEnded(session) { (success) in
             reloadView()
             arMode.update()
