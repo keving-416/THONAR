@@ -18,7 +18,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     //  from one ViewController to another, it is a simple string
     var mode: String = "Default"
     
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var smallAlertIsDisplayed: Bool = false
     var largeAlertIsDisplayed: Bool = false
 
@@ -38,9 +37,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    
-    var resources = NSMutableArray(array: [])
-    
     var effect:UIVisualEffect!
     
     private lazy var menuViewController: MenuViewController = {
@@ -52,7 +48,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
         viewController.menuDelegate = self
         viewController.sceneView = sceneView
-        viewController.resourceGroup = resources
         self.add(asChildViewController: viewController, animated: true)
         
         return viewController
@@ -129,7 +124,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         modeLabel?.alpha = 0.0
         
         // Set default Mode
-        arMode = GameMode(forView: sceneView, forResourceGroup: resources)
+        arMode = GameMode(forView: sceneView)
         
         let cloudkitHandler = CloudKitHandler()
         

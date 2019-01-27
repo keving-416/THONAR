@@ -20,15 +20,22 @@ struct timerData {
 
 final class GameMode: Mode {
 
+    // imageView for the bubble blower
     var imageView:UIImageView!
+    
+    // Maximum number of bubbles (Set to prevent frame rate drops)
     var bubblesOut = 1000
+    
+    // Stores the input in dB from the microphone
     var avgNoise:Float?
+    
     var arReady = false
     var recorder: AVAudioRecorder?
     var timer: Timer?
     var audioSession: AVAudioSession?
     
     override func clean() {
+        // Invalidate/ Stop recorders and timers
         recorder?.stop()
         recorder = nil
         timer?.invalidate()
@@ -50,8 +57,13 @@ final class GameMode: Mode {
     }
     
     override func handleTap(sender: UITapGestureRecognizer) {
+        // Get view that was tapped
         let sceneView = sender.view as! SCNView
+        
+        // Get the location of the tap within the tapped view
         let touchLocation = sender.location(in: sceneView)
+        
+        // Get the location with the 3D AR scene based on the location of the tap within the tapped view
         let hitTest = sceneView.hitTest(touchLocation, options: nil)
         if !hitTest.isEmpty {
             // remove the tapped bubble
@@ -80,11 +92,17 @@ final class GameMode: Mode {
     private func setUpCalibrationView() {
         sceneView.isUserInteractionEnabled = false
         let calibrationView = calibrateView(frame: sceneView.superview!.bounds)
-        calibrationView.alpha = 1
+        
+        // Set alpha to 0 to fade it in
+        calibrationView.alpha = 0
         sceneView.addSubview(calibrationView)
+        
+        // Fade in the calibration view
         UIView.animate(withDuration: 0.3) {
             calibrationView.alpha = 1
         }
+        
+        // Begin bubbling blowing feature when calibration is finished
         calibrationView.calibrationDone = { [weak self] done in
             if done {
                 self?.initView()
@@ -104,6 +122,8 @@ final class GameMode: Mode {
         /*
          * Main Thread Checker: UI API called on a background thread: -[UIApplication applicationState]
          * PID: 25982, TID: 8931726, Thread name: com.apple.CoreMotion.MotionThread, Queue name: com.apple.root.default-qos.overcommit, QoS: com.apple.CoreMotion.MotionThread
+         *
+         * Seems to be a bug with ios 12
          */
         
         //let url = URL(fileURLWithPath:"/dev/null")
@@ -139,6 +159,7 @@ final class GameMode: Mode {
             alertMessageDelegate?.showAlert(forMessage: "Excessive Motion - Please steady the camera", ofSize: AlertSize.large, withDismissAnimation: false)
             break
         case .limited(.initializing):
+            // Only set ARTrackingIsReady to false if it was previously true
             if ARTrackingIsReady { ARTrackingIsReady = false }
             break
         case .limited(.insufficientFeatures):
@@ -217,18 +238,20 @@ final class GameMode: Mode {
         sceneView.addSubview(imageView)
     }
     
+    // Generic Initializer
     public override init() {
         super.init()
     }
     
-    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableArray) {
+    // Main initializer for Game Mode
+    public init(forView view: ARSCNView) {
         super.init(forView: view, withDescription: "Game Mode")
-        self.resources = resources
     }
     
     var ARTrackingIsReady:Bool = false {
         didSet{
             if ARTrackingIsReady {
+                // Posts the notification with name "arTrackingReady," which runs its selector function
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "arTrackingReady"), object: nil)
             }
         }

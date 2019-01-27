@@ -175,10 +175,9 @@ final class TourMode: Mode {
     }
     
     // Main initializer for Tour Mode
-    public init(forView view: ARSCNView, forResourceGroup resources: NSMutableArray) {
+    public init(forView view: ARSCNView) {
         print("TourMode initialized")
         super.init(forView: view, withDescription: "Tour Mode")
-        self.resources = resources
     }
     
     // Invalidates and deletes all AVPlayers

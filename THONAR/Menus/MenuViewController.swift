@@ -23,7 +23,6 @@ class MenuViewController: UIViewController {
     var buttons: [UIButton]?
     
     var sceneView: ARSCNView?
-    var resourceGroup: NSMutableArray?
     
     override func viewDidLoad() {
         super.viewDidLoad()

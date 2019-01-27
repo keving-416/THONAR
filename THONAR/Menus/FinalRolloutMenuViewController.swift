@@ -25,11 +25,11 @@ class FinalRolloutMenuViewController: MenuViewController {
     // Called in super class
     override func setUpButtons() {
         gameButton.mode = "Game"
-        gameButton.arMode = GameMode(forView: sceneView!, forResourceGroup: resourceGroup!)
+        gameButton.arMode = GameMode(forView: sceneView!)
         buttons?.append(gameButton)
         
         storybookButton.mode = "Storybook"
-        storybookButton.arMode = TourMode(forView: sceneView!, forResourceGroup: resourceGroup!)
+        storybookButton.arMode = TourMode(forView: sceneView!)
         buttons?.append(storybookButton)
         
         // Make menu button a circle
