@@ -13,8 +13,8 @@ import AVFoundation
 
 
 
-var container: CKContainer = CKContainer.default()
-public var publicDatabase: CKDatabase  = container.publicCloudDatabase
+//var container: CKContainer = CKContainer.default()
+//public var publicDatabase: CKDatabase  = container.publicCloudDatabase
 
 /// The mode that handles the functionality of the augmented reality tour during THON weekend
 final class TourMode: Mode {

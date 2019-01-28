@@ -156,6 +156,7 @@ class Mode {
     }
     
     func fetchEstablishments() {
+        /*
         print("begin")
         let predicate = NSPredicate(value: true)
         let establishmentType = "videos"
@@ -213,6 +214,7 @@ class Mode {
             }
         }
         publicDatabase.add(queryOperation)
+    */
     }
     
     func update() {
@@ -229,6 +231,7 @@ class Mode {
     func clean() {}
     
     func getImages() -> Set<ARReferenceImage>? {
+        /*
         var set = Set<ARReferenceImage>()
         for resource in resources! {
             let imageData: Data
@@ -251,6 +254,8 @@ class Mode {
             set.insert(referenceImage)
         }
         return set
+         */
+        return nil
     }
     
     func didFailWithError(_ error: Error, completion: (Bool) -> Void) {
