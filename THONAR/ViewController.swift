@@ -22,6 +22,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var largeAlertIsDisplayed: Bool = false
 
     @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var infoButton: UIButton!
     
     @IBOutlet var sceneView: ARSCNView!
     
@@ -33,6 +34,20 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
                 oldValue.clean()
                 reloadView()
                 arMode.updateView()
+                
+                if smallAlertIsDisplayed {
+                    dismissAlert(ofSize: .small)
+                }
+                
+                if largeAlertIsDisplayed {
+                    dismissAlert(ofSize: .large)
+                }
+                
+                if arMode.modeDescription == "Tour Mode" {
+                    infoButton.alpha = 0.65
+                } else {
+                    infoButton.alpha = 0.0
+                }
             }
         }
     }
@@ -104,6 +119,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         add(asChildViewController: menuViewController, animated: true)
     }
     
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        arMode.infoButtonPressed()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -123,19 +142,19 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         modeLabel?.text = mode
         modeLabel?.alpha = 0.0
         
+        // Set alpha of info button
+        infoButton.alpha = 0.0
+        
         // Set default Mode
         arMode = GameMode(forView: sceneView)
-        
-        let cloudkitHandler = CloudKitHandler()
-        
-        // Start querying data from server
-        cloudkitHandler.fetchEstablishments()
         
         // Set arMode's alert message delegate
         arMode.alertMessageDelegate = self
         
-        // Make menu button a circle
+        // Make menu and info button a circle
         menuButton.layer.cornerRadius = menuButton.frame.width/2
+        infoButton.layer.cornerRadius = infoButton.frame.width/2
+        
     }
     
     // Called everytime the mode changes
@@ -224,6 +243,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         arMode.renderer(didAdd: node, for: anchor)
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        arMode.renderer(didUpdate: node, for: anchor)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {

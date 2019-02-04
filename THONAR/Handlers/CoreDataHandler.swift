@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 import UIKit
+import zlib
+import AVFoundation
 
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 let managedContext = appDelegate!.persistentContainer.viewContext
@@ -16,7 +18,7 @@ let managedContext = appDelegate!.persistentContainer.viewContext
 public class CoreDataHandler {
     // Returns Data for a given NSManagedObject and a given key
     public func getData(forNSManagedObject resource: Any, forKey key: String) -> Data? {
-        return ((resource as? NSManagedObject)?.value(forKey: key) as! NSData) as Data?
+        return ((resource as? NSManagedObject)?.value(forKey: key) as? NSData) as Data?
     }
     
     // Returns a String for a given NSManagedObject and a given key
@@ -27,6 +29,49 @@ public class CoreDataHandler {
     // Returns a Bool for a given NSManagedObject and a given key
     public func getBoolData(forNSManagedObject resource: Any, forKey key: String) -> Bool? {
         return (resource as? NSManagedObject)?.value(forKey: key) as? Bool
+    }
+    
+    // Deletes
+    public func delete(forName name: String) {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "VideoPhotoBundle")
+        
+        let array: [NSManagedObject]
+        
+        do {
+            array = try managedContext.fetch(fetchRequest)
+            
+            for object in array {
+                if self.getStringData(forNSManagedObject: object, forKey: "name") == name {
+                    managedContext.delete(object)
+                    
+                    try managedContext.save()
+                    break
+                }
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
+    
+    public func dataHasFetched() -> Bool {
+        let fetchedArray: [NSManagedObject]
+        
+        let fetchedFetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Fetched")
+        
+        do {
+            fetchedArray = try managedContext.fetch(fetchedFetchRequest)
+            
+            if fetchedArray.count == 0 || !((fetchedArray[0] as NSManagedObject).value(forKey: "cloudkitFetched") as! Bool) {
+                return false
+            } else {
+                return true
+            }
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+        return false
     }
     
     // Query's from "VideoPhotoBundle" and updates the given NSMutableArray
@@ -55,7 +100,8 @@ public class CoreDataHandler {
                 resources = try NSMutableArray(array: managedContext.fetch(fetchRequest))
             } else {
                 // If the first instance of the entity "Fetched" is false then we are not safe to query from CoreData
-                resources = []
+                //resources = []
+                resources = try NSMutableArray(array: managedContext.fetch(fetchRequest))
             }
             print("new resources count \(String(describing: resources?.count))")
             
@@ -122,10 +168,84 @@ public class CoreDataHandler {
                 
                 // Loops through NSManagedObjects to find the correct object to save the video to
                 for dataObject in resources {
-                    print("dataObject name: \((dataObject).value(forKey: "name") as! String)")
-                    print("parameter name: \(name)")
-                    if (dataObject).value(forKey: "name") as! String == name {
-                        (dataObject).setValue(NSData(contentsOf: url), forKey: "video")
+                    var found = false
+                        print("dataObject name: \((dataObject).value(forKey: "name") as! String)")
+                        print("parameter name: \(name)")
+                        if (dataObject).value(forKey: "name") as! String == name {
+                            
+                            do {
+                                try (dataObject).setValue(NSData(contentsOf: url, options: [.uncached]), forKey: "video")
+                                
+                            } catch {
+                                print("couldn't process video")
+                                
+                            }
+                            //do {
+//                                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//                                let destinationPath = documentsPath + "/filename.mp4"
+//                                //try FileManager.default.createFile(atPath: destinationPath, contents: Data(contentsOf: url), attributes: nil)
+//
+//                                //let data = NSData()
+//
+//                                // This line creates a generic filename based on UUID, but you may want to use your own
+//                                // The extension must match with the AVFileType enum
+//                                //let path = NSTemporaryDirectory() + url.uuidString + ".mp4"
+//                                let outputURL = URL.init(fileURLWithPath: documentsPath)
+//                                let urlAsset = AVURLAsset(url: outputURL)
+//                                // You can change the presetName value to obtain different results
+//                                if let exportSession = AVAssetExportSession(asset: urlAsset,
+//                                                                            presetName: AVAssetExportPresetMediumQuality) {
+//                                    exportSession.outputURL = outputURL
+//                                    // Changing the AVFileType enum gives you different options with
+//                                    // varying size and quality. Just ensure that the file extension
+//                                    // aligns with your choice
+//                                    exportSession.outputFileType = AVFileType.mp4
+//                                    exportSession.exportAsynchronously {
+//                                        switch exportSession.status {
+//                                        case .unknown:
+//                                            print("exportSession.status: unknown)")
+//                                            break
+//                                        case .waiting:
+//                                            print("exportSession.status: waiting")
+//                                            break
+//                                        case .exporting:
+//                                            print("exportSession.status: exporting")
+//                                            break
+//                                        case .completed:
+//                                            // This code only exists to provide the file size after compression. Should remove this from production code
+////                                            do {
+////                                                let data = try Data(contentsOf: outputFileURL)
+////                                                print("File size after compression: \(Double(data.count / 1048576)) mb")
+////                                            } catch {
+////                                                print("Error: \(error)")
+////                                            }
+//                                            print("compression complete")
+//                                            do {
+//                                                try (dataObject).setValue(NSData(contentsOf: exportSession.outputURL!, options: [.uncached]), forKey: "video")
+//                                            } catch {
+//                                                print("couldn't process video")
+//                                            }
+//                                        case .failed:
+//                                            print("exportSession.status: failed")
+//                                            break
+//                                        case .cancelled:
+//                                            print("exportSession.status: cancelled")
+//                                            break
+//                                        }
+//                                    }
+                            
+                                //} else {
+                                    //print("Couldn't create exportSession")
+                            //}
+                                //et zipFilePath = try Zip.quickZipFiles([destinationPath], fileName: "archive")
+                            //} catch {
+                                //print("couldn't process video")
+                            //}
+                            
+                            
+                            found = true
+                        }
+                    if found {
                         break
                     }
                 }

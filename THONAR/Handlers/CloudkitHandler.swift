@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import CloudKit
-//import CoreData
 
 // Creates global variables for the default CKContainer and the publicCloudDatabase
 var container: CKContainer = CKContainer.default()
@@ -48,12 +47,12 @@ public class CloudKitHandler {
         let predicate = NSPredicate(value: true)
         
         // Creates a Query Subcription that fires whenever a record is created in the iCloud Database
-        let subscription = CKQuerySubscription(recordType: "videos", predicate: predicate, subscriptionID: "videosSubscription", options: [.firesOnRecordCreation])
+        let subscription = CKQuerySubscription(recordType: "videos", predicate: predicate, subscriptionID: "videosSubscription", options: [.firesOnRecordCreation, .firesOnRecordDeletion])
         let info = CKSubscription.NotificationInfo()
         
         // Sets up the notification message
         info.shouldSendContentAvailable = true
-        info.alertBody = "New video is available"
+        info.alertBody = "Videos have been updated"
         subscription.notificationInfo = info
         
         // Saves the subscription to the iCloud Database
@@ -70,7 +69,7 @@ public class CloudKitHandler {
                     self.coreDataHandler.setValue(forNSManagedObject: fetchedArray[0], forValue: true, forKey: "subscriptionFetched")
                     
                     // Set up observer that should be called whenever the subscription fires
-                    NotificationCenter.default.addObserver(self, selector: #selector(self.updateforNewVideos(_:)), name: NSNotification.Name("updateForNewVideos"), object: nil)
+                    //NotificationCenter.default.addObserver(self, selector: #selector(self.updateforNewVideos(_:)), name: NSNotification.Name("updateForNewVideos"), object: nil)
                 } catch let error as NSError {
                     print("Could not fetch. \(error), \(error.userInfo)")
                 }
@@ -106,6 +105,40 @@ public class CloudKitHandler {
         }
     }
     
+    func queryNotificationData(for queryNotification: CKQueryNotification) {
+        // Query new record from iCloud Database
+        publicDatabase.fetch(withRecordID: queryNotification.recordID!) { (record, error) in
+            if error != nil {
+                print("Error with fetch record with ID \(queryNotification.recordID?.recordName)")
+                guard let _ = queryNotification.recordID?.recordName else {
+                    print("Fetch canceled due to error")
+                    return
+                }
+            }
+            
+            if queryNotification.queryNotificationReason == .recordUpdated {
+                // Handle when a record is updated
+            } else if queryNotification.queryNotificationReason == .recordCreated {
+                // Handle when a record is created
+                print(".recordCreated within updateForNewVideos")
+                guard let imageAsset = record!["Image"] as? CKAsset else {
+                    return
+                }
+                
+                self.coreDataHandler.save(forURL: imageAsset.fileURL, forName: record!["Name"]!, withImages: true)
+                self.coreDataHandler.save(forURL: (record!["Video"] as? CKAsset)!.fileURL, forName: record!["Name"]!, withImages: false)
+            } else if queryNotification.queryNotificationReason == .recordDeleted {
+                self.coreDataHandler.delete(forName: (queryNotification.recordID?.recordName)!)
+            } else {
+                print("queryNotificationReason not handled")
+            }
+        }
+    }
+    
+    public func dataHasFetched() -> Bool {
+        return coreDataHandler.dataHasFetched()
+    }
+    
     public func fetchEstablishments() {
         do {
             let fetchedArray =  try coreDataHandler.getCoreDataArray(forEntityName: "Fetched")
@@ -119,7 +152,7 @@ public class CloudKitHandler {
                 self.setUpSubscription()
             } else if !(coreDataHandler.getBoolData(forNSManagedObject: fetchedArray[0], forKey: "cloudkitFetched") ?? true) {
                 print("fetched block 2")
-                // coreDataHandler.batchDeleteRecords(forEntityName: "VideoPhotoBundle")
+                coreDataHandler.batchDeleteRecords(forEntityName: "VideoPhotoBundle")
                 // If the cloudkit records did not finish querying then requery from the iCloud Database and set up the subscriptions
                 self.query()
                 self.setUpSubscription()

@@ -11,7 +11,7 @@ import ARKit
 import AVFoundation
 
 /// Default mode to be subclassed for specific types of modes
-class Mode {
+class Mode: NSObject {
     var configuration: ARWorldTrackingConfiguration
     let sceneView: ARSCNView
     
@@ -28,7 +28,7 @@ class Mode {
     }
     
     // Identifier for the current mode
-    let description: String
+    let modeDescription: String
     
     // Delegate that can present a message to the user
     var alertMessageDelegate: AlertMessageDelegate?
@@ -60,7 +60,7 @@ class Mode {
                 print("-----------------------------------------")
                 print("object named \(String(describing: coreDataHandler.getStringData(forNSManagedObject: resource, forKey: "name")))")
                 print("has image? \(String(describing: coreDataHandler.getData(forNSManagedObject: resource, forKey: "photo") != nil))")
-                print("has video? \(String(describing: coreDataHandler.getData(forNSManagedObject: resource, forKey: "video")  != nil))")
+                print("has video? \(String(describing: coreDataHandler.getData(forNSManagedObject: resource, forKey: "video") ?? nil  != nil))")
                 print("-----------------------------------------")
             }
         } else {
@@ -95,17 +95,17 @@ class Mode {
     }
     
     // Generic initializer
-    public init() {
+    override public init() {
         self.configuration = ARWorldTrackingConfiguration()
         self.sceneView = ARSCNView()
-        self.description = "Mode"
+        self.modeDescription = "Mode"
     }
     
     // Initializer for each mode
     public init(forView view: ARSCNView, withDescription description: String = "Mode") {
         self.configuration = ARWorldTrackingConfiguration()
         self.sceneView = view
-        self.description = description
+        self.modeDescription = description
     }
     
     // Creates a node that displays a video when a certain image is detected using video URL
@@ -143,22 +143,32 @@ class Mode {
     }
     
     // Creates a node that displays a video when a certain is detected using video Data
-    func createVideoPlayerPlaneNode(forData data: Data, forResourceName resourceName: String, forImageAnchor imageAnchor: ARImageAnchor) -> SCNNode {
-        let videoPlayer : AVPlayer = {
-            // Load video from bundle
-            print("create video player node for resourceName: \(resourceName)")
-            let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-            let destinationPath = documentsPath + "/filename.mp4"
-            FileManager.default.createFile(atPath: destinationPath, contents: data, attributes: nil)
-            let player = AVPlayer(url: URL(fileURLWithPath: destinationPath))
-            return player
-        }()
+    func createVideoPlayerPlaneNode(forResourceName resourceName: String, forImageAnchor imageAnchor: ARImageAnchor) -> SCNNode {
+        let offset: Float
+        let multiplier: CGFloat
+        
+        switch resourceName {
+        case "Maddy 1":
+            offset = 0.079
+            multiplier = 4
+        case "Zach 1":
+            offset = 0.06
+            multiplier = 4
+        case "Lizzy 1":
+            offset = 0.085
+            multiplier = 4
+        case "Mary 1":
+            offset = 0.074
+            multiplier = 4
+        default:
+            offset = 0.0
+            multiplier = 1
+        }
+        
+        let referenceImagePhysicalSizeWidth = imageAnchor.referenceImage.physicalSize.width * multiplier
         
         // Create plane with the dimensions of the reference image
-        let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
-        
-        // Add videoPlayer to the material of the plane
-        plane.firstMaterial?.diffuse.contents = videoPlayer
+        let plane = SCNPlane(width: referenceImagePhysicalSizeWidth, height: imageAnchor.referenceImage.physicalSize.height)
         
         // Create plane node with the plane previously created as its geometry
         let planeNode = SCNNode(geometry: plane)
@@ -166,16 +176,38 @@ class Mode {
         // Rotate node by -.pi / 2 to make it facing the camera and vertical
         planeNode.eulerAngles.x = -.pi / 2
         
-        // Add observer that is called when the video finishes playing
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(_:)), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: (planeNode.geometry?.firstMaterial?.diffuse.contents as! AVPlayer).currentItem)
+        
+        planeNode.position = SCNVector3Make(planeNode.position.x - offset, planeNode.position.y, planeNode.position.z)
         
         // Add video options that display after the video finishes as child nodes of the planeNode
-        planeNode.addChildNodes(createOptionPlayerNodes(forNumOptions: 3, imageAnchorHeight: imageAnchor.referenceImage.physicalSize.height, imageAnchorWidth: imageAnchor.referenceImage.physicalSize.width, imageAnchorCenterX: planeNode.position.x, imageAnchorCenterY: planeNode.position.y, imageAnchorCenterZ: planeNode.position.z, forResourceName: resourceName))
+        planeNode.addChildNodes(createOptionPlayerNodes(forNumOptions: 1, imageAnchorHeight: imageAnchor.referenceImage.physicalSize.height, imageAnchorWidth: referenceImagePhysicalSizeWidth, imageAnchorCenterX: planeNode.position.x + offset, imageAnchorCenterY: planeNode.position.y, imageAnchorCenterZ: planeNode.position.z, forResourceName: resourceName))
+        
+        planeNode.addChildNode(createPlayPauseRepeatNode(imageAnchorHeight: imageAnchor.referenceImage.physicalSize.height, imageAnchorWidth: referenceImagePhysicalSizeWidth, imageAnchorCenterX: planeNode.position.x + offset, imageAnchorCenterY: planeNode.position.y, imageAnchorCenterZ: planeNode.position.z))
         
         return planeNode
     }
     
-    func createOptionPlayerNodes(forNumOptions numOptions: Int, forTopMargin topMargin: CGFloat = 0.005, forSideMargin sideMargin: CGFloat = 0.005, imageAnchorHeight iaHeight: CGFloat,
+    func createPlayPauseRepeatNode(imageAnchorHeight iaHeight: CGFloat, imageAnchorWidth iaWidth: CGFloat, imageAnchorCenterX iaX: Float, imageAnchorCenterY iaY: Float, imageAnchorCenterZ iaZ: Float) -> SCNNode {
+        let smaller = [iaWidth,iaHeight].min()
+        
+        let plane = SCNPlane(width: smaller!/5, height: smaller!/5)
+        
+        let planeNode = SCNNode(geometry: plane)
+        
+        //planeNode.eulerAngles.x = -.pi / 2
+        
+        planeNode.position = SCNVector3Make(iaX, iaY, iaZ + 0.001)
+        
+        // PPR - PlayPauseRepeat
+        planeNode.name = "Play"
+        
+        planeNode.opacity = 0.0
+        
+        return planeNode
+        
+    }
+    
+    func createOptionPlayerNodes(forNumOptions numOptions: Int, forTopMargin topMargin: CGFloat = 0.000, forSideMargin sideMargin: CGFloat = 0.000, imageAnchorHeight iaHeight: CGFloat,
                                  imageAnchorWidth iaWidth: CGFloat, imageAnchorCenterX iaX: Float, imageAnchorCenterY iaY: Float, imageAnchorCenterZ iaZ: Float, forResourceName resourceName: String) -> [SCNNode] {
         var nodes: [SCNNode] = []
         
@@ -185,23 +217,24 @@ class Mode {
         let topMargin: CGFloat = topMargin
         let sideMargin: CGFloat = sideMargin
         
-        let height = CGFloat(iaHeight / CGFloat(numVideoOptions)) - topMargin
+        let height = CGFloat(iaHeight / 3) - topMargin
         let width = CGFloat(iaWidth / 3) - sideMargin
         
-        let rightX = (iaX + Float(iaWidth / 2))
-        let centerX = rightX - ((Float(iaWidth) / (widthDivisions*2)))
+        let rightX = (iaX - Float(iaWidth / 2))
+        let centerX = rightX + ((Float(iaWidth) / (widthDivisions*2)))
         let centerZ = iaZ + 0.002
         
         for videoNum in 0..<numVideoOptions {
-            let bottomY = (iaY - Float(iaHeight / 2))
-            let centerY = bottomY + (Float(iaHeight) / Float(numVideoOptions * 2)) * (2 * Float(videoNum) + 1)
+            //let bottomY = (iaY + Float(iaHeight / 2))
+            //let centerY = bottomY - (Float(iaHeight) / Float(numVideoOptions * 2)) * (2 * Float(videoNum) + 1)
+            let centerY = iaY
             
             // Create plane with dimensions proportions relative to size of the imageAnchor (or encompassing node),
             //  the number of video options, and the margins
             let optionPlane = SCNPlane(width: width, height: height)
             
             // Set material of plane
-            optionPlane.firstMaterial?.multiply.contents = UIColor.red
+            //optionPlane.firstMaterial?.multiply.contents = UIColor.red
             
             // Create option plane node with the previously created plane as its geometry
             let optionPlaneNode = SCNNode(geometry: optionPlane)
@@ -224,18 +257,28 @@ class Mode {
     }
     
     // Override in subclasses
+    func infoButtonPressed() {
+        
+    }
+    
+    // Override in subclasses
     @objc func playerDidFinishPlaying(_ note: Notification) {
         print("Video Finished")
     }
     
     // Resets the ARSCNView
     func update() {
-        let referenceImages = getImages()
-        self.configuration.detectionImages = referenceImages
-        self.configuration.maximumNumberOfTrackedImages = 3
-        
-        // Run the view's session
-        sceneView.session.run(self.configuration)
+        DispatchQueue.global(qos: .userInitiated).async {
+            let referenceImages = self.getImages()
+            
+            DispatchQueue.main.async {
+                self.configuration.detectionImages = referenceImages
+                self.configuration.maximumNumberOfTrackedImages = 3
+                
+                // Run the view's session
+                self.sceneView.session.run(self.configuration)
+            }
+        }
     }
     
     // Override in subclasses
@@ -260,7 +303,7 @@ class Mode {
                 let ciImage = CIImage(image: image!)
                 let context = CIContext(options: nil)
                 let cgImage = context.createCGImage(ciImage!, from: ciImage!.extent)
-                let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.2)
+                let referenceImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: 0.1)
                 referenceImage.name = coreDataHandler.getStringData(forNSManagedObject: resource, forKey: "name")
                 set.insert(referenceImage)
             } else {
@@ -293,6 +336,9 @@ class Mode {
     
     // Override in subclasses
     func renderer(didAdd node: SCNNode, for anchor: ARAnchor) {}
+    
+    // Override in subclasses
+    func renderer(didUpdate node: SCNNode, for anchor: ARAnchor) {}
 }
 
 extension SCNNode {

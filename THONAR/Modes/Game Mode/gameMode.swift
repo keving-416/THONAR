@@ -231,7 +231,7 @@ final class GameMode: Mode {
     }
     
     func initView() {
-        imageView = UIImageView(frame: CGRect(x: 0, y: sceneView.frame.size.height*0.5, width: sceneView.frame.size.width, height: sceneView.frame.size.height*0.5))
+        imageView = UIImageView(frame: CGRect(x: 0, y: sceneView.frame.size.height*0.5 - 16, width: sceneView.frame.size.width, height: sceneView.frame.size.height*0.5))
         imageView.contentMode = .scaleAspectFit
         imageView.image = #imageLiteral(resourceName: "white-bubble-wand")
         imageView.alpha = 0.9

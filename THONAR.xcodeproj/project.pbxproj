@@ -19,6 +19,8 @@
 		B44FC59C21C615E1000A2CD6 /* mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59B21C615E1000A2CD6 /* mode.swift */; };
 		B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC59D21C61907000A2CD6 /* tourMode.swift */; };
 		B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */; };
+		B4581EA92207C14400604F67 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4581EA82207C14400604F67 /* IntroViewController.swift */; };
+		B4581EAB2207E3B600604F67 /* detectionImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4581EAA2207E3B600604F67 /* detectionImageCell.swift */; };
 		B465A9E021F5482B00C48CD8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9DF21F5482B00C48CD8 /* Reachability.swift */; };
 		B465A9E221FBAF9000C48CD8 /* CloudkitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */; };
 		B465A9E421FBB55200C48CD8 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */; };
@@ -49,6 +51,8 @@
 		B44FC59B21C615E1000A2CD6 /* mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mode.swift; sourceTree = "<group>"; };
 		B44FC59D21C61907000A2CD6 /* tourMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tourMode.swift; sourceTree = "<group>"; };
 		B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gameMode.swift; sourceTree = "<group>"; };
+		B4581EA82207C14400604F67 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		B4581EAA2207E3B600604F67 /* detectionImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detectionImageCell.swift; sourceTree = "<group>"; };
 		B465A9DF21F5482B00C48CD8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudkitHandler.swift; sourceTree = "<group>"; };
 		B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
@@ -81,6 +85,7 @@
 				B40F596221ADEC5700480637 /* THONAR */,
 				B40F596121ADEC5700480637 /* Products */,
 				B43A00B221DD609C00067994 /* Frameworks */,
+				FDC4B9D50F3109175BB8C28A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +104,7 @@
 				B40F596321ADEC5700480637 /* AppDelegate.swift */,
 				B40F596721ADEC5700480637 /* ViewController.swift */,
 				98C5611721D4617800CF8FA3 /* Gill-Sans-MT.ttf */,
+				B4581EA82207C14400604F67 /* IntroViewController.swift */,
 				B44FC59F21C61FDB000A2CD6 /* Modes */,
 				B483627E21CDBE1C006B8697 /* Menus */,
 				B472412921E82FCB007DB29B /* MessageViewControllers */,
@@ -138,6 +144,7 @@
 			children = (
 				B44FC59B21C615E1000A2CD6 /* mode.swift */,
 				B44FC59D21C61907000A2CD6 /* tourMode.swift */,
+				B4581EAA2207E3B600604F67 /* detectionImageCell.swift */,
 				B43A00A621D541AA00067994 /* Game Mode */,
 			);
 			path = Modes;
@@ -186,6 +193,13 @@
 				B44FC59921C45DBA000A2CD6 /* MenuButton.swift */,
 			);
 			path = "Custom UI Elements";
+			sourceTree = "<group>";
+		};
+		FDC4B9D50F3109175BB8C28A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +300,7 @@
 				B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */,
 				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
 				B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */,
+				B4581EAB2207E3B600604F67 /* detectionImageCell.swift in Sources */,
 				B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */,
 				B40F596821ADEC5700480637 /* ViewController.swift in Sources */,
 				B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */,
@@ -295,6 +310,7 @@
 				B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */,
 				B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */,
 				B40F596421ADEC5700480637 /* AppDelegate.swift in Sources */,
+				B4581EA92207C14400604F67 /* IntroViewController.swift in Sources */,
 				B430BD8E21CB127700E6F495 /* FinalRolloutMenuViewController.swift in Sources */,
 				B465A9E221FBAF9000C48CD8 /* CloudkitHandler.swift in Sources */,
 				B465A9E021F5482B00C48CD8 /* Reachability.swift in Sources */,

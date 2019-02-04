@@ -25,6 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         application.registerForRemoteNotifications()
         
+        let cloudkitHandler = CloudKitHandler()
+        
+        // Start querying data from server
+        cloudkitHandler.fetchEstablishments()
+        
         return true
     }
     
@@ -52,16 +57,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.saveContext()
     }
     
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        print("Application Did Receive Memory Warning ran")
+    }
+    
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if (application.applicationState == .background) {
+            completionHandler(.noData)
+            return
+        }
+        
         // Sets up remote notification for when a new video is added to the iCloud Database
         let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String : NSObject])
         if cloudKitNotification.notificationType == .query {
             let queryNotification = cloudKitNotification as! CKQueryNotification
             if queryNotification.queryNotificationReason == .recordDeleted {
                 print("Post Notification - .recordDeleted")
+                let cloudkitHandler = CloudKitHandler()
+                
+                cloudkitHandler.queryNotificationData(for: queryNotification)
             } else {
                 print("Post Notification - .recordCreated")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateForNewVideos"), object: nil, userInfo: ["queryNotification": queryNotification])
+                let cloudkitHandler = CloudKitHandler()
+                
+                cloudkitHandler.queryNotificationData(for: queryNotification)
+                //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateForNewVideos"), object: nil, userInfo: ["queryNotification": queryNotification])
+                completionHandler(.newData)
             }
         }
     }
