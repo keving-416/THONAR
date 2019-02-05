@@ -208,6 +208,16 @@
                                     <action selector="menuButtonPressed:" destination="g9N-hw-rz5" eventType="touchUpInside" id="piu-2n-rle"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iZ9-es-ALt" userLabel="Learn Button" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
+                                <rect key="frame" x="320" y="394" width="39" height="32"/>
+                                <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
+                                <state key="normal" title="Learn">
+                                    <color key="titleColor" red="0.13272666929999999" green="0.13068619370000001" blue="0.49807000159999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="menuButtonPressed:" destination="g9N-hw-rz5" eventType="touchUpInside" id="P3Q-DK-BM4"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nLW-a9-jGq" customClass="MenuButton" customModule="THONAR" customModuleProvider="target">
                                 <rect key="frame" x="286" y="474" width="73" height="32"/>
                                 <fontDescription key="fontDescription" name="GillSansMT" family="Gill Sans MT" pointSize="17"/>
@@ -222,7 +232,9 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="aqi-QZ-WzU" firstAttribute="trailing" secondItem="iZ9-es-ALt" secondAttribute="trailing" constant="16" id="D4f-0X-Bnq"/>
                             <constraint firstItem="PrW-Ju-3bu" firstAttribute="top" secondItem="nLW-a9-jGq" secondAttribute="bottom" constant="27" id="DdK-Ax-uL9"/>
+                            <constraint firstItem="Rvc-ze-vo7" firstAttribute="top" secondItem="iZ9-es-ALt" secondAttribute="bottom" constant="8" id="P06-Y3-Co4"/>
                             <constraint firstItem="aqi-QZ-WzU" firstAttribute="trailing" secondItem="nLW-a9-jGq" secondAttribute="trailing" constant="16" id="QZF-z7-WWn"/>
                             <constraint firstItem="aqi-QZ-WzU" firstAttribute="trailing" secondItem="PrW-Ju-3bu" secondAttribute="trailing" constant="8" id="aZo-Vk-zsx"/>
                             <constraint firstItem="nLW-a9-jGq" firstAttribute="top" secondItem="Rvc-ze-vo7" secondAttribute="bottom" constant="8" id="n6l-Mg-2vb"/>
@@ -235,13 +247,14 @@
                         <outlet property="backgroundMenuView" destination="zNo-bT-o1l" id="9fT-ky-Sgc"/>
                         <outlet property="dismissMenuButton" destination="PrW-Ju-3bu" id="B4B-eC-TTP"/>
                         <outlet property="gameButton" destination="Rvc-ze-vo7" id="gOQ-kx-svN"/>
+                        <outlet property="learnButton" destination="iZ9-es-ALt" id="I06-YZ-FDo"/>
                         <outlet property="menuView" destination="VfZ-vp-1bS" id="s8P-Ea-l8d"/>
-                        <outlet property="storybookButton" destination="nLW-a9-jGq" id="2Ei-Bq-ce9"/>
+                        <outlet property="storybookButton" destination="iZ9-es-ALt" id="QZV-qY-hTr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXx-av-13c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="812" y="134"/>
+            <point key="canvasLocation" x="812" y="133.5832083958021"/>
         </scene>
         <!--Initial Rollout Menu View Controller-->
         <scene sceneID="dCK-gF-agP">

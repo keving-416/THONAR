@@ -277,4 +277,8 @@ class Mode {
     
     //Override in subclasses
     func renderer(updateAtTime time:TimeInterval) {}
+    
+    func renderer(didAdd node: SCNNode, for anchor: ARAnchor) {}
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {}
 }

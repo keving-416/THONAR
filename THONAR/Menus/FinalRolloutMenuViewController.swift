@@ -13,6 +13,7 @@ class FinalRolloutMenuViewController: MenuViewController {
 
     @IBOutlet weak var gameButton: MenuButton!
     @IBOutlet weak var storybookButton: MenuButton!
+    @IBOutlet weak var learnButton: MenuButton!
     @IBOutlet weak var dismissMenuButton: UIButton!
     
     
@@ -30,6 +31,10 @@ class FinalRolloutMenuViewController: MenuViewController {
         storybookButton.mode = "Storybook"
         storybookButton.arMode = TourMode(forView: sceneView!, forResourceGroup: resourceGroup!)
         buttons?.append(storybookButton)
+        
+        learnButton.mode = "Learn"
+        learnButton.arMode = LearnMode(forView: sceneView!)
+        buttons?.append(learnButton)
         
         // Make menu button a circle
         dismissMenuButton.layer.cornerRadius = dismissMenuButton.frame.width/2
