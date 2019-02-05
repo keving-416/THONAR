@@ -186,15 +186,15 @@ final class LearnMode: Mode {
             descImageView.image = descImage!
             descImageView.frame = CGRect(x: 32, y: 497, width: 310, height: 150)
             descImageView.contentMode = .scaleAspectFit
+            descImageView.alpha = 0.0
+            sceneView.addSubview(descImageView)
             descImageView.translatesAutoresizingMaskIntoConstraints = false
             
             descImageView.leadingAnchor.constraint(equalTo: sceneView.leadingAnchor, constant: 32).isActive = true
-            descImageView.trailingAnchor.constraint(equalTo: sceneView.trailingAnchor, constant: 32).isActive = true
+            descImageView.trailingAnchor.constraint(equalTo: sceneView.trailingAnchor, constant: -32).isActive = true
             descImageView.bottomAnchor.constraint(equalTo: sceneView.bottomAnchor, constant: 20).isActive = true
-            descImageView.topAnchor.constraint(equalTo: sceneView.topAnchor, constant: 477).isActive = true
+            descImageView.topAnchor.constraint(equalTo: sceneView.topAnchor, constant: 350).isActive = true
             
-            descImageView.alpha = 0.0
-            sceneView.addSubview(descImageView)
             UIView.animate(withDuration: 1, animations: { self.descImageView.alpha = 1.0 })
     
         } // end addDiamondDescription
