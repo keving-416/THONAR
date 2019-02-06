@@ -21,16 +21,16 @@
 		B44FC5A121C6E4C9000A2CD6 /* gameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */; };
 		B4581EA92207C14400604F67 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4581EA82207C14400604F67 /* IntroViewController.swift */; };
 		B4581EAB2207E3B600604F67 /* detectionImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4581EAA2207E3B600604F67 /* detectionImageCell.swift */; };
+		B4581EB022095EF100604F67 /* THONARProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B4581EAE22095EF100604F67 /* THONARProject.xcdatamodeld */; };
+		B4581EB222095FF200604F67 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B4581EB122095FF200604F67 /* art.scnassets */; };
 		B465A9E021F5482B00C48CD8 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9DF21F5482B00C48CD8 /* Reachability.swift */; };
 		B465A9E221FBAF9000C48CD8 /* CloudkitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */; };
 		B465A9E421FBB55200C48CD8 /* CoreDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */; };
 		B465A9E721FE2C4C00C48CD8 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B465A9E621FE2C4C00C48CD8 /* CloudKit.framework */; };
-		B472411A21E3FC80007DB29B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B472411921E3FC80007DB29B /* art.scnassets */; };
 		B472411F21E6A78D007DB29B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B472411D21E6A78D007DB29B /* Main.storyboard */; };
 		B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */; };
 		B472412621E7F1A0007DB29B /* AlertMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */; };
 		B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B472412721E82FC5007DB29B /* SmallMessageViewController.swift */; };
-		B472412E21ED4F12007DB29B /* THONARProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B472412C21ED4F12007DB29B /* THONARProject.xcdatamodeld */; };
 		B483627B21CD9550006B8697 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627A21CD9550006B8697 /* MenuViewController.swift */; };
 		B483627D21CD9997006B8697 /* InitialRolloutMenuViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */; };
 /* End PBXBuildFile section */
@@ -53,16 +53,16 @@
 		B44FC5A021C6E4C9000A2CD6 /* gameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gameMode.swift; sourceTree = "<group>"; };
 		B4581EA82207C14400604F67 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		B4581EAA2207E3B600604F67 /* detectionImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = detectionImageCell.swift; sourceTree = "<group>"; };
+		B4581EAF22095EF100604F67 /* THON ARProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "THON ARProject.xcdatamodel"; sourceTree = "<group>"; };
+		B4581EB122095FF200604F67 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B465A9DF21F5482B00C48CD8 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B465A9E121FBAF9000C48CD8 /* CloudkitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudkitHandler.swift; sourceTree = "<group>"; };
 		B465A9E321FBB55200C48CD8 /* CoreDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHandler.swift; sourceTree = "<group>"; };
 		B465A9E621FE2C4C00C48CD8 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
-		B472411921E3FC80007DB29B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B472411E21E6A78D007DB29B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B472412021E7EFB3007DB29B /* LargeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMessageViewController.swift; sourceTree = "<group>"; };
 		B472412521E7F1A0007DB29B /* AlertMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageProtocol.swift; sourceTree = "<group>"; };
 		B472412721E82FC5007DB29B /* SmallMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallMessageViewController.swift; sourceTree = "<group>"; };
-		B472412D21ED4F12007DB29B /* THONARProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = THONARProject.xcdatamodel; sourceTree = "<group>"; };
 		B483627A21CD9550006B8697 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B483627C21CD9997006B8697 /* InitialRolloutMenuViewControler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialRolloutMenuViewControler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,8 +115,8 @@
 				B472411D21E6A78D007DB29B /* Main.storyboard */,
 				B40F596E21ADEC5A00480637 /* LaunchScreen.storyboard */,
 				B40F597121ADEC5A00480637 /* Info.plist */,
-				B472411921E3FC80007DB29B /* art.scnassets */,
-				B472412C21ED4F12007DB29B /* THONARProject.xcdatamodeld */,
+				B4581EAE22095EF100604F67 /* THONARProject.xcdatamodeld */,
+				B4581EB122095FF200604F67 /* art.scnassets */,
 			);
 			path = THONAR;
 			sourceTree = "<group>";
@@ -281,9 +281,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B40F597021ADEC5A00480637 /* LaunchScreen.storyboard in Resources */,
+				B4581EB222095FF200604F67 /* art.scnassets in Resources */,
 				B472411F21E6A78D007DB29B /* Main.storyboard in Resources */,
 				B40F596D21ADEC5A00480637 /* Assets.xcassets in Resources */,
-				B472411A21E3FC80007DB29B /* art.scnassets in Resources */,
 				98C5611821D4617800CF8FA3 /* Gill-Sans-MT.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,10 +295,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B472412E21ED4F12007DB29B /* THONARProject.xcdatamodeld in Sources */,
 				B465A9E421FBB55200C48CD8 /* CoreDataHandler.swift in Sources */,
 				B472412121E7EFB3007DB29B /* LargeMessageViewController.swift in Sources */,
 				B44FC59A21C45DBA000A2CD6 /* MenuButton.swift in Sources */,
+				B4581EB022095EF100604F67 /* THONARProject.xcdatamodeld in Sources */,
 				B472412821E82FC5007DB29B /* SmallMessageViewController.swift in Sources */,
 				B4581EAB2207E3B600604F67 /* detectionImageCell.swift in Sources */,
 				B44FC59E21C61907000A2CD6 /* tourMode.swift in Sources */,
@@ -518,13 +518,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		B472412C21ED4F12007DB29B /* THONARProject.xcdatamodeld */ = {
+		B4581EAE22095EF100604F67 /* THONARProject.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				B472412D21ED4F12007DB29B /* THONARProject.xcdatamodel */,
+				B4581EAF22095EF100604F67 /* THON ARProject.xcdatamodel */,
 			);
-			currentVersion = B472412D21ED4F12007DB29B /* THONARProject.xcdatamodel */;
-			path = THONARProject.xcdatamodeld;
+			currentVersion = B4581EAF22095EF100604F67 /* THON ARProject.xcdatamodel */;
+			name = THONARProject.xcdatamodeld;
+			path = "THON ARProject.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
