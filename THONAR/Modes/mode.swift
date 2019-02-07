@@ -32,6 +32,17 @@ class Mode {
     let description: String
     var alertMessageDelegate: AlertMessageDelegate?
     
+    public init() {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = ARSCNView()
+        self.description = "Mode"
+    }
+    
+    public init(forView view: ARSCNView, withDescription description: String = "Mode") {
+        self.configuration = ARWorldTrackingConfiguration()
+        self.sceneView = view
+        self.description = description
+    }
     
     // Override in subclasses
     func session(forCamera camera: ARCamera) {
@@ -47,7 +58,7 @@ class Mode {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         print("gestureRecognizer should have been added")
-        //sceneView.isUserInteractionEnabled = true
+        sceneView.isUserInteractionEnabled = true
         sceneView.session.run(self.configuration, options: [.resetTracking,.removeExistingAnchors])
     }
     
@@ -73,17 +84,7 @@ class Mode {
         }
     }
         
-    public init() {
-        self.configuration = ARWorldTrackingConfiguration()
-        self.sceneView = ARSCNView()
-        self.description = "Mode"
-    }
     
-    public init(forView view: ARSCNView, withDescription description: String = "Mode") {
-        self.configuration = ARWorldTrackingConfiguration()
-        self.sceneView = view
-        self.description = description
-    }
     
     // Creates a node that displays a video when a certain image is detected
     func createVideoPlayerPlaneNode(forResourceDictionary resourceNames: [String:(String,String)], forImageAnchor imageAnchor: ARImageAnchor, fromImageName name: String?) -> SCNNode {
@@ -280,5 +281,5 @@ class Mode {
     
     func renderer(didAdd node: SCNNode, for anchor: ARAnchor) {}
     
-    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {}
+    func renderer(didUpdate node: SCNNode, for anchor: ARAnchor) {}
 }

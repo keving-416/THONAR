@@ -13,37 +13,37 @@ import SceneKit
 
 final class LearnMode: Mode {
     
-    var placedDiamondAlready: Bool = false
-    var noDiamondSelected: Bool = true
+    var placedDiamondAlready: Bool
+    var noDiamondSelected: Bool
     var descImageView = UIImageView()
     
     public override init() {
+        self.noDiamondSelected = true
+        self.placedDiamondAlready = false
         super.init()
     }
     
     public init(forView view: ARSCNView) {
+        self.noDiamondSelected = true
+        self.placedDiamondAlready = false
         super.init(forView: view, withDescription: "Learn Mode")
-        print("Made it here")
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         print("Learn Mode viewWillAppear")
-        
+        self.noDiamondSelected = true
+        self.placedDiamondAlready = false
         setUpConfiguration()
         configureLighting()
+        displayInstructions()
     }
     
     private func setUpConfiguration() {
         let configuration = ARWorldTrackingConfiguration()
-        
         configuration.planeDetection = [.horizontal]
-        
+//        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         sceneView.session.run(configuration) // add the configuration
-        
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints] // visual debugging: feature points are the yellow dots that stick to things
-        
-        print("Hello+++++++++++++++++++++++++++++++++++")
     }
     
     func configureLighting() {
@@ -51,11 +51,17 @@ final class LearnMode: Mode {
         sceneView.automaticallyUpdatesLighting = true
     }
     
-    override func handleTap(sender: UIGestureRecognizer) {
+    func displayInstructions() {
+        sceneView.
+    }
+    
+    @objc override func handleTap(sender: UIGestureRecognizer) {
+        print("Note: User tapped screen")
         
         let tapLocation = sender.location(in: sceneView)
         
         if (self.placedDiamondAlready) {
+            print("Note: There was a diamond placed already")
             let diamondHitTestResults = sceneView.hitTest(tapLocation, options: [SCNHitTestOption.searchMode: 1])
             
             guard let hit = diamondHitTestResults.last else { return }
@@ -67,7 +73,7 @@ final class LearnMode: Mode {
             
             if (hitName.range(of:"selected") == nil) {
                 // if no other diamond is selected, select diamond that was hit
-                if (noDiamondSelected) {
+                if (self.noDiamondSelected) {
                     
                     // select diamond
                     hit.node.parent?.runAction(SCNAction.moveBy(x: 0, y: 0, z: 0.2, duration: 1))
@@ -78,7 +84,7 @@ final class LearnMode: Mode {
                     // add description
                     addDiamondDescription(hitName: hitName)
                     
-                    noDiamondSelected = false
+                    self.noDiamondSelected = false
                     hit.node.name = hit.node.name! + " selected"
                 }
             }
@@ -87,7 +93,7 @@ final class LearnMode: Mode {
                 let endOfOriginalName = hit.node.name!.index(hit.node.name!.endIndex, offsetBy: -9)
                 let rangeOfOriginalName = hit.node.name!.startIndex ..< endOfOriginalName
                 hit.node.name = String(hit.node.name![rangeOfOriginalName])
-                noDiamondSelected = true
+                self.noDiamondSelected = true
                 
                 // Move diamond back
                 hit.node.parent?.runAction(SCNAction.moveBy(x: 0, y: 0, z: -0.2, duration: 1))
@@ -100,8 +106,9 @@ final class LearnMode: Mode {
             }
             
         }
-            
+        
         else {
+            print("Note: There was no diamond placed yet")
             let planeHitTestResults = sceneView.hitTest(tapLocation, types: .existingPlaneUsingExtent)
             
             guard let hitTestResult = planeHitTestResults.last else { return }
@@ -168,20 +175,21 @@ final class LearnMode: Mode {
     
         func addDiamondDescription(hitName: String){
             var imageName: String = ""
-    
+            
             switch hitName {
-            case "Top":
-                imageName = "courage-desc"
-            case "Left":
-                imageName = "strength-desc"
-            case "Right":
-                imageName = "wisdom-desc"
-            case "Bottom":
-                imageName = "honesty-desc"
-            default:
-                print("Didn't match any of the cases")
+                case "Top":
+                    imageName = "courage-desc"
+                case "Left":
+                    imageName = "strength-desc"
+                case "Right":
+                    imageName = "wisdom-desc"
+                case "Bottom":
+                    imageName = "honesty-desc"
+                default:
+                    print("Didn't match any of the cases")
             }
-    
+            print("THE HIT NAME WAS: ", hitName)
+            print("THE NAME WAS: ", imageName)
             let descImage = UIImage(named: imageName)
             descImageView.image = descImage!
             descImageView.frame = CGRect(x: 32, y: 497, width: 310, height: 150)
@@ -267,77 +275,90 @@ final class LearnMode: Mode {
     } // end createDiamond
     
         override func renderer(nodeFor anchor: ARAnchor) -> SCNNode? {
-            print("Learn Mode nodeFor renderer")
-            guard let planeAnchor = anchor as? ARPlaneAnchor else { return nil }
-    
-            let width = CGFloat(planeAnchor.extent.x)
-            let height = CGFloat(planeAnchor.extent.z)
-            let plane = SCNPlane(width: width, height: height)
-    
-            plane.materials.first?.diffuse.contents = UIColor.transparentLightBlue
-    
-            let planeParentNode = SCNNode()
-            let planeNode = SCNNode(geometry: plane)
-    
-            let x = CGFloat(planeAnchor.center.x)
-            let y = CGFloat(planeAnchor.center.y)
-            let z = CGFloat(planeAnchor.center.z)
-    
-            planeNode.position = SCNVector3(x,y,z)
-            planeNode.eulerAngles.x = -.pi / 2
-    
-            planeParentNode.addChildNode(planeNode)
-            
-            return planeParentNode
+            print("Note: found a plane")
+//            print("SUUUUUUUUUUUURFS UP BRO ------------------------")
+//            guard let planeAnchor = anchor as? ARPlaneAnchor else { return nil }
+//
+//            let width = CGFloat(planeAnchor.extent.x)
+//            let height = CGFloat(planeAnchor.extent.z)
+//            let plane = SCNPlane(width: width, height: height)
+//
+//            plane.materials.first?.diffuse.contents = UIColor.transparentLightBlue
+//
+//            let planeParentNode = SCNNode()
+//            planeParentNode.name = "plane"
+//            let planeNode = SCNNode(geometry: plane)
+//
+//            let x = CGFloat(planeAnchor.center.x)
+//            let y = CGFloat(planeAnchor.center.y)
+//            let z = CGFloat(planeAnchor.center.z)
+//
+//            planeNode.position = SCNVector3(x,y,z)
+//            planeNode.eulerAngles.x = -.pi / 2
+//
+//            planeParentNode.addChildNode(planeNode)
+//
+//            return planeParentNode
+            return SCNNode()
         } // end renderer
-    
+//
 //    override func renderer(didAdd node: SCNNode, for anchor: ARAnchor) {
-//        print("renderer")
-//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//        print("SURRRRRRFSSSSS UPPPP BROOOOOOOO++++++++++++++++++++++")
+//    }
 //
-//        let width = CGFloat(planeAnchor.extent.x)
-//        let height = CGFloat(planeAnchor.extent.z)
-//        let plane = SCNPlane(width: width, height: height)
-//
-//        plane.materials.first?.diffuse.contents = UIColor.transparentLightBlue
-//
-//        let planeNode = SCNNode(geometry: plane)
-//
-//        let x = CGFloat(planeAnchor.center.x)
-//        let y = CGFloat(planeAnchor.center.y)
-//        let z = CGFloat(planeAnchor.center.z)
-//
-//        planeNode.position = SCNVector3(x,y,z)
-//        planeNode.eulerAngles.x = -.pi / 2
-//
-//        node.addChildNode(planeNode)
-//
-//
-//    } // end renderer
+//    override func renderer(didUpdate node: SCNNode, for anchor: ARAnchor) {
+//        print("i am here $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+//    }
     
-    override func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Old renderer functions */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    override func renderer(didAdd node: SCNNode, for anchor: ARAnchor) {
+        print("Note: adding a plane")
+        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+
+        let width = CGFloat(planeAnchor.extent.x)
+        let height = CGFloat(planeAnchor.extent.z)
+        let plane = SCNPlane(width: width, height: height)
+
+        plane.materials.first?.diffuse.contents = UIColor.transparentLightBlue
+
+        let planeNode = SCNNode(geometry: plane)
+
+        let x = CGFloat(planeAnchor.center.x)
+        let y = CGFloat(planeAnchor.center.y)
+        let z = CGFloat(planeAnchor.center.z)
+
+        planeNode.position = SCNVector3(x,y,z)
+        planeNode.eulerAngles.x = -.pi / 2
+
+        node.addChildNode(planeNode)
+
+
+    } // end renderer
+    
+    override func renderer(didUpdate node: SCNNode, for anchor: ARAnchor) {
         // 1
         guard let planeAnchor = anchor as?  ARPlaneAnchor,
             let planeNode = node.childNodes.first,
             let plane = planeNode.geometry as? SCNPlane
             else { return }
-        
+
         // 2
         let width = CGFloat(planeAnchor.extent.x)
         let height = CGFloat(planeAnchor.extent.z)
         plane.width = width
         plane.height = height
-        
+
         // 3
         let x = CGFloat(planeAnchor.center.x)
         let y = CGFloat(planeAnchor.center.y)
         let z = CGFloat(planeAnchor.center.z)
         planeNode.position = SCNVector3(x, y, z)
         planeNode.name = "plane"
-        
+
     } // end renderer
-    
+
 } // end LearnMode class
 
 extension UIColor {
